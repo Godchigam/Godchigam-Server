@@ -18,7 +18,7 @@ public enum ErrorCode {
     EMPTY_JWT(false, "400", "JWT를 입력해주세요."),
 
     // users
-    USERS_EMPTY_USER_ID(false, "400", "유저 아이디 값을 확인해주세요."),
+    DUPLICATE_USER_ID(false, "400", "중복된 아이디가 있습니다."),
 
 
     /**
@@ -29,13 +29,13 @@ public enum ErrorCode {
 
 
     private final boolean isSuccess;
-    private final String code;
+    private final String status;
     private final String message;
 
 
-    private ErrorCode(boolean isSuccess, String code, String message) {
+    private ErrorCode(boolean isSuccess, String status, String message) {
         this.isSuccess = isSuccess;
-        this.code = code;
+        this.status = status;
         this.message = message;
     }
 }
