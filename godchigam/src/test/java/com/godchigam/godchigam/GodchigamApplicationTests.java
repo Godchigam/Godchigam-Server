@@ -1,0 +1,13 @@
+package com.godchigam.godchigam;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class GodchigamApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
