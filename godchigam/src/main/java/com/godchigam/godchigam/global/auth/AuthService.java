@@ -69,4 +69,21 @@ public class AuthService {
                 .build();
         return CommonResponse.success(loginUser, "로그인 성공");
     }
+
+    public UserResponse GetCurrentUserInfo(String accessToken) {
+
+        if (!jwtTokenProvider.isValidToken(accessToken)) {
+            return null;
+        }
+        String loginId = jwtTokenProvider.getUserLoginId(accessToken);
+        log.info("추출해낸 로그인 아이디:" + loginId);
+        Optional<User> currentLoginUser = userRepository.findByLoginId(loginId);
+
+        UserResponse loginUser = UserResponse.builder()
+                .nickname(currentLoginUser.get().getNickname())
+                .accessToken(accessToken)
+                .build();
+
+        return loginUser;
+    }
 }

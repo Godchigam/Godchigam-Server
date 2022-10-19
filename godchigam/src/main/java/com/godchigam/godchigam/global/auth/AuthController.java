@@ -33,5 +33,9 @@ public class AuthController {
     public CommonResponse UserLogin(@RequestBody LoginRequest loginRequest){
         return authService.UserLogin(loginRequest);
     }
+
+    @GetMapping("")
+    public CommonResponse<UserResponse> GetCurrentUserInfo(@RequestHeader("token") String accessToken){
+        return CommonResponse.success(authService.GetCurrentUserInfo(accessToken),"로그인한 유저 정보 검색 성공");
     }
 }
