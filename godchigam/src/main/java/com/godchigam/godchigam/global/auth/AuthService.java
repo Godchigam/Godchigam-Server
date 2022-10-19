@@ -46,4 +46,27 @@ public class AuthService {
         return "중복된 아이디가 존재하지 않습니다.";
     }
 
+    public CommonResponse UserLogin(LoginRequest loginRequest) {
+
+        Optional<User> findUser = userRepository.findByLoginId(loginRequest.getLoginId());
+        if (findUser.isEmpty()) {
+            return CommonResponse.error(400, "존재하는 계정이 없습니다.");
+        }
+        if (!findUser.get().getPassword().equals(loginRequest.getPassword())) {
+            return CommonResponse.error(400, "비밀번호가 맞지 않습니다.");
+        }
+
+        String loginId = findUser.get().getLoginId();
+        String accessToken = jwtTokenProvider.generateToken(loginId);
+        findUser.get().setAccessToken(accessToken);
+
+        log.info("발급된 토큰 : "+accessToken);
+        userRepository.flush();
+
+        UserResponse loginUser = UserResponse.builder()
+                .nickname(findUser.get().getNickname())
+                .accessToken(accessToken)
+                .build();
+        return CommonResponse.success(loginUser, "로그인 성공");
+    }
 }

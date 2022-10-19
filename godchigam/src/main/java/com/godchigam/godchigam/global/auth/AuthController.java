@@ -24,7 +24,14 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public CommonSuccessResponse SignUpUser(@RequestBody AuthRequest authRequest) {
-        return CommonSuccessResponse.successWithOutData(authService.SignUpUser(authRequest));
+    public CommonResponse SignUpUser(@RequestBody AuthRequest authRequest) {
+        String message =authService.SignUpUser(authRequest);
+        return CommonResponse.successWithOutData(message);
+    }
+
+    @PostMapping("/login")
+    public CommonResponse UserLogin(@RequestBody LoginRequest loginRequest){
+        return authService.UserLogin(loginRequest);
+    }
     }
 }

@@ -1,13 +1,12 @@
-package com.godchigam.godchigam.global.auth;
+package com.godchigam.godchigam.global.auth.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class AuthRequest {
+public class LoginRequest {
     private String loginId;
     private String password;
-    private String nickname;
-    private String profileImageUrl;
+    private String fcmToken;
 }
