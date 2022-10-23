@@ -1,13 +1,13 @@
 package com.godchigam.godchigam.global.auth;
 
+import com.godchigam.godchigam.domain.refrigerator.entity.Refrigerator;
+import com.godchigam.godchigam.domain.refrigerator.repository.RefrigeratorRepository;
 import com.godchigam.godchigam.domain.user.entity.User;
 import com.godchigam.godchigam.domain.user.repository.UserRepository;
 import com.godchigam.godchigam.global.auth.dto.AuthRequest;
 import com.godchigam.godchigam.global.auth.dto.LoginRequest;
 import com.godchigam.godchigam.global.auth.dto.UserResponse;
 import com.godchigam.godchigam.global.common.CommonResponse;
-import com.godchigam.godchigam.global.common.ErrorCode;
-import com.godchigam.godchigam.global.common.exception.BaseException;
 import com.godchigam.godchigam.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +25,7 @@ import java.util.Optional;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final RefrigeratorRepository refrigeratorRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     public String SignUpUser(AuthRequest authRequest) {
@@ -33,6 +34,10 @@ public class AuthService {
         BeanUtils.copyProperties(authRequest, newUser);
         newUser.setStatus("ACTIVE");
         userRepository.save(newUser);
+        Refrigerator newFrige = new Refrigerator();
+        newFrige.setUser(newUser);
+        refrigeratorRepository.save(newFrige);
+
         return "회원 가입에 성공했습니다.";
     }
 
