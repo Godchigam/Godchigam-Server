@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class Error {
-    private String status;
+    private int status;
     private String message;
 
     public static Error of(ErrorCode errorCode) {
