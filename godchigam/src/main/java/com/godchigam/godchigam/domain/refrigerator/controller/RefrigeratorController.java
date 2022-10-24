@@ -29,4 +29,15 @@ public class RefrigeratorController {
     public CommonResponse LookUpDetailIngredientInfo(@RequestParam Long foodId){
         return CommonResponse.success(refrigeratorService.LookUpDetailIngredientInfo(foodId),"재료 상세 정보 조회 성공");
     }
+
+    @PostMapping("")
+    public CommonResponse addNewIngredient(@RequestHeader("token") String accessToken, @RequestBody NewIngredientRequest newIngredientRequest){
+        refrigeratorService.addNewIngredient(jwtTokenProvider.getUserLoginId(accessToken),newIngredientRequest );
+        return CommonResponse.successWithOutData("재료 추가 성공");
+    }
+
+    @PutMapping()
+    public CommonResponse addIngredientAmount(){
+        
+    }
 }
