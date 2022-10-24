@@ -48,4 +48,10 @@ public class RefrigeratorController {
         refrigeratorService.deleteIngredient(foodId);
         return CommonResponse.successWithOutData("재료 삭제 성공");
     }
+
+    @PostMapping("/info")
+    public CommonResponse changeIngredientDetail(@RequestHeader("token") String accessToken, @RequestBody NewIngredientRequest changeIngredientRequest, @RequestParam Long foodId){
+        refrigeratorService.changeIngredientDetail(changeIngredientRequest, foodId);
+        return CommonResponse.successWithOutData("재료 정보 수정 성공");
+    }
 }

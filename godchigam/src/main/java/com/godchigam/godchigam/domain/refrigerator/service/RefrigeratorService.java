@@ -183,4 +183,19 @@ public class RefrigeratorService {
     public void deleteIngredient(Long foodId) {
         ingredientRepository.deleteById(foodId);
     }
+
+    public void changeIngredientDetail(NewIngredientRequest changeIngredientRequest,Long foodId) {
+        Optional<Ingredient> selectIngredient = ingredientRepository.findByIngredientIdx(foodId);
+        Ingredient changeIngredient = selectIngredient.get();
+        changeIngredient.setIngredientCnt(changeIngredientRequest.getAmount());
+        changeIngredient.setIngredientName(changeIngredientRequest.getFoodName());
+        log.info("바뀐이름"+changeIngredient.getIngredientName());
+        LocalDate limit = LocalDate.of(changeIngredientRequest.getExpirationYear(),changeIngredientRequest.getExpirationMonth(),changeIngredientRequest.getExpirationDay());
+        LocalDate purchase = LocalDate.of(changeIngredientRequest.getPurchaseYear(),changeIngredientRequest.getPurchaseMonth(),changeIngredientRequest.getPurchaseDay());
+        changeIngredient.setIngredientLimit(limit);
+        changeIngredient.setIngredientBuy(purchase);
+
+        changeIngredient.setIngredientStatus(changeIngredientRequest.getStorage());
+
+    }
 }
