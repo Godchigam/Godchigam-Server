@@ -16,35 +16,36 @@ public class RefrigeratorController {
     private final JwtTokenProvider jwtTokenProvider;
     private final RefrigeratorService refrigeratorService;
 
-    /**
-     * TO-DO : 유통기한, 산 날짜, REMAIN 관련해서 아직 남음
-     * @param accessToken
-     * @return
-     */
     @GetMapping("")
     public CommonResponse LookUpRefrigerator(@RequestHeader("token") String accessToken) {
-        return CommonResponse.success(refrigeratorService.LookUpRefrigerator(jwtTokenProvider.getUserLoginId(accessToken)),"냉장고 조회 성공");
+        return CommonResponse.success(refrigeratorService.LookUpRefrigerator(jwtTokenProvider.getUserLoginId(accessToken)), "냉장고 조회 성공");
     }
 
     @GetMapping("/detail")
-    public CommonResponse LookUpDetailIngredientInfo(@RequestParam Long foodId){
-        return CommonResponse.success(refrigeratorService.LookUpDetailIngredientInfo(foodId),"재료 상세 정보 조회 성공");
+    public CommonResponse LookUpDetailIngredientInfo(@RequestParam Long foodId) {
+        return CommonResponse.success(refrigeratorService.LookUpDetailIngredientInfo(foodId), "재료 상세 정보 조회 성공");
     }
 
     @PostMapping("")
-    public CommonResponse addNewIngredient(@RequestHeader("token") String accessToken, @RequestBody NewIngredientRequest newIngredientRequest){
-        refrigeratorService.addNewIngredient(jwtTokenProvider.getUserLoginId(accessToken),newIngredientRequest );
+    public CommonResponse addNewIngredient(@RequestHeader("token") String accessToken, @RequestBody NewIngredientRequest newIngredientRequest) {
+        refrigeratorService.addNewIngredient(jwtTokenProvider.getUserLoginId(accessToken), newIngredientRequest);
         return CommonResponse.successWithOutData("재료 추가 성공");
     }
 
-    @PutMapping()
-    public CommonResponse addIngredientAmount(@RequestHeader("token") String accessToken, @RequestBody ChangeAmountRequest changeAmount, @RequestParam Long foodId){
+    @PutMapping("")
+    public CommonResponse addIngredientAmount(@RequestHeader("token") String accessToken, @RequestBody ChangeAmountRequest changeAmount, @RequestParam Long foodId) {
         int result = refrigeratorService.addIngredientAmount(changeAmount.getChangeAmount(), foodId);
-        if(result <= 0){
-            return CommonResponse.error(400,"재료 개수가 너무 적습니다.");
-        }else if(result >=99){
-            return  CommonResponse.error(400,"재료 개수가 초과되었습니다.");
+        if (result <= 0) {
+            return CommonResponse.error(400, "재료 개수가 너무 적습니다.");
+        } else if (result >= 99) {
+            return CommonResponse.error(400, "재료 개수가 초과되었습니다.");
         }
-        return CommonResponse.success(result,"재료 개수 변경 성공");
+        return CommonResponse.success(result, "재료 개수 변경 성공");
+    }
+
+    @DeleteMapping("")
+    public CommonResponse deleteIngredient(@RequestHeader("token") String accessToken, @RequestParam Long foodId) {
+        refrigeratorService.deleteIngredient(foodId);
+        return CommonResponse.successWithOutData("재료 삭제 성공");
     }
 }

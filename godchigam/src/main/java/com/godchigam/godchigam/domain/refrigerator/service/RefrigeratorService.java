@@ -179,4 +179,8 @@ public class RefrigeratorService {
         selectIngredient.get().setIngredientCnt(newAmonut);
         return newAmonut;
     }
+
+    public void deleteIngredient(Long foodId) {
+        ingredientRepository.deleteById(foodId);
+    }
 }
