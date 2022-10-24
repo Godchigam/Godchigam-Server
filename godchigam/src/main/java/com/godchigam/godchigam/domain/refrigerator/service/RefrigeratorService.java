@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -164,5 +165,18 @@ public class RefrigeratorService {
         newIngredient.setRefrigerator(loginUserFrige.get());
 
         ingredientRepository.save(newIngredient);
+    }
+
+    public int addIngredientAmount(int changeAmount,Long foodId) {
+        Optional<Ingredient> selectIngredient = ingredientRepository.findByIngredientIdx(foodId);
+        int curAmount = selectIngredient.get().getIngredientCnt();
+        int newAmonut = curAmount+changeAmount;
+        if(newAmonut <=0){
+            return newAmonut;
+        }else if(newAmonut>=99){
+            return newAmonut;
+        }
+        selectIngredient.get().setIngredientCnt(newAmonut);
+        return newAmonut;
     }
 }

@@ -1,5 +1,6 @@
 package com.godchigam.godchigam.domain.refrigerator.controller;
 
+import com.godchigam.godchigam.domain.refrigerator.dto.ChangeAmountRequest;
 import com.godchigam.godchigam.domain.refrigerator.dto.NewIngredientRequest;
 import com.godchigam.godchigam.domain.refrigerator.service.RefrigeratorService;
 import com.godchigam.godchigam.global.common.CommonResponse;
@@ -37,7 +38,13 @@ public class RefrigeratorController {
     }
 
     @PutMapping()
-    public CommonResponse addIngredientAmount(){
-        
+    public CommonResponse addIngredientAmount(@RequestHeader("token") String accessToken, @RequestBody ChangeAmountRequest changeAmount, @RequestParam Long foodId){
+        int result = refrigeratorService.addIngredientAmount(changeAmount.getChangeAmount(), foodId);
+        if(result <= 0){
+            return CommonResponse.error(400,"재료 개수가 너무 적습니다.");
+        }else if(result >=99){
+            return  CommonResponse.error(400,"재료 개수가 초과되었습니다.");
+        }
+        return CommonResponse.success(result,"재료 개수 변경 성공");
     }
 }
