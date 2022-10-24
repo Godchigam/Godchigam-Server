@@ -1,5 +1,6 @@
 package com.godchigam.godchigam.domain.refrigerator.controller;
 
+import com.godchigam.godchigam.domain.refrigerator.dto.NewIngredientRequest;
 import com.godchigam.godchigam.domain.refrigerator.service.RefrigeratorService;
 import com.godchigam.godchigam.global.common.CommonResponse;
 import com.godchigam.godchigam.global.jwt.JwtTokenProvider;
@@ -24,7 +25,7 @@ public class RefrigeratorController {
         return CommonResponse.success(refrigeratorService.LookUpRefrigerator(jwtTokenProvider.getUserLoginId(accessToken)),"냉장고 조회 성공");
     }
 
-    @GetMapping("")
+    @GetMapping("/detail")
     public CommonResponse LookUpDetailIngredientInfo(@RequestParam Long foodId){
         return CommonResponse.success(refrigeratorService.LookUpDetailIngredientInfo(foodId),"재료 상세 정보 조회 성공");
     }

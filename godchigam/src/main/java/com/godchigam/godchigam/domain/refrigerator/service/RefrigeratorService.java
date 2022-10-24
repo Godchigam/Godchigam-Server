@@ -40,7 +40,11 @@ public class RefrigeratorService {
         /**
          * 날짜 저장 관련 다시 조사
          */
+
         loginUserIngredientList.forEach(ingredient -> {
+            LocalDate currentTime= LocalDate.now();
+            Period diff = Period.between(currentTime,ingredient.getIngredientLimit());
+            int diff_time = diff.getYears()*365 + diff.getMonths()*30 + diff.getDays();
             if (ingredient.getIngredientStatus().equals("freezer")) {
                 freezer.add(
                         FoodInfoResponse.builder()
@@ -48,16 +52,16 @@ public class RefrigeratorService {
                                 .foodName(ingredient.getIngredientName())
                                 .expirationDate(DateInfoResponse.builder()
                                         .year(ingredient.getIngredientLimit().getYear())
-                                        .month(ingredient.getIngredientLimit().getMonth())
-                                        .day(ingredient.getIngredientLimit().getDay())
+                                        .month(ingredient.getIngredientLimit().getMonthValue())
+                                        .day(Integer.parseInt(ingredient.getIngredientLimit().toString().substring(8)))
                                         .build())
                                 .purchaseDate(DateInfoResponse.builder()
                                         .year(ingredient.getIngredientBuy().getYear())
-                                        .month(ingredient.getIngredientBuy().getMonth())
-                                        .day(ingredient.getIngredientBuy().getDay())
+                                        .month(ingredient.getIngredientBuy().getMonthValue())
+                                        .day(Integer.parseInt(ingredient.getIngredientBuy().toString().substring(8)))
                                         .build())
                                 .amount(ingredient.getIngredientCnt())
-                                .remain(65)
+                                .remain(diff_time)
                                 .storage(ingredient.getIngredientStatus())
                                 .build()
                 );
@@ -68,16 +72,16 @@ public class RefrigeratorService {
                                 .foodName(ingredient.getIngredientName())
                                 .expirationDate(DateInfoResponse.builder()
                                         .year(ingredient.getIngredientLimit().getYear())
-                                        .month(ingredient.getIngredientLimit().getMonth())
-                                        .day(ingredient.getIngredientLimit().getDay())
+                                        .month(ingredient.getIngredientLimit().getDayOfMonth())
+                                        .day(Integer.parseInt(ingredient.getIngredientLimit().toString().substring(8)))
                                         .build())
                                 .purchaseDate(DateInfoResponse.builder()
                                         .year(ingredient.getIngredientBuy().getYear())
-                                        .month(ingredient.getIngredientBuy().getMonth())
-                                        .day(ingredient.getIngredientBuy().getDay())
+                                        .month(ingredient.getIngredientBuy().getDayOfMonth())
+                                        .day(Integer.parseInt(ingredient.getIngredientBuy().toString().substring(8)))
                                         .build())
                                 .amount(ingredient.getIngredientCnt())
-                                .remain(65)
+                                .remain(diff_time)
                                 .storage(ingredient.getIngredientStatus())
                                 .build()
                 );
@@ -88,16 +92,16 @@ public class RefrigeratorService {
                                 .foodName(ingredient.getIngredientName())
                                 .expirationDate(DateInfoResponse.builder()
                                         .year(ingredient.getIngredientLimit().getYear())
-                                        .month(ingredient.getIngredientLimit().getMonth())
-                                        .day(ingredient.getIngredientLimit().getDay())
+                                        .month(ingredient.getIngredientLimit().getDayOfMonth())
+                                        .day(Integer.parseInt(ingredient.getIngredientLimit().toString().substring(8)))
                                         .build())
                                 .purchaseDate(DateInfoResponse.builder()
                                         .year(ingredient.getIngredientBuy().getYear())
-                                        .month(ingredient.getIngredientBuy().getMonth())
-                                        .day(ingredient.getIngredientBuy().getDay())
+                                        .month(ingredient.getIngredientBuy().getDayOfMonth())
+                                        .day(Integer.parseInt(ingredient.getIngredientBuy().toString().substring(8)))
                                         .build())
                                 .amount(ingredient.getIngredientCnt())
-                                .remain(65)
+                                .remain(diff_time)
                                 .storage(ingredient.getIngredientStatus())
                                 .build()
                 );
@@ -111,23 +115,28 @@ public class RefrigeratorService {
                 .build();
     }
 
-    public FoodInfoResponse LookUpDetailIngredientInfo(Long foodId){
+    public FoodInfoResponse LookUpDetailIngredientInfo(Long foodId) {
         Optional<Ingredient> selectedIngredient = ingredientRepository.findByIngredientIdx(foodId);
+
+        LocalDate currentTime= LocalDate.now();
+        Period diff = Period.between(currentTime,selectedIngredient.get().getIngredientLimit());
+        int diff_time = diff.getYears()*365 + diff.getMonths()*30 + diff.getDays();
+        log.info("날짜 차이:"+diff.getYears()+diff.getMonths()+diff.getDays());
         return FoodInfoResponse.builder()
                 .foodId(selectedIngredient.get().getIngredientIdx())
                 .foodName(selectedIngredient.get().getIngredientName())
                 .expirationDate(DateInfoResponse.builder()
                         .year(selectedIngredient.get().getIngredientLimit().getYear())
-                        .month(selectedIngredient.get().getIngredientLimit().getMonth())
-                        .day(selectedIngredient.get().getIngredientLimit().getDay())
+                        .month(selectedIngredient.get().getIngredientLimit().getMonthValue())
+                        .day(Integer.parseInt(selectedIngredient.get().getIngredientLimit().toString().substring(8)))
                         .build())
                 .purchaseDate(DateInfoResponse.builder()
                         .year(selectedIngredient.get().getIngredientBuy().getYear())
-                        .month(selectedIngredient.get().getIngredientBuy().getMonth())
-                        .day(selectedIngredient.get().getIngredientBuy().getDay())
+                        .month(selectedIngredient.get().getIngredientBuy().getMonthValue())
+                        .day(Integer.parseInt(selectedIngredient.get().getIngredientBuy().toString().substring(8)))
                         .build())
                 .amount(selectedIngredient.get().getIngredientCnt())
-                .remain(65)
+                .remain(diff_time)
                 .storage(selectedIngredient.get().getIngredientStatus())
                 .build();
     }
