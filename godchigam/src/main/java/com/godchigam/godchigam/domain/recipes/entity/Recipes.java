@@ -48,10 +48,10 @@ public class Recipes extends BaseTimeEntity {
     @Column
     private String difficulty;
 
-    @Column
+    @Column(length=5000)
     private String ingredient;
 
-    @Column
+    @Column(length=5000)
     private String cooking_method;
 
 

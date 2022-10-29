@@ -10,7 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface recipesRepository extends JpaRepository<Recipes, Long >{
-    //전체 레시피 보기
-    Optional<Recipes> findById(Long Id);
+
+    List<Recipes> findByCategoryContaining(String theme);
+    Optional<Recipes> findById(String Id);
+
+
 
 }
