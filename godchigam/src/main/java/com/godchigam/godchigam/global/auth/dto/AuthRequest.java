@@ -10,5 +10,5 @@ public class AuthRequest {
     private String password;
     private String nickname;
     private String profileImageUrl;
-    private String fcmToken;
+    private String address;
 }

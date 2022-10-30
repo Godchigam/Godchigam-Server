@@ -28,6 +28,10 @@ public class AuthService {
     private final RefrigeratorRepository refrigeratorRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * TO-DO
+     * 유저 주소 정보 추가
+     */
     public String SignUpUser(AuthRequest authRequest) {
 
         User newUser = new User();
