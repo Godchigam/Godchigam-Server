@@ -20,7 +20,11 @@ public enum ErrorCode {
 
     // users
     DUPLICATE_USER_ID(false, 400, "중복된 아이디가 있습니다."),
+    USERS_EMPTY_USER_ID(false, 400, "유저 아이디 값을 확인해주세요."),
 
+
+    // recipes
+    RECIPES_EMPTY(false, 400, "레시피가 비었습니다."),
 
     /**
      * 500 : Server 오류

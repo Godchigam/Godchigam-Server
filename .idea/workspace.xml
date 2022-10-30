@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bfbd921a-ec13-4ecd-a792-a1165e0be6f5" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipes/dto/RecipesFindResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipes/dto/RecipesFindResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipes/entity/Recipes.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipes/entity/Recipes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipes/service/recipesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipes/service/recipesService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipesBookmark/controller/BookmarkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipesBookmark/controller/BookmarkController.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/godchigam">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="myId2FirstActivated">
+      <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="true" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="true" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
+      </map>
+    </option>
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="false" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="false" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2GXqQ17avhGKEzMH5xvQKw7ih5l" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../proso_goodserver" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+  </component>
+  <component name="RunManager">
+    <configuration name="GodchigamApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="godchigam.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.godchigam.godchigam.GodchigamApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bfbd921a-ec13-4ecd-a792-a1165e0be6f5" name="Changes" comment="" />
+      <created>1666545256905</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1666545256905</updated>
+      <workItem from="1666545260176" duration="7309000" />
+      <workItem from="1667051460983" duration="600000" />
+      <workItem from="1667057816932" duration="938000" />
+      <workItem from="1667058795834" duration="7142000" />
+      <workItem from="1667068024973" duration="44000" />
+      <workItem from="1667068551362" duration="35103000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
