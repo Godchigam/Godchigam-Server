@@ -1,12 +1,18 @@
 package com.godchigam.godchigam.domain.recipes.entity;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.godchigam.godchigam.domain.recipesBookmark.model.Bookmark;
 import com.godchigam.godchigam.global.entity.BaseTimeEntity;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import com.godchigam.godchigam.domain.user.entity.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -56,4 +62,9 @@ public class Recipes extends BaseTimeEntity {
 
 
 
+    @JsonBackReference
+    @OneToMany(mappedBy= "recipes",
+    fetch = FetchType.LAZY, cascade = CascadeType.ALL,
+    orphanRemoval = true)
+    private List<Bookmark> bookmarks = new ArrayList<>();
 }
