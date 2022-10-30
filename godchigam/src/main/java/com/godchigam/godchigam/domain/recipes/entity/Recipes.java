@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.godchigam.godchigam.domain.recipesBookmark.model.Bookmark;
+import com.godchigam.godchigam.domain.recipesWish.model.Wish;
 import com.godchigam.godchigam.global.entity.BaseTimeEntity;
 import lombok.Data;
 import lombok.Getter;
@@ -67,4 +68,10 @@ public class Recipes extends BaseTimeEntity {
     fetch = FetchType.LAZY, cascade = CascadeType.ALL,
     orphanRemoval = true)
     private List<Bookmark> bookmarks = new ArrayList<>();
+
+    @JsonBackReference
+    @OneToMany(mappedBy= "recipes",
+            fetch = FetchType.LAZY, cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<Wish> wishes = new ArrayList<>();
 }

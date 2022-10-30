@@ -19,9 +19,9 @@ public class BookmarkController {
      * **/
 
     @PutMapping("/bookmark")
-    public CommonResponse<BookmarkResponse> CheckBookmark(@RequestHeader("Authorization") String accessToken, @RequestParam Long recipesIdx){
+    public CommonResponse<BookmarkResponse> CheckBookmark(@RequestHeader("Authorization") String accessToken, @RequestParam Long recipeId){
         //jwt복호화, user정보 얻기
        String userId = jwtTokenProvider.getUserLoginId(accessToken);
-       return CommonResponse.success(bookmarkService.checkBookmark(userId,recipesIdx),"북마크 체크 성공");
+       return CommonResponse.success(bookmarkService.checkBookmark(userId,recipeId),"북마크 체크 성공");
     }
 }
