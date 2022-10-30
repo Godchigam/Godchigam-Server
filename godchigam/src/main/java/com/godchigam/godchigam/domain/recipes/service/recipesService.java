@@ -1,13 +1,12 @@
 package com.godchigam.godchigam.domain.recipes.service;
 
 
-import com.godchigam.godchigam.domain.recipes.controller.RecipesController;
 import com.godchigam.godchigam.domain.recipes.dto.RecipesFindResponse;
 import com.godchigam.godchigam.domain.recipes.entity.Recipes;
 import com.godchigam.godchigam.domain.recipes.repository.recipesRepository;
-import com.godchigam.godchigam.domain.recipesBookmark.dto.BookmarkResponse;
 import com.godchigam.godchigam.domain.recipesBookmark.model.Bookmark;
 import com.godchigam.godchigam.domain.recipesBookmark.model.BookmarkStatus;
+import com.godchigam.godchigam.domain.recipesWish.model.WishStatus;
 import com.godchigam.godchigam.global.common.ErrorCode;
 import com.godchigam.godchigam.global.common.exception.BaseException;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +29,7 @@ public class recipesService {
         if(recipes.isEmpty()){
             throw new BaseException(ErrorCode.RECIPES_EMPTY);
         }
+
         recipes = recipes.stream().distinct().collect(Collectors.toList());
         List<RecipesFindResponse> newList = new ArrayList<>();
         recipes.forEach(recipes1 -> {
@@ -48,6 +48,7 @@ public class recipesService {
                                     .cooking_method(recipes1.getCooking_method())
                                     .likeCount(recipes1.getCountOfLikes())
 
+
                                     .build()
                     );
                 }
@@ -64,6 +65,7 @@ public class recipesService {
         if(recipes.isEmpty()){
             throw new BaseException(ErrorCode.RECIPES_EMPTY);
         }
+
         recipes = recipes.stream().distinct().collect(Collectors.toList());
         List<RecipesFindResponse> newList = new ArrayList<>();
         recipes.forEach(recipes1 -> {

@@ -26,6 +26,7 @@ public class BookmarkController {
        return CommonResponse.success(bookmarkService.checkBookmark(userId,recipeId),"북마크 체크 성공");
     }
 
+    //북마크한 레시피 불러오기
     @GetMapping("/bookmark")
     public CommonResponse readBookmarks(@RequestHeader("Authorization") String accessToken, @RequestParam(required = false)BookmarkStatus status){
         String userId = jwtTokenProvider.getUserLoginId(accessToken);

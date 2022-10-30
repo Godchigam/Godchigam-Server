@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.godchigam.godchigam.domain.recipesBookmark.model.Bookmark;
 import com.godchigam.godchigam.domain.recipesBookmark.model.BookmarkStatus;
 import com.godchigam.godchigam.domain.recipesWish.model.Wish;
+import com.godchigam.godchigam.domain.recipesWish.model.WishStatus;
 import com.godchigam.godchigam.global.entity.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -74,8 +75,6 @@ public class Recipes extends BaseTimeEntity {
 
 
     public int getCountOfLikes(){return this.wishes.size();}
-
-
 
 
 
