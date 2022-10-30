@@ -1,5 +1,6 @@
 package com.godchigam.godchigam.domain.recipesBookmark.service;
 
+import com.godchigam.godchigam.domain.recipes.dto.RecipesFindResponse;
 import com.godchigam.godchigam.domain.recipesBookmark.dto.BookmarkResponse;
 import com.godchigam.godchigam.domain.recipesBookmark.model.Bookmark;
 import com.godchigam.godchigam.domain.recipesBookmark.model.BookmarkStatus;
@@ -14,7 +15,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -65,6 +69,35 @@ public class BookmarkService {
                     .status(updateBookmark.getStatus())
                     .build();
         }
+    }
+
+    ////
+
+    public List<BookmarkResponse> readBookmark(String userId, BookmarkStatus status){
+        Optional<User> user=userRepository.findByLoginId(userId);
+        List<Recipes> recipes = bookmarkRepository.getRecipesList(userId, status);
+        if(user.isEmpty()){
+            throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
+        }
+        if(recipes.isEmpty()){
+            return null;
+        }
+        recipes = recipes.stream().distinct().collect(Collectors.toList());
+        List<BookmarkResponse> newList = new ArrayList<>();
+        recipes.forEach(recipes1 -> {
+                    newList.add(
+                            BookmarkResponse.builder()
+                                    .userId(userId)
+                                    .recipesId(recipes1.getIdx())
+                                    .name(recipes1.getName())
+                                    .status(status)
+                                    .build()
+
+                    );
+                }
+        );
+        return newList;
+
     }
 
 }

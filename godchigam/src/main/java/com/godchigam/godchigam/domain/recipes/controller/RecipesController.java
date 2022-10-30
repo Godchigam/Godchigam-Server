@@ -16,15 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecipesController {
     private final recipesService recipesService;
-    //레시피 전체 조회
 
-    /*
-    @GetMapping("")
-    public CommonResponse<List<RecipesFindResponse>> readRecipes(@Param("theme")String theme){
-        return CommonResponse.success(recipesService.readRecipes(),"레시피 전체 조회 성공");
-    }
-*/
-
+    //레시피 전체조회, 카테고리별 조회
     @GetMapping("")
     public CommonResponse<List<RecipesFindResponse>> searchRecipes(@RequestParam(required = false) String theme){
         if(theme==null){
@@ -32,6 +25,13 @@ public class RecipesController {
         }
         return CommonResponse.success(recipesService.searchRecipes(theme),"카테고리별 레시피 조회 성공");
     }
+
+    @GetMapping("/detail")
+    public CommonResponse readRecipes(@RequestParam(required = true)Long recipeId){
+        return CommonResponse.success(recipesService.readRecipe(recipeId),"레시피 상세조회 성공");
+    }
+
+
 
 
 }

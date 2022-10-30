@@ -39,6 +39,7 @@ public class Bookmark extends BaseTimeEntity{
     private Recipes recipes;
 
 
+
     public Bookmark(BookmarkStatus status, User user, Recipes recipes){
         this.status = status;
         this.user = user;

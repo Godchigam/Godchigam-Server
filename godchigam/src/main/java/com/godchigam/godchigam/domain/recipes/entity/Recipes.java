@@ -4,13 +4,12 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.godchigam.godchigam.domain.recipesBookmark.model.Bookmark;
+import com.godchigam.godchigam.domain.recipesBookmark.model.BookmarkStatus;
 import com.godchigam.godchigam.domain.recipesWish.model.Wish;
 import com.godchigam.godchigam.global.entity.BaseTimeEntity;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.godchigam.godchigam.domain.user.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,12 +60,10 @@ public class Recipes extends BaseTimeEntity {
     @Column(length=5000)
     private String cooking_method;
 
-
-
     @JsonBackReference
     @OneToMany(mappedBy= "recipes",
-    fetch = FetchType.LAZY, cascade = CascadeType.ALL,
-    orphanRemoval = true)
+            fetch = FetchType.LAZY, cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<Bookmark> bookmarks = new ArrayList<>();
 
     @JsonBackReference
@@ -74,4 +71,12 @@ public class Recipes extends BaseTimeEntity {
             fetch = FetchType.LAZY, cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<Wish> wishes = new ArrayList<>();
+
+
+    public int getCountOfLikes(){return this.wishes.size();}
+
+
+
+
+
 }

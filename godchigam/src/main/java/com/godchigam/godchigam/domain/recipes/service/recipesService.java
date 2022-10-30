@@ -5,6 +5,9 @@ import com.godchigam.godchigam.domain.recipes.controller.RecipesController;
 import com.godchigam.godchigam.domain.recipes.dto.RecipesFindResponse;
 import com.godchigam.godchigam.domain.recipes.entity.Recipes;
 import com.godchigam.godchigam.domain.recipes.repository.recipesRepository;
+import com.godchigam.godchigam.domain.recipesBookmark.dto.BookmarkResponse;
+import com.godchigam.godchigam.domain.recipesBookmark.model.Bookmark;
+import com.godchigam.godchigam.domain.recipesBookmark.model.BookmarkStatus;
 import com.godchigam.godchigam.global.common.ErrorCode;
 import com.godchigam.godchigam.global.common.exception.BaseException;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +46,8 @@ public class recipesService {
                                     .difficulty(recipes1.getDifficulty())
                                     .ingredient(recipes1.getIngredient())
                                     .cooking_method(recipes1.getCooking_method())
+                                    .likeCount(recipes1.getCountOfLikes())
+
                                     .build()
                     );
                 }
@@ -52,6 +57,7 @@ public class recipesService {
 
     }
 
+    //레시피 카테고리 조회
     @Transactional
     public List<RecipesFindResponse> searchRecipes(String keyword){
         List<Recipes> recipes = recipesRepository.findByCategoryContaining(keyword);
@@ -74,6 +80,8 @@ public class recipesService {
                                     .difficulty(recipes1.getDifficulty())
                                     .ingredient(recipes1.getIngredient())
                                     .cooking_method(recipes1.getCooking_method())
+                                    .likeCount(recipes1.getCountOfLikes())
+
                                     .build()
                     );
                 }
@@ -81,5 +89,27 @@ public class recipesService {
         return newList;
     }
 
+    //레시피 상세조회
+    @Transactional
+    public RecipesFindResponse readRecipe(Long id){
+        Optional<Recipes> recipes = recipesRepository.findById(id);
+        if(recipes.isEmpty()){
+            throw new BaseException(ErrorCode.RECIPES_EMPTY);
+        }
+        return RecipesFindResponse.builder()
+                .id(recipes.get().getId())
+                .name(recipes.get().getName())
+                .image_url(recipes.get().getImage_url())
+                .category(recipes.get().getCategory())
+                .site_id(recipes.get().getSite_id())
+                .link(recipes.get().getLink())
+                .dish(recipes.get().getDish())
+                .cooking_time(recipes.get().getCooking_time())
+                .difficulty(recipes.get().getDifficulty())
+                .ingredient(recipes.get().getIngredient())
+                .cooking_method(recipes.get().getCooking_method())
+                .likeCount(recipes.get().getCountOfLikes())
+                .build();
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.godchigam.godchigam.domain.recipes.dto;
 
+import com.godchigam.godchigam.domain.recipesBookmark.model.BookmarkStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -21,4 +22,8 @@ public class RecipesFindResponse {
     private final String difficulty;
     private final String ingredient;
     private final String cooking_method;
+    private final Integer likeCount; //찜하기 수
+    private final BookmarkStatus bookmarkStatus; //북마크 되어있는가
+
+
 }

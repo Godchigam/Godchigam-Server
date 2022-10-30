@@ -1,6 +1,7 @@
 package com.godchigam.godchigam.domain.recipesBookmark.controller;
 
 import com.godchigam.godchigam.domain.recipesBookmark.dto.BookmarkResponse;
+import com.godchigam.godchigam.domain.recipesBookmark.model.BookmarkStatus;
 import com.godchigam.godchigam.domain.recipesBookmark.service.BookmarkService;
 import com.godchigam.godchigam.global.common.CommonResponse;
 import com.godchigam.godchigam.global.jwt.JwtTokenProvider;
@@ -20,8 +21,18 @@ public class BookmarkController {
 
     @PutMapping("/bookmark")
     public CommonResponse<BookmarkResponse> CheckBookmark(@RequestHeader("Authorization") String accessToken, @RequestParam Long recipeId){
-        //jwt복호화, user정보 얻기
+
        String userId = jwtTokenProvider.getUserLoginId(accessToken);
        return CommonResponse.success(bookmarkService.checkBookmark(userId,recipeId),"북마크 체크 성공");
     }
+
+    @GetMapping("/bookmark")
+    public CommonResponse readBookmarks(@RequestHeader("Authorization") String accessToken, @RequestParam(required = false)BookmarkStatus status){
+        String userId = jwtTokenProvider.getUserLoginId(accessToken);
+        BookmarkStatus status1 = BookmarkStatus.ON;
+        return CommonResponse.success(bookmarkService.readBookmark(userId,status1),"북마크 불러오기 성공");
+    }
+
+
+
 }
