@@ -98,7 +98,10 @@ public class AuthService {
     public AddressResponse ChangeAddress(String x, String y) {
         KakaoMapResponse kakaoMapResponse= kakaoMapClient.BringAddress(x,y); ;
         String address = kakaoMapResponse.getAddress();
+        String[] splitDong = address.split(" ");
+        int addressSize = splitDong.length;
+        log.info(address);
         return AddressResponse.builder()
-                .address_name(address).build();
+                .address_name(splitDong[addressSize-1]).build();
     }
 }
