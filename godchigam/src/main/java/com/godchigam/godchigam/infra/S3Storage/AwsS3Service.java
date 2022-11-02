@@ -28,29 +28,27 @@ public class AwsS3Service {
 
     private final AmazonS3 amazonS3;
 
-    public List<String> uploadFile(List<MultipartFile> multipartFile, String filePath) {
+    public String uploadFile(MultipartFile multipartFile, String filePath) {
         log.info(bucket);
-        List<String> fileNameList = new ArrayList<>();
+        String fileNameBefore = "https://gadchigam.s3.ap-northeast-2.amazonaws.com/";
 
         // forEach 구문을 통해 multipartFile로 넘어온 파일들 하나씩 fileNameList에 추가
-        multipartFile.forEach(file -> {
-            String fileName = filePath+"/"+createFileName(file.getOriginalFilename());
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentLength(file.getSize());
-            objectMetadata.setContentType(file.getContentType());
+        log.info(multipartFile.getOriginalFilename());
+        String fileName = filePath + "/" + createFileName(multipartFile.getOriginalFilename());
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(multipartFile.getSize());
+        objectMetadata.setContentType(multipartFile.getContentType());
 
-            try(InputStream inputStream = file.getInputStream()) {
-                amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
-                        .withCannedAcl(CannedAccessControlList.PublicRead));
-            } catch(IOException e) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
-            }
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
+        }
 
-            fileNameList.add("https://gadchigam.s3.ap-northeast-2.amazonaws.com/"+fileName);
+        fileNameBefore+= fileName;
 
-        });
-
-        return fileNameList;
+        return fileNameBefore;
     }
 
 
