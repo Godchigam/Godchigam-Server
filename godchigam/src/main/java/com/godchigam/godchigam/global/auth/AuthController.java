@@ -38,4 +38,9 @@ public class AuthController {
     public CommonResponse<UserResponse> GetCurrentUserInfo(@RequestHeader("token") String accessToken){
         return CommonResponse.success(authService.GetCurrentUserInfo(accessToken),"로그인한 유저 정보 검색 성공");
     }
+
+    @GetMapping("/address")
+    public CommonResponse ChangeAddress(@RequestParam String x,@RequestParam String y) {
+        return CommonResponse.success(authService.ChangeAddress(x,y),"주소 변환 성공");
+    }
 }

@@ -38,8 +38,7 @@ public class User extends BaseTimeEntity {
     @Column(nullable = true)
     private String accessToken;
 
-    @Column(nullable = false)
-    private String fcmToken;
-
+    @Column(nullable = true)
+    private String address;
 
 }

@@ -4,9 +4,7 @@ import com.godchigam.godchigam.domain.refrigerator.entity.Refrigerator;
 import com.godchigam.godchigam.domain.refrigerator.repository.RefrigeratorRepository;
 import com.godchigam.godchigam.domain.user.entity.User;
 import com.godchigam.godchigam.domain.user.repository.UserRepository;
-import com.godchigam.godchigam.global.auth.dto.AuthRequest;
-import com.godchigam.godchigam.global.auth.dto.LoginRequest;
-import com.godchigam.godchigam.global.auth.dto.UserResponse;
+import com.godchigam.godchigam.global.auth.dto.*;
 import com.godchigam.godchigam.global.common.CommonResponse;
 import com.godchigam.godchigam.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +25,12 @@ public class AuthService {
     private final UserRepository userRepository;
     private final RefrigeratorRepository refrigeratorRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final KakaoMapClient kakaoMapClient;
 
+    /**
+     * TO-DO
+     * 유저 주소 정보 추가
+     */
     public String SignUpUser(AuthRequest authRequest) {
 
         User newUser = new User();
@@ -90,5 +93,15 @@ public class AuthService {
                 .build();
 
         return loginUser;
+    }
+
+    public AddressResponse ChangeAddress(String x, String y) {
+        KakaoMapResponse kakaoMapResponse= kakaoMapClient.BringAddress(x,y); ;
+        String address = kakaoMapResponse.getAddress();
+        String[] splitDong = address.split(" ");
+        int addressSize = splitDong.length;
+        log.info(address);
+        return AddressResponse.builder()
+                .address_name(splitDong[addressSize-1]).build();
     }
 }
