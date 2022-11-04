@@ -4,7 +4,6 @@ import com.godchigam.godchigam.domain.recipes.entity.Recipes;
 import com.godchigam.godchigam.domain.user.entity.User;
 import com.godchigam.godchigam.global.entity.BaseTimeEntity;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,9 +24,9 @@ public class Bookmark extends BaseTimeEntity{
     @Column(name="bookmarkIdx")
     private Long bookmarkIdx;
 
-    @Enumerated(EnumType.STRING)
+
     @Column(nullable = false)
-    private BookmarkStatus status;
+    private Boolean status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userIdx")
@@ -39,17 +38,26 @@ public class Bookmark extends BaseTimeEntity{
     private Recipes recipes;
 
 
-
-    public Bookmark(BookmarkStatus status, User user, Recipes recipes){
-        this.status = status;
-        this.user = user;
+    public Bookmark(Boolean status, User user, Recipes recipes){
         this.recipes = recipes;
+        this.user = user;
+        this.status = true;
     }
 
-    public Bookmark updateStatus(BookmarkStatus status){
-        this.status = status;
-        return this;
+    public Boolean getBookmarkStatus(){
+        return this.status;
     }
+
+    public Boolean updateStatusToFalse(Boolean status){
+        return this.status = Boolean.FALSE;
+
+    }
+
+    public Boolean updateStatusToTrue(Boolean status){
+        return this.status = Boolean.TRUE;
+
+    }
+
 
 }
 

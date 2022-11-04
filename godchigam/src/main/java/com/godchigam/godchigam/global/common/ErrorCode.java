@@ -24,7 +24,7 @@ public enum ErrorCode {
 
 
     // recipes
-    RECIPES_EMPTY(false, 400, "레시피가 비었습니다."),
+    RECIPES_EMPTY(false, 400, "존재하는 레시피 없음"),
 
     /**
      * 500 : Server 오류

@@ -4,16 +4,18 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.godchigam.godchigam.domain.recipesBookmark.model.Bookmark;
-import com.godchigam.godchigam.domain.recipesBookmark.model.BookmarkStatus;
 import com.godchigam.godchigam.domain.recipesWish.model.Wish;
-import com.godchigam.godchigam.domain.recipesWish.model.WishStatus;
+import com.godchigam.godchigam.domain.recipesWish.repository.WishRepository;
+import com.godchigam.godchigam.domain.user.entity.User;
 import com.godchigam.godchigam.global.entity.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -49,8 +51,8 @@ public class Recipes extends BaseTimeEntity {
     @Column
     private String dish;
 
-    @Column
-    private String cooking_time;
+    @Column(name="cooking_time")
+    private String cookingTime;
 
     @Column
     private String difficulty;
@@ -60,6 +62,9 @@ public class Recipes extends BaseTimeEntity {
 
     @Column(length=5000)
     private String cooking_method;
+
+    @Column
+    private Integer likeCount;
 
     @JsonBackReference
     @OneToMany(mappedBy= "recipes",
@@ -71,11 +76,16 @@ public class Recipes extends BaseTimeEntity {
     @OneToMany(mappedBy= "recipes",
             fetch = FetchType.LAZY, cascade = CascadeType.ALL,
             orphanRemoval = true)
-    private List<Wish> wishes = new ArrayList<>();
+    private List<Wish> wishes = new ArrayList<>(
+
+    );
 
 
-    public int getCountOfLikes(){return this.wishes.size();}
 
+
+    public int getCountOfLikes(){
+
+        return this.wishes.size();}
 
 
 }

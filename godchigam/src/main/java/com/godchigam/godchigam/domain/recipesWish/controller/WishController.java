@@ -1,12 +1,18 @@
 package com.godchigam.godchigam.domain.recipesWish.controller;
 
+import com.godchigam.godchigam.domain.recipes.entity.Recipes;
+import com.godchigam.godchigam.domain.recipes.repository.recipesRepository;
 import com.godchigam.godchigam.domain.recipesBookmark.dto.BookmarkResponse;
 import com.godchigam.godchigam.domain.recipesWish.dto.WishResponse;
+import com.godchigam.godchigam.domain.recipesWish.repository.WishRepository;
 import com.godchigam.godchigam.domain.recipesWish.service.WishService;
 import com.godchigam.godchigam.global.common.CommonResponse;
+import com.godchigam.godchigam.global.common.ErrorCode;
 import com.godchigam.godchigam.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -14,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class WishController {
     private final JwtTokenProvider jwtTokenProvider;
     private final WishService wishService;
-
+    private final recipesRepository recipesRepository;
 
     /**
      * 어떤 유저가 한 테마에 찜하기 누르기
@@ -24,6 +30,10 @@ public class WishController {
     public CommonResponse<WishResponse> CheckWish(@RequestHeader("Authorization") String accessToken, @RequestParam Long recipeId){
         //jwt복호화, user정보 얻기
         String userId = jwtTokenProvider.getUserLoginId(accessToken);
-        return CommonResponse.success(wishService.checkWish(userId,recipeId),"찜하기 체크 성공");
+        Optional<Recipes> recipes = recipesRepository.findById(recipeId);
+        if(recipes.isEmpty()){
+            return CommonResponse.error(ErrorCode.RECIPES_EMPTY.getStatus(), ErrorCode.RECIPES_EMPTY.getMessage());
+        }
+        return CommonResponse.success(wishService.checkWish(userId,recipeId),"레시피 좋아요 및 취소 성공");
     }
 }
