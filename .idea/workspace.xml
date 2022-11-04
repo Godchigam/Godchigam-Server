@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bfbd921a-ec13-4ecd-a792-a1165e0be6f5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/mypage/controller/mypageController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/mypage/dto/mypageResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/mypage/entity/mypage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/mypage/service/mypageService.java" afterDir="false" />
-    </list>
+    <list default="true" id="bfbd921a-ec13-4ecd-a792-a1165e0be6f5" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
