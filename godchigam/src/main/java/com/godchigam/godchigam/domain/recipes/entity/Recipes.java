@@ -42,8 +42,8 @@ public class Recipes extends BaseTimeEntity {
     @Column
     private String category;
 
-    @Column
-    private String site_id;
+    @Column(name="site_Id")
+    private String siteId;
 
     @Column
     private String link;
@@ -72,6 +72,7 @@ public class Recipes extends BaseTimeEntity {
             orphanRemoval = true)
     private List<Bookmark> bookmarks = new ArrayList<>();
 
+
     @JsonBackReference
     @OneToMany(mappedBy= "recipes",
             fetch = FetchType.LAZY, cascade = CascadeType.ALL,
@@ -79,8 +80,6 @@ public class Recipes extends BaseTimeEntity {
     private List<Wish> wishes = new ArrayList<>(
 
     );
-
-
 
 
     public int getCountOfLikes(){

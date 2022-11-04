@@ -54,9 +54,6 @@ public class WishService {
         }
         //좋아요 이미 누른거 취소하거나 다시 누를 때
         else{
-           // User newUser = user.get();
-           // Recipes newRecipes = recipes.get();
-           // Boolean newWishes = wishes.get().getStatus();
             Optional<Wish> wish = wishRepository.getWish(userId,recipesIdx);
 
 
@@ -69,15 +66,11 @@ public class WishService {
                 wishRepository.save(updateWish);
             }else{
                 updateWish.setStatus(Boolean.FALSE);
-              //  wishRepository.save(updateWish);
                 wishRepository.delete(updateWish);
                 updateWish.getRecipes().setLikeCount(updateWish.getRecipes().getCountOfLikes());
                 wishRepository.save(updateWish);
             }
             return WishResponse.builder()
-                 //   .userId(userId)
-                 //   .recipesId(recipesIdx)
-                 //   .name(updateWish.getRecipes().getName())
                     .isLiked(updateWish.getStatus())
                     .likeCount(updateWish.getRecipes().getLikeCount())
                     .build();

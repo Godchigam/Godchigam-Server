@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,12 +29,15 @@ public class RecipesController {
     @GetMapping("")
     public CommonResponse<List<RecipeInfoResponseDto>> searchRecipes(@RequestParam(required = false) String theme,
                                                                      @RequestHeader("Authorization") String accessToken,
-                                                                     @RequestParam(required=false) Integer filter){
+                                                                     @RequestParam(required=false) Integer filter)  {
         String userId = jwtTokenProvider.getUserLoginId(accessToken);
+
+        //기존 전체보기 - theme안받아오는 경우
         if(theme==null&&filter==null){
             return CommonResponse.success(recipesService.readRecipes(userId),"레시피 백과 조회 성공");
 
-        }else if(theme!=null && filter==null){
+        }
+        if(theme!=null && filter==null){
             return CommonResponse.success(recipesService.searchRecipes(theme),"레시피 백과 조회 성공");
         }
         else if(theme==null && filter==1){ //전체보기 + 난이도 낮은 순

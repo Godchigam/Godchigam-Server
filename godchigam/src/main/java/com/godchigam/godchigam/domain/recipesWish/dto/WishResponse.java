@@ -10,9 +10,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 @RequiredArgsConstructor
 @Builder
 public class WishResponse {
-    //private final String userId;
-    //private final Long recipesId;
-    //private final String name;
     private final Integer likeCount;
     private final Boolean isLiked;
 }

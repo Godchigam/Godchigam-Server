@@ -54,18 +54,12 @@ public class BookmarkService {
             Bookmark newbb = new Bookmark(Boolean.TRUE, newUser1, newRecipes1);
             bookmarkRepository.save(newbb);
             return BookmarkResponse.builder()
-                 //   .userId(userId)
-                 //   .recipesId(recipesIdx)
-                 //   .name(newRecipes1.getName())
                     .isBookmarked(newbb.getStatus())
                     .build();
 
         }
 
         else{
-            User newUser = user.get();
-            Recipes newRecipes = recipes.get();
-
             Boolean newbookmark = bookmarks.get().getStatus();
             Optional<Bookmark> bookmark = bookmarkRepository.getBookmark(userId,recipesIdx);
 
@@ -79,17 +73,10 @@ public class BookmarkService {
                 bookmarkRepository.save(updateBookmark);
             }
             return BookmarkResponse.builder()
-                   // .userId(userId)
-                   // .recipesId(recipesIdx)
-                   // .name(updateBookmark.getRecipes().getName())
                     .isBookmarked(updateBookmark.getStatus())
                     .build();
         }
     }
-
-
-
-
 
     //내가 북마크한 레시피 불러오기
     @Transactional
