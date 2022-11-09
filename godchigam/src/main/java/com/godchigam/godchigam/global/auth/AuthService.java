@@ -36,6 +36,9 @@ public class AuthService {
     public String SignUpUser(AuthRequest authRequest) {
 
         User newUser = new User();
+        if(authRequest.getProfileImageUrl()==null||authRequest.getProfileImageUrl().isBlank()) {
+            authRequest.setProfileImageUrl("");
+        }
         BeanUtils.copyProperties(authRequest, newUser);
         newUser.setStatus("ACTIVE");
         userRepository.save(newUser);

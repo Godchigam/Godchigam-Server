@@ -29,7 +29,7 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = true) //기본프사 강제 입력 가능하게
     private String profileImageUrl;
 
     @Column(columnDefinition = "VARCHAR(20) default 'ACTIVE'")
