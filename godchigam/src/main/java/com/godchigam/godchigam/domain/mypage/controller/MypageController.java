@@ -2,20 +2,18 @@ package com.godchigam.godchigam.domain.mypage.controller;
 
 import com.godchigam.godchigam.domain.mypage.dto.MypageRequest;
 import com.godchigam.godchigam.domain.mypage.dto.MypageResponse;
-import com.godchigam.godchigam.domain.mypage.service.mypageService;
-import com.godchigam.godchigam.domain.user.entity.User;
+import com.godchigam.godchigam.domain.mypage.service.MypageService;
 import com.godchigam.godchigam.global.common.CommonResponse;
 import com.godchigam.godchigam.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.repository.query.Param;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value="/my")
-public class mypageController {
+public class MypageController {
     private final JwtTokenProvider jwtTokenProvider;
-    private final mypageService mypageService;
+    private final MypageService mypageService;
 
     @GetMapping("")
     public CommonResponse readMypage(@RequestHeader("Authorization") String accessToken){

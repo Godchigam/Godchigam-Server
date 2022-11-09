@@ -21,7 +21,7 @@ public interface BookmarkRepository extends JpaRepository<Bookmark,Long>{
     @Query("select b.recipes from Bookmark b where b.user.loginId= :userId and b.status= :status")
     List<Recipes> getRecipesList(@Param("userId") String userId, @Param("status") Boolean status);
 
-    @Query("select b from Bookmark b where b.user.loginId= :userId")
+    @Query("select b from Bookmark b where b.user.loginId= :userId and b.status= true")
     List<Bookmark> getBookmarkStatus(@Param("userId") String userId);
 
 

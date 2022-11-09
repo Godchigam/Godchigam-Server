@@ -1,10 +1,8 @@
 package com.godchigam.godchigam.domain.recipesWish.controller;
 
 import com.godchigam.godchigam.domain.recipes.entity.Recipes;
-import com.godchigam.godchigam.domain.recipes.repository.recipesRepository;
-import com.godchigam.godchigam.domain.recipesBookmark.dto.BookmarkResponse;
+import com.godchigam.godchigam.domain.recipes.repository.RecipesRepository;
 import com.godchigam.godchigam.domain.recipesWish.dto.WishResponse;
-import com.godchigam.godchigam.domain.recipesWish.repository.WishRepository;
 import com.godchigam.godchigam.domain.recipesWish.service.WishService;
 import com.godchigam.godchigam.global.common.CommonResponse;
 import com.godchigam.godchigam.global.common.ErrorCode;
@@ -20,7 +18,7 @@ import java.util.Optional;
 public class WishController {
     private final JwtTokenProvider jwtTokenProvider;
     private final WishService wishService;
-    private final recipesRepository recipesRepository;
+    private final RecipesRepository recipesRepository;
 
     /**
      * 어떤 유저가 한 테마에 찜하기 누르기

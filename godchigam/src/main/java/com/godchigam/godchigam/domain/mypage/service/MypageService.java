@@ -18,7 +18,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 
-public class mypageService {
+public class MypageService {
     private final UserRepository userRepository;
     private final MypageRepository mypageRepository;
 
@@ -52,7 +52,9 @@ public class mypageService {
         user.setNickname(request.getNickname());
         user.setProfileImageUrl(request.getProfileImageUrl());
         user.setAddress(request.getAddress());
-
+        if(request.getProfileImageUrl()==null||request.getProfileImageUrl().equals("")){
+            user.setProfileImageUrl("https://gadchigam.s3.ap-northeast-2.amazonaws.com/profile/2789abf4-3d3a-43fc-8781-25c425bfa191.jpg");
+        }
         userRepository.save(user);
 
         return MypageResponse.builder()

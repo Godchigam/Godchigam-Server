@@ -1,12 +1,10 @@
 package com.godchigam.godchigam.domain.recipesBookmark.controller;
 
-import com.godchigam.godchigam.domain.recipes.dto.RecipesFindResponse;
 import com.godchigam.godchigam.domain.recipes.entity.Recipes;
-import com.godchigam.godchigam.domain.recipes.repository.recipesRepository;
+import com.godchigam.godchigam.domain.recipes.repository.RecipesRepository;
 import com.godchigam.godchigam.domain.recipesBookmark.dto.BookmarkResponse;
 import com.godchigam.godchigam.domain.recipesBookmark.dto.RecipeInfoResponseDto;
 import com.godchigam.godchigam.domain.recipesBookmark.service.BookmarkService;
-import com.godchigam.godchigam.domain.recipesWish.model.Wish;
 import com.godchigam.godchigam.domain.recipesWish.repository.WishRepository;
 import com.godchigam.godchigam.global.common.CommonResponse;
 import com.godchigam.godchigam.global.common.ErrorCode;
@@ -23,7 +21,7 @@ import java.util.Optional;
 public class BookmarkController {
     private final JwtTokenProvider jwtTokenProvider;
     private final BookmarkService bookmarkService;
-    private final recipesRepository recipesRepository;
+    private final RecipesRepository recipesRepository;
     private final WishRepository wishRepository;
 
     //북마크 체크하기

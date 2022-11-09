@@ -4,7 +4,7 @@ import com.godchigam.godchigam.domain.recipesBookmark.dto.BookmarkResponse;
 import com.godchigam.godchigam.domain.recipesBookmark.dto.RecipeInfoResponseDto;
 import com.godchigam.godchigam.domain.recipesBookmark.model.Bookmark;
 import com.godchigam.godchigam.domain.recipesBookmark.repository.BookmarkRepository;
-import com.godchigam.godchigam.domain.recipes.repository.recipesRepository;
+import com.godchigam.godchigam.domain.recipes.repository.RecipesRepository;
 import com.godchigam.godchigam.domain.recipes.entity.Recipes;
 import com.godchigam.godchigam.domain.recipesWish.model.Wish;
 import com.godchigam.godchigam.domain.recipesWish.repository.WishRepository;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class BookmarkService {
-    private final recipesRepository recipesRepository;
+    private final RecipesRepository recipesRepository;
     private final UserRepository userRepository;
     private final BookmarkRepository bookmarkRepository;
     private final WishRepository wishRepository;
@@ -81,51 +81,34 @@ public class BookmarkService {
     //내가 북마크한 레시피 불러오기
     @Transactional
     public List<RecipeInfoResponseDto> readBookmark(String userId, Boolean status){
-        List<Recipes> recipes = recipesRepository.findAll();
-
         List<Bookmark> bookmarkStatus = bookmarkRepository.getBookmarkStatus(userId);
         List<Wish> wishStatus = wishRepository.getWishStatus(userId);
 
-        List<Long> recipesIdList = new ArrayList<>();
         List<Long> recipesIdList2 = new ArrayList<>();
-        bookmarkStatus.forEach(bookmark -> {
-            recipesIdList.add(
-                    bookmark.getRecipes().getIdx()
-            );
-        });
+
         wishStatus.forEach(wish -> {
             recipesIdList2.add(
                     wish.getRecipes().getIdx()
             );
         });
 
-
-        recipes = recipes.stream().distinct().collect(Collectors.toList());
         List<RecipeInfoResponseDto> newList = new ArrayList<>();
 
-        recipes.forEach(recipes1 -> {
-
-                        bookmarkStatus.forEach(bookmark -> {
-                            if (recipesIdList.contains(recipes1.getIdx()) && bookmark.getRecipes().getIdx() == recipes1.getIdx()) {
-                                 //   wishStatus.forEach(wish -> {
-                                Boolean isLike = Boolean.TRUE;
-                                            newList.add(
-                                                    RecipeInfoResponseDto.builder()
-                                                            .recipeId(recipes1.getIdx())
-                                                            .recipeImageUrl(recipes1.getImage_url())
-                                                            .recipeTitle(recipes1.getName())
-                                                            .dishes(recipes1.getDish())
-                                                            .time(recipes1.getCookingTime())
-                                                            .difficulty(recipes1.getDifficulty())
-                                                            .likeCount(recipes1.getCountOfLikes())
-                                                            .isBookmarked(Boolean.TRUE)
-                                                            .isLiked(isLike)
-                                                            .build()
-                                            );
-
-                            }
-                        }  );}
-                            );
+        bookmarkStatus.forEach(recipes1 -> {
+            Boolean isLike = recipesIdList2.contains(recipes1.getRecipes().getIdx());
+            newList.add(RecipeInfoResponseDto.builder()
+                    .recipeId(recipes1.getRecipes().getIdx())
+                    .recipeImageUrl(recipes1.getRecipes().getImage_url())
+                    .recipeTitle(recipes1.getRecipes().getName())
+                    .dishes(recipes1.getRecipes().getDish())
+                    .time(recipes1.getRecipes().getCookingTime())
+                    .difficulty(recipes1.getRecipes().getDifficulty())
+                    .likeCount(recipes1.getRecipes().getCountOfLikes())
+                    .isBookmarked(recipes1.getStatus())
+                    .isLiked(isLike)
+                    .build())
+            ;
+        });
 
 
         return newList;
