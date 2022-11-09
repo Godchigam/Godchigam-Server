@@ -37,7 +37,7 @@ public class AuthService {
 
         User newUser = new User();
         if(authRequest.getProfileImageUrl()==null||authRequest.getProfileImageUrl().isBlank()) {
-            authRequest.setProfileImageUrl("");
+            authRequest.setProfileImageUrl("https://gadchigam.s3.ap-northeast-2.amazonaws.com/profile/2789abf4-3d3a-43fc-8781-25c425bfa191.jpg");
         }
         BeanUtils.copyProperties(authRequest, newUser);
         newUser.setStatus("ACTIVE");
