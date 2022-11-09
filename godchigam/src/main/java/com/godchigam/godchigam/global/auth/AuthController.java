@@ -30,8 +30,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public CommonResponse UserLogin(@RequestBody LoginRequest loginRequest){
-        return authService.UserLogin(loginRequest);
+    public CommonResponse<UserResponse> UserLogin(@RequestBody LoginRequest loginRequest){
+        return CommonResponse.success(authService.UserLogin(loginRequest),"로그인 성공");
     }
 
     @GetMapping("")

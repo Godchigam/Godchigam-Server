@@ -6,6 +6,8 @@ import com.godchigam.godchigam.domain.user.entity.User;
 import com.godchigam.godchigam.domain.user.repository.UserRepository;
 import com.godchigam.godchigam.global.auth.dto.*;
 import com.godchigam.godchigam.global.common.CommonResponse;
+import com.godchigam.godchigam.global.common.ErrorCode;
+import com.godchigam.godchigam.global.common.exception.BaseException;
 import com.godchigam.godchigam.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,19 +51,19 @@ public class AuthService {
         log.info(loginId);
         Optional<User> duplicateUser = userRepository.findByLoginId(loginId);
         if (duplicateUser.isPresent()) {
-            return null;
+            throw new BaseException(ErrorCode.DUPLICATE_USER_ID);
         }
         return "중복된 아이디가 존재하지 않습니다.";
     }
 
-    public CommonResponse UserLogin(LoginRequest loginRequest) {
+    public UserResponse UserLogin(LoginRequest loginRequest) {
 
         Optional<User> findUser = userRepository.findByLoginId(loginRequest.getLoginId());
         if (findUser.isEmpty()) {
-            return CommonResponse.error(400, "존재하는 계정이 없습니다.");
+            throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
         }
         if (!findUser.get().getPassword().equals(loginRequest.getPassword())) {
-            return CommonResponse.error(400, "비밀번호가 맞지 않습니다.");
+            throw new BaseException(ErrorCode.WRONG_PASSWORD);
         }
 
         String loginId = findUser.get().getLoginId();
@@ -71,11 +73,10 @@ public class AuthService {
         log.info("발급된 토큰 : "+accessToken);
         userRepository.flush();
 
-        UserResponse loginUser = UserResponse.builder()
+       return UserResponse.builder()
                 .nickname(findUser.get().getNickname())
                 .accessToken(accessToken)
                 .build();
-        return CommonResponse.success(loginUser, "로그인 성공");
     }
 
     public UserResponse GetCurrentUserInfo(String accessToken) {
@@ -96,12 +97,13 @@ public class AuthService {
     }
 
     public AddressResponse ChangeAddress(String x, String y) {
-        KakaoMapResponse kakaoMapResponse= kakaoMapClient.BringAddress(x,y); ;
+
+        KakaoMapResponse kakaoMapResponse = kakaoMapClient.BringAddress(x, y);
         String address = kakaoMapResponse.getAddress();
         String[] splitDong = address.split(" ");
         int addressSize = splitDong.length;
         log.info(address);
         return AddressResponse.builder()
-                .address_name(splitDong[addressSize-1]).build();
+                .address_name(splitDong[addressSize - 1]).build();
     }
 }

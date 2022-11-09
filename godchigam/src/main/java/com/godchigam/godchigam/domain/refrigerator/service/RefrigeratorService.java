@@ -9,6 +9,8 @@ import com.godchigam.godchigam.domain.refrigerator.entity.Refrigerator;
 import com.godchigam.godchigam.domain.refrigerator.repository.IngredientRepository;
 import com.godchigam.godchigam.domain.refrigerator.repository.RefrigeratorRepository;
 import com.godchigam.godchigam.global.common.CommonResponse;
+import com.godchigam.godchigam.global.common.ErrorCode;
+import com.godchigam.godchigam.global.common.exception.BaseException;
 import com.godchigam.godchigam.global.dto.DateInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,14 +48,10 @@ public class RefrigeratorService {
         List<FoodInfoResponse> cold = new ArrayList<>();
         List<FoodInfoResponse> room = new ArrayList<>();
 
-        /**
-         * 날짜 저장 관련 다시 조사
-         */
-
         loginUserIngredientList.forEach(ingredient -> {
-            LocalDate currentTime= LocalDate.now();
-            Period diff = Period.between(currentTime,ingredient.getIngredientLimit());
-            int diff_time = diff.getYears()*365 + diff.getMonths()*30 + diff.getDays();
+            LocalDate currentTime = LocalDate.now();
+            Period diff = Period.between(currentTime, ingredient.getIngredientLimit());
+            int diff_time = diff.getYears() * 365 + diff.getMonths() * 30 + diff.getDays();
             if (ingredient.getIngredientStatus().equals("freezer")) {
                 freezer.add(
                         FoodInfoResponse.builder()
@@ -81,12 +79,12 @@ public class RefrigeratorService {
                                 .foodName(ingredient.getIngredientName())
                                 .expirationDate(DateInfoResponse.builder()
                                         .year(ingredient.getIngredientLimit().getYear())
-                                        .month(ingredient.getIngredientLimit().getDayOfMonth())
+                                        .month(ingredient.getIngredientLimit().getMonthValue())
                                         .day(Integer.parseInt(ingredient.getIngredientLimit().toString().substring(8)))
                                         .build())
                                 .purchaseDate(DateInfoResponse.builder()
                                         .year(ingredient.getIngredientBuy().getYear())
-                                        .month(ingredient.getIngredientBuy().getDayOfMonth())
+                                        .month(ingredient.getIngredientBuy().getMonthValue())
                                         .day(Integer.parseInt(ingredient.getIngredientBuy().toString().substring(8)))
                                         .build())
                                 .amount(ingredient.getIngredientCnt())
@@ -101,12 +99,12 @@ public class RefrigeratorService {
                                 .foodName(ingredient.getIngredientName())
                                 .expirationDate(DateInfoResponse.builder()
                                         .year(ingredient.getIngredientLimit().getYear())
-                                        .month(ingredient.getIngredientLimit().getDayOfMonth())
+                                        .month(ingredient.getIngredientLimit().getMonthValue())
                                         .day(Integer.parseInt(ingredient.getIngredientLimit().toString().substring(8)))
                                         .build())
                                 .purchaseDate(DateInfoResponse.builder()
                                         .year(ingredient.getIngredientBuy().getYear())
-                                        .month(ingredient.getIngredientBuy().getDayOfMonth())
+                                        .month(ingredient.getIngredientBuy().getMonthValue())
                                         .day(Integer.parseInt(ingredient.getIngredientBuy().toString().substring(8)))
                                         .build())
                                 .amount(ingredient.getIngredientCnt())
@@ -127,10 +125,14 @@ public class RefrigeratorService {
     public FoodInfoResponse LookUpDetailIngredientInfo(Long foodId) {
         Optional<Ingredient> selectedIngredient = ingredientRepository.findByIngredientIdx(foodId);
 
-        LocalDate currentTime= LocalDate.now();
-        Period diff = Period.between(currentTime,selectedIngredient.get().getIngredientLimit());
-        int diff_time = diff.getYears()*365 + diff.getMonths()*30 + diff.getDays();
-        log.info("날짜 차이:"+diff.getYears()+diff.getMonths()+diff.getDays());
+        if (selectedIngredient.isEmpty()) {
+            throw new BaseException(ErrorCode.EMPTY_FOOD_ID);
+        }
+
+        LocalDate currentTime = LocalDate.now();
+        Period diff = Period.between(currentTime, selectedIngredient.get().getIngredientLimit());
+        int diff_time = diff.getYears() * 365 + diff.getMonths() * 30 + diff.getDays();
+        log.info("날짜 차이:" + diff.getYears() + diff.getMonths() + diff.getDays());
         return FoodInfoResponse.builder()
                 .foodId(selectedIngredient.get().getIngredientIdx())
                 .foodName(selectedIngredient.get().getIngredientName())
@@ -150,7 +152,7 @@ public class RefrigeratorService {
                 .build();
     }
 
-    public void addNewIngredient(String loginId,NewIngredientRequest newIngredientRequest) {
+    public void addNewIngredient(String loginId, NewIngredientRequest newIngredientRequest) {
         Optional<Refrigerator> loginUserFrige = refrigeratorRepository.findByUser(loginId);
 
         Ingredient newIngredient = new Ingredient();
@@ -158,8 +160,8 @@ public class RefrigeratorService {
         newIngredient.setIngredientCnt(newIngredientRequest.getAmount());
         newIngredient.setIngredientStatus(newIngredientRequest.getStorage());
 
-        LocalDate limit = LocalDate.of(newIngredientRequest.getExpirationYear(),newIngredientRequest.getExpirationMonth(),newIngredientRequest.getExpirationDay());
-        LocalDate purchase = LocalDate.of(newIngredientRequest.getPurchaseYear(),newIngredientRequest.getPurchaseMonth(),newIngredientRequest.getPurchaseDay());
+        LocalDate limit = LocalDate.of(newIngredientRequest.getExpirationYear(), newIngredientRequest.getExpirationMonth(), newIngredientRequest.getExpirationDay());
+        LocalDate purchase = LocalDate.of(newIngredientRequest.getPurchaseYear(), newIngredientRequest.getPurchaseMonth(), newIngredientRequest.getPurchaseDay());
         newIngredient.setIngredientBuy(purchase);
         newIngredient.setIngredientLimit(limit);
         newIngredient.setRefrigerator(loginUserFrige.get());
@@ -167,31 +169,45 @@ public class RefrigeratorService {
         ingredientRepository.save(newIngredient);
     }
 
-    public int addIngredientAmount(int changeAmount,Long foodId) {
+    public int addIngredientAmount(int changeAmount, Long foodId) {
         Optional<Ingredient> selectIngredient = ingredientRepository.findByIngredientIdx(foodId);
+
+        if (selectIngredient.isEmpty()) {
+            throw new BaseException(ErrorCode.EMPTY_FOOD_ID);
+        }
+
         int curAmount = selectIngredient.get().getIngredientCnt();
-        int newAmonut = curAmount+changeAmount;
-        if(newAmonut <=0){
-            return newAmonut;
-        }else if(newAmonut>=99){
-            return newAmonut;
+        int newAmonut = curAmount + changeAmount;
+        if (newAmonut <= 0) {
+            throw new BaseException(ErrorCode.TOO_SMALL_AMOUNT);
+        } else if (newAmonut > 99) {
+            throw new BaseException(ErrorCode.TOO_MANY_AMOUNT);
         }
         selectIngredient.get().setIngredientCnt(newAmonut);
         return newAmonut;
     }
 
     public void deleteIngredient(Long foodId) {
+        Optional<Ingredient> selectIngredient = ingredientRepository.findByIngredientIdx(foodId);
+        if (selectIngredient.isEmpty()) {
+            throw new BaseException(ErrorCode.EMPTY_FOOD_ID);
+        }
         ingredientRepository.deleteById(foodId);
     }
 
-    public void changeIngredientDetail(NewIngredientRequest changeIngredientRequest,Long foodId) {
+    public void changeIngredientDetail(NewIngredientRequest changeIngredientRequest, Long foodId) {
         Optional<Ingredient> selectIngredient = ingredientRepository.findByIngredientIdx(foodId);
+
+        if (selectIngredient.isEmpty()) {
+            throw new BaseException(ErrorCode.EMPTY_FOOD_ID);
+        }
+
         Ingredient changeIngredient = selectIngredient.get();
         changeIngredient.setIngredientCnt(changeIngredientRequest.getAmount());
         changeIngredient.setIngredientName(changeIngredientRequest.getFoodName());
-        log.info("바뀐이름"+changeIngredient.getIngredientName());
-        LocalDate limit = LocalDate.of(changeIngredientRequest.getExpirationYear(),changeIngredientRequest.getExpirationMonth(),changeIngredientRequest.getExpirationDay());
-        LocalDate purchase = LocalDate.of(changeIngredientRequest.getPurchaseYear(),changeIngredientRequest.getPurchaseMonth(),changeIngredientRequest.getPurchaseDay());
+        log.info("바뀐이름" + changeIngredient.getIngredientName());
+        LocalDate limit = LocalDate.of(changeIngredientRequest.getExpirationYear(), changeIngredientRequest.getExpirationMonth(), changeIngredientRequest.getExpirationDay());
+        LocalDate purchase = LocalDate.of(changeIngredientRequest.getPurchaseYear(), changeIngredientRequest.getPurchaseMonth(), changeIngredientRequest.getPurchaseDay());
         changeIngredient.setIngredientLimit(limit);
         changeIngredient.setIngredientBuy(purchase);
 

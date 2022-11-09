@@ -12,7 +12,6 @@ public class CommonResponse<T> {
     private String message;
     private T data;
 
-
     public static <T> CommonResponse<T> successWithOutData(String message) {
         return new CommonResponse<>(200, true, message, null);
     }
@@ -20,7 +19,6 @@ public class CommonResponse<T> {
     public static <T> CommonResponse<T> success(T data,String message) {
         return new CommonResponse<>(200,true,message,data);
     }
-
 
     public static <T> CommonResponse<T> error(int status,String message) {
         return new CommonResponse<>(status,false , message, null);

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.reactive.function.client.WebClientException;
 
 @Slf4j
@@ -18,10 +19,18 @@ import org.springframework.web.reactive.function.client.WebClientException;
 public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    private ResponseEntity<CommonResponse> handleInternal(Exception e) {
+        log.warn(e.getMessage(), e);
+        CommonResponse errorResponse = CommonResponse.error(500,e.getMessage());
+        return new ResponseEntity<CommonResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(WebClientException.class)
     private ResponseEntity<CommonResponse> handleInternalServerError(WebClientException e){
         log.warn(e.getMessage(), e);
-        CommonResponse errorResponse = CommonResponse.error(400,e.getMessage());
+        CommonResponse errorResponse = CommonResponse.error(500,e.getMessage());
         return new ResponseEntity<CommonResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
