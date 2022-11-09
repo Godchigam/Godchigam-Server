@@ -33,7 +33,7 @@ public class JwtTokenProvider {
 
 
     public String generateToken(String logindId){
-        long tokenPeriod = 10000L * 60L * 40L * 10L;
+        long tokenPeriod = 10000L * 600L * 40L * 10L;
 
         Claims claims = Jwts.claims().setSubject(String.valueOf(logindId));
 
