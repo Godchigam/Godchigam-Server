@@ -1,17 +1,17 @@
 package com.godchigam.godchigam.global.auth;
 
+import com.godchigam.godchigam.domain.groupbuying.entity.RequestStorage;
+import com.godchigam.godchigam.domain.groupbuying.repository.RequestRepository;
 import com.godchigam.godchigam.domain.refrigerator.entity.Refrigerator;
 import com.godchigam.godchigam.domain.refrigerator.repository.RefrigeratorRepository;
 import com.godchigam.godchigam.domain.user.entity.User;
 import com.godchigam.godchigam.domain.user.repository.UserRepository;
 import com.godchigam.godchigam.global.auth.dto.*;
-import com.godchigam.godchigam.global.common.CommonResponse;
 import com.godchigam.godchigam.global.common.ErrorCode;
 import com.godchigam.godchigam.global.common.exception.BaseException;
 import com.godchigam.godchigam.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.PropertyValueException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +26,10 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final RefrigeratorRepository refrigeratorRepository;
+    private final RequestRepository requestRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final KakaoMapClient kakaoMapClient;
+
 
     /**
      * TO-DO
@@ -44,7 +46,10 @@ public class AuthService {
         userRepository.save(newUser);
         Refrigerator newFrige = new Refrigerator();
         newFrige.setUser(newUser);
+        RequestStorage newStorage = new RequestStorage();
+        newStorage.setUser(newUser);
         refrigeratorRepository.save(newFrige);
+        requestRepository.save(newStorage);
 
         return "회원 가입에 성공했습니다.";
     }
