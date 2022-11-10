@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 public class RecipeDetailResponse {
     private final RecipeInfoResponseDto recipeInfo;
-    private final String ingredients;
-    private final String orders;
+    private final List<String> ingredients;
+    private final List<String> orders;
 
 }

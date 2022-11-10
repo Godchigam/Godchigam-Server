@@ -4,7 +4,7 @@ package com.godchigam.godchigam.domain.recipesWish.service;
 import com.godchigam.godchigam.domain.recipesWish.dto.WishResponse;
 import com.godchigam.godchigam.domain.recipesWish.model.Wish;
 import com.godchigam.godchigam.domain.recipesWish.repository.WishRepository;
-import com.godchigam.godchigam.domain.recipes.repository.recipesRepository;
+import com.godchigam.godchigam.domain.recipes.repository.RecipesRepository;
 import com.godchigam.godchigam.domain.recipes.entity.Recipes;
 import com.godchigam.godchigam.domain.user.entity.User;
 import com.godchigam.godchigam.domain.user.repository.UserRepository;
@@ -22,7 +22,7 @@ import java.util.Optional;
 
 //좋아요 체크하기
 public class WishService {
-    private final recipesRepository recipesRepository;
+    private final RecipesRepository recipesRepository;
     private final UserRepository userRepository;
     private final WishRepository wishRepository;
 

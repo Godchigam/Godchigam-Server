@@ -33,6 +33,7 @@ public enum ErrorCode {
 
     // recipes
     RECIPES_EMPTY(false, 400, "존재하는 레시피 없음"),
+    EMPTY_THEME_AND_FILTER(false,400,"테마와 필터 설정 안함"),
 
     /**
      * 500 : Server 오류

@@ -22,7 +22,7 @@ public interface WishRepository extends JpaRepository<Wish,Long>{
     List<Recipes> getRecipesList(@Param("userId") String userId, @Param("status") Boolean status);
 
 
-    @Query("select b from Wish b where b.user.loginId= :userId")
+    @Query("select b from Wish b where b.user.loginId= :userId and b.status= true")
     List<Wish> getWishStatus(@Param("userId") String userId);
 
 
