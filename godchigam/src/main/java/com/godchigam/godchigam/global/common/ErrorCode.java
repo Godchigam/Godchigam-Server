@@ -35,6 +35,9 @@ public enum ErrorCode {
     RECIPES_EMPTY(false, 400, "존재하는 레시피 없음"),
     EMPTY_THEME_AND_FILTER(false,400,"테마와 필터 설정 안함"),
 
+    //groupbuying
+    EMPTY_PRODUCT_ID(false,400,"존재하는 공동구매 상품이 없습니다."),
+
     /**
      * 500 : Server 오류
      */

@@ -2,9 +2,15 @@ package com.godchigam.godchigam.domain.groupbuying.service;
 
 import com.godchigam.godchigam.domain.groupbuying.dto.RequestMessageResponse;
 import com.godchigam.godchigam.domain.groupbuying.dto.UserInfoResponse;
+import com.godchigam.godchigam.domain.groupbuying.dto.UserJoinStatusResponse;
+import com.godchigam.godchigam.domain.groupbuying.entity.JoinPeople;
+import com.godchigam.godchigam.domain.groupbuying.entity.JoinStorage;
 import com.godchigam.godchigam.domain.groupbuying.entity.RequestMessage;
 import com.godchigam.godchigam.domain.groupbuying.entity.RequestStorage;
+import com.godchigam.godchigam.domain.groupbuying.repository.JoinStorageRepository;
 import com.godchigam.godchigam.domain.groupbuying.repository.RequestRepository;
+import com.godchigam.godchigam.global.common.ErrorCode;
+import com.godchigam.godchigam.global.common.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -21,6 +29,7 @@ import java.util.Optional;
 public class RequestService {
 
     private final RequestRepository requestRepository;
+    private final JoinStorageRepository joinStorageRepository;
 
     public List<RequestMessageResponse> LookUpRequestStorage(String loginId) {
 
@@ -50,5 +59,26 @@ public class RequestService {
 
         if (resultMessageList.isEmpty()) return null;
         return resultMessageList;
+    }
+
+    public UserJoinStatusResponse checkProductJoinStatus(String loginId, Long productId){
+
+        Optional<JoinStorage> joinStorage = joinStorageRepository.findByProduct(productId);
+        if(joinStorage.isEmpty()){
+            throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
+        }
+
+        Long joinStorageId = joinStorage.get().getJoinStorageIdx();
+        List<JoinPeople> joinPeopleList = joinStorageRepository.findByJoinStorageIdx(joinStorageId);
+
+        UserJoinStatusResponse resultResponse= UserJoinStatusResponse.builder().joinType("참여안함").build();
+
+        joinPeopleList.forEach(joinPeople -> {
+            if(joinPeople.getJoinUserLoginId().equals(loginId)){
+                resultResponse.setJoinType(joinPeople.getJoinStatus());
+            }
+        });
+
+        return resultResponse;
     }
 }

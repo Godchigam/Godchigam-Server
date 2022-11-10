@@ -19,7 +19,7 @@ public class JoinPeople {
     private Long joinerIdx;
 
     @Column(nullable = false)
-    private Long joinUserIdx;
+    private String joinUserLoginId;
 
     @Column(nullable = false)
     private String joinStatus;

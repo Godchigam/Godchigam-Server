@@ -19,4 +19,10 @@ public class RequestController {
         String loginId= jwtTokenProvider.getUserLoginId(accessToken);
         return CommonResponse.success(requestService.LookUpRequestStorage(loginId),"같이 구매 요청함 조회 성공");
     }
+
+    @GetMapping("/{productId}/join")
+    public CommonResponse checkProductJoinStatus(@RequestHeader("token") String accessToken, @PathVariable("productId")long productId){
+        String loginId= jwtTokenProvider.getUserLoginId(accessToken);
+        return CommonResponse.success(requestService.checkProductJoinStatus(loginId,productId),"참여 상태 조회 성공");
+    }
 }
