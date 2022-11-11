@@ -21,10 +21,14 @@ public class RequestController {
     }
 
     @GetMapping("/join/{productId}")
-    public CommonResponse checkProductJoinStatus(@RequestHeader("token") String accessToken, @PathVariable("productId")long productId){
+    public CommonResponse checkProductJoinStatus(@RequestHeader("token") String accessToken, @PathVariable("productId")Long productId){
         String loginId= jwtTokenProvider.getUserLoginId(accessToken);
         return CommonResponse.success(requestService.checkProductJoinStatus(loginId,productId),"참여 상태 조회 성공");
     }
 
-    
+    @GetMapping("/joinPeople/{productId}")
+    public CommonResponse checkProductJoinPeople(@RequestHeader("token") String accessToken, @PathVariable("productId")Long productId){
+        String loginId= jwtTokenProvider.getUserLoginId(accessToken);
+        return CommonResponse.success(requestService.checkProductJoinPeople(loginId,productId),"참여자 목록 조회 성공");
+    }
 }
