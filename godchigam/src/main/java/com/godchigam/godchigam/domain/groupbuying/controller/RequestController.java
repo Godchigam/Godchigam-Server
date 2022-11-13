@@ -49,4 +49,11 @@ public class RequestController {
         String loginId = jwtTokenProvider.getUserLoginId(accessToken);
         return CommonResponse.success(requestService.sendJoinRequest(loginId, productId),"참여/탈퇴 요청 성공");
     }
+
+    @PostMapping("/join/cancel")
+    public CommonResponse sendJoinCancel(@RequestHeader("token") String accessToken, @RequestBody Long productId) {
+        String loginId = jwtTokenProvider.getUserLoginId(accessToken);
+        return CommonResponse.success(requestService.sendJoinCancel(loginId, productId),"참여/탈퇴 취소 요청 성공");
+    }
+
 }

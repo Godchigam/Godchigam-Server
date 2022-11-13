@@ -278,4 +278,43 @@ public class RequestService {
         JoinStatusResponse joinStatusResponse= new JoinStatusResponse(myJoinType);
         return joinStatusResponse;
     }
+
+    public JoinStatusResponse sendJoinCancel(String loginId, Long productId) {
+
+        Optional<User> writer = userRepository.findByLoginId(loginId);
+        if (writer.isEmpty()) {
+            throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
+        }
+
+        Optional<JoinStorage> joinStorage = joinStorageRepository.findByProduct(productId);
+        if (joinStorage.isEmpty()) {
+            throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
+        }
+
+        Long joinStorageId = joinStorage.get().getJoinStorageIdx();
+        List<JoinPeople> joinPeopleList = joinStorageRepository.findByJoinStorageIdx(joinStorageId);
+
+        List<JoinPeople> checkMyStatus = new ArrayList<>();
+
+        joinPeopleList.forEach(joinPeople -> {
+            if (joinPeople.getJoinUserLoginId().equals(loginId)) {
+                checkMyStatus.add(joinPeople);
+            }
+        });
+
+        JoinPeople currentUser = checkMyStatus.get(0);
+        String myJoinType = currentUser.getJoinStatus();
+        String newJoinType ="";
+        if(myJoinType.equals("참여대기")) {
+            newJoinType = "참여안함";
+        } else { //탈퇴 대기
+            newJoinType = "참여중";
+        }
+
+        currentUser.setJoinStatus(newJoinType);
+        joinPeopleRepository.save(currentUser);
+
+        JoinStatusResponse joinStatusResponse= new JoinStatusResponse(newJoinType);
+        return joinStatusResponse;
+    }
 }
