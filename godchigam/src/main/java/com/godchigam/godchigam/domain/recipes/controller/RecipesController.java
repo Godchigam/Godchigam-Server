@@ -29,7 +29,7 @@ public class RecipesController {
     //레시피 전체조회, 카테고리별 조회
     @GetMapping("")
     public CommonResponse<List<RecipeInfoResponseDto>> searchRecipes(@RequestParam(required = false) Integer theme,
-                                                                     @RequestHeader("Authorization") String accessToken,
+                                                                     @RequestHeader("token") String accessToken,
                                                                      @RequestParam(required=false) Integer filter) throws UnsupportedEncodingException {
         String userId = jwtTokenProvider.getUserLoginId(accessToken);
         if (theme == null || filter == null) {
@@ -45,7 +45,7 @@ public class RecipesController {
 
 
     @GetMapping("/detail")
-    public CommonResponse readRecipes(@RequestParam(required = true)Long recipeId, @RequestHeader("Authorization") String accessToken){
+    public CommonResponse readRecipes(@RequestParam(required = true)Long recipeId, @RequestHeader("token") String accessToken){
         Optional<Recipes> recipes = recipesRepository.findById(recipeId);
         String userId = jwtTokenProvider.getUserLoginId(accessToken);
         if(recipes.isEmpty()){
