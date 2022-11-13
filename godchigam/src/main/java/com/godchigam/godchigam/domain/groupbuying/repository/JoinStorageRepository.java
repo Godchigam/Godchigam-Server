@@ -19,5 +19,5 @@ public interface JoinStorageRepository extends JpaRepository<JoinStorage,Long> {
     Optional<JoinStorage> findByProduct(@Param("productId") Long productId);
 
     @Query("select b from JoinPeople b where b.joinStorage.joinStorageIdx = :joinStorageIdx ")
-    List<JoinPeople> findByJoinStorageIdx(@Param("JoinStorageIdx") Long joinStorageIdx);
+    List<JoinPeople> findByJoinStorageIdx(@Param("joinStorageIdx") Long joinStorageIdx);
 }

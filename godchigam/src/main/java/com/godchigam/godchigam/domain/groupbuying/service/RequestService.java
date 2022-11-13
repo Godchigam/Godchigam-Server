@@ -70,7 +70,7 @@ public class RequestService {
         Long joinStorageId = joinStorage.get().getJoinStorageIdx();
         List<JoinPeople> joinPeopleList = joinStorageRepository.findByJoinStorageIdx(joinStorageId);
 
-        UserJoinStatusResponse resultResponse= UserJoinStatusResponse.builder().joinType("참여안함").build();
+        UserJoinStatusResponse resultResponse=  new UserJoinStatusResponse("참여안함");
 
         joinPeopleList.forEach(joinPeople -> {
             if(joinPeople.getJoinUserLoginId().equals(loginId)){
