@@ -14,7 +14,7 @@ public class RequestController {
     private final JwtTokenProvider jwtTokenProvider;
     private final RequestService requestService;
 
-    @GetMapping("/request")
+    @GetMapping("/requestbox")
     public CommonResponse LookUpRequestStorage(@RequestHeader("token") String accessToken) {
         String loginId = jwtTokenProvider.getUserLoginId(accessToken);
         return CommonResponse.success(requestService.LookUpRequestStorage(loginId), "같이 구매 요청함 조회 성공");
@@ -42,5 +42,11 @@ public class RequestController {
     public CommonResponse changeProductStatus(@RequestHeader("token") String accessToken, @PathVariable("productId") Long productId) {
         String loginId = jwtTokenProvider.getUserLoginId(accessToken);
         return CommonResponse.success(requestService.changeProductStatus(loginId, productId),"같이 구매 상태 변경 성공");
+    }
+
+    @PostMapping("/join/request")
+    public CommonResponse sendJoinRequest(@RequestHeader("token") String accessToken, @RequestBody Long productId) {
+        String loginId = jwtTokenProvider.getUserLoginId(accessToken);
+        return CommonResponse.success(requestService.sendJoinRequest(loginId, productId),"참여/탈퇴 요청 성공");
     }
 }
