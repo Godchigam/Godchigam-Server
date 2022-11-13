@@ -2,6 +2,7 @@ package com.godchigam.godchigam.domain.groupbuying.service;
 
 import com.godchigam.godchigam.domain.groupbuying.dto.*;
 import com.godchigam.godchigam.domain.groupbuying.entity.*;
+import com.godchigam.godchigam.domain.groupbuying.repository.JoinPeopleRepository;
 import com.godchigam.godchigam.domain.groupbuying.repository.JoinStorageRepository;
 import com.godchigam.godchigam.domain.groupbuying.repository.RequestRepository;
 import com.godchigam.godchigam.domain.user.entity.User;
@@ -28,6 +29,7 @@ public class RequestService {
     private final RequestRepository requestRepository;
     private final JoinStorageRepository joinStorageRepository;
     private final UserRepository userRepository;
+    private final JoinPeopleRepository joinPeopleRepository;
     public List<RequestMessageResponse> LookUpRequestStorage(String loginId) {
 
         Optional<RequestStorage> loginUserStorage = requestRepository.findByUser(loginId);
@@ -224,5 +226,56 @@ public class RequestService {
             changeProductStatus.setPurchaseStatus("종료");
        }
         return changeProductStatus;
+    }
+
+    public JoinStatusResponse sendJoinRequest(String loginId, Long productId) {
+
+        Optional<User> writer = userRepository.findByLoginId(loginId);
+        if (writer.isEmpty()) {
+            throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
+        }
+
+        Optional<JoinStorage> joinStorage = joinStorageRepository.findByProduct(productId);
+        if (joinStorage.isEmpty()) {
+            throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
+        }
+
+        Long joinStorageId = joinStorage.get().getJoinStorageIdx();
+        List<JoinPeople> joinPeopleList = joinStorageRepository.findByJoinStorageIdx(joinStorageId);
+
+        List<JoinPeople> checkMyStatus = new ArrayList<>();
+
+        joinPeopleList.forEach(joinPeople -> {
+            if (joinPeople.getJoinUserLoginId().equals(loginId)) {
+                checkMyStatus.add(joinPeople);
+            }
+        });
+
+        String myJoinType = "";
+        if (checkMyStatus.isEmpty()) {
+            myJoinType = "참여대기";
+            JoinPeople newJoinner = new JoinPeople();
+            newJoinner.setJoinUserLoginId(loginId);
+            newJoinner.setJoinStatus("참여대기");
+            newJoinner.setJoinStorage(joinStorage.get());
+
+            joinPeopleRepository.save(newJoinner);
+        } else {
+            JoinPeople currentUser = checkMyStatus.get(0);
+            myJoinType = currentUser.getJoinStatus(); //참여중 일수도 있고 참여안함 일수도 있음
+
+            if (myJoinType.equals("참여중")) {
+                currentUser.setJoinStatus("탈퇴대기");
+                myJoinType = "탈퇴대기";
+            } else if (myJoinType.equals("참여안함")) {
+                currentUser.setJoinStatus("참여대기");
+                myJoinType = "참여대기";
+            }
+
+            joinPeopleRepository.save(currentUser);
+        }
+
+        JoinStatusResponse joinStatusResponse= new JoinStatusResponse(myJoinType);
+        return joinStatusResponse;
     }
 }
