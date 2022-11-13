@@ -228,6 +228,11 @@ public class RequestService {
         return changeProductStatus;
     }
 
+    /**
+     *
+     * RequestMessage 추가 되도록 repo 로직 추가해야함.
+     *
+     */
     public JoinStatusResponse sendJoinRequest(String loginId, Long productId) {
 
         Optional<User> writer = userRepository.findByLoginId(loginId);
