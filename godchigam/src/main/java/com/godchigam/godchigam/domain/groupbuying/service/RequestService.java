@@ -182,4 +182,47 @@ public class RequestService {
                 .build();
 
     }
+
+    public ChangeProductStatus changeProductStatus(String loginId, Long productId) {
+
+        Optional<User> writer = userRepository.findByLoginId(loginId);
+        if (writer.isEmpty()) {
+            throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
+        }
+
+        Optional<JoinStorage> joinStorage = joinStorageRepository.findByProduct(productId);
+        if (joinStorage.isEmpty()) {
+            throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
+        }
+
+        ChangeProductStatus changeProductStatus = new ChangeProductStatus();
+        Product product = joinStorage.get().getProduct();
+        if (product.getStatus().equals("종료")) {
+
+            Long joinStorageId = joinStorage.get().getJoinStorageIdx();
+            List<JoinPeople> joinPeopleList = joinStorageRepository.findByJoinStorageIdx(joinStorageId);
+
+            List<UserInfoResponse> joinnerList = new ArrayList<>(); //실제 참여중인 애들만 뽑기
+            joinPeopleList.forEach(joinPeople -> {
+                if (joinPeople.getJoinStatus().equals("참여중")) {
+                    Optional<User> addUser = userRepository.findByLoginId(joinPeople.getJoinUserLoginId());
+                    joinnerList.add(UserInfoResponse.builder()
+                            .userId(addUser.get().getUserIdx())
+                            .nickname(addUser.get().getNickname())
+                            .profileImageUrl(addUser.get().getProfileImageUrl())
+                            .build());
+                }
+            });
+
+            if(product.getGoalPeopleCount().equals(joinnerList.size())) {
+                changeProductStatus.setPurchaseStatus("모집완료");
+            } else {
+                changeProductStatus.setPurchaseStatus("모집중");
+            }
+
+        } else {
+            changeProductStatus.setPurchaseStatus("종료");
+       }
+        return changeProductStatus;
+    }
 }
