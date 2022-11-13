@@ -1,12 +1,7 @@
 package com.godchigam.godchigam.domain.groupbuying.service;
 
-import com.godchigam.godchigam.domain.groupbuying.dto.RequestMessageResponse;
-import com.godchigam.godchigam.domain.groupbuying.dto.UserInfoResponse;
-import com.godchigam.godchigam.domain.groupbuying.dto.UserJoinStatusResponse;
-import com.godchigam.godchigam.domain.groupbuying.entity.JoinPeople;
-import com.godchigam.godchigam.domain.groupbuying.entity.JoinStorage;
-import com.godchigam.godchigam.domain.groupbuying.entity.RequestMessage;
-import com.godchigam.godchigam.domain.groupbuying.entity.RequestStorage;
+import com.godchigam.godchigam.domain.groupbuying.dto.*;
+import com.godchigam.godchigam.domain.groupbuying.entity.*;
 import com.godchigam.godchigam.domain.groupbuying.repository.JoinStorageRepository;
 import com.godchigam.godchigam.domain.groupbuying.repository.RequestRepository;
 import com.godchigam.godchigam.domain.user.entity.User;
@@ -110,5 +105,81 @@ public class RequestService {
         });
 
         return resultList;
+    }
+
+    public DetailProductInfoResponse detailProductInfo(String loginId, Long productId) {
+        Optional<JoinStorage> joinStorage = joinStorageRepository.findByProduct(productId);
+        if (joinStorage.isEmpty()) {
+            throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
+        }
+
+        Product product = joinStorage.get().getProduct();
+        User writer = product.getWriter();
+        Boolean isOwner = false;
+        if (writer.getLoginId().equals(loginId)) {
+            isOwner = true;
+        }
+
+        Boolean isFull = true;
+        if (product.getStatus().equals("모집중")) {
+            isFull = false;
+        }
+
+        Long joinStorageId = joinStorage.get().getJoinStorageIdx();
+        List<JoinPeople> joinPeopleList = joinStorageRepository.findByJoinStorageIdx(joinStorageId);
+
+        List<UserInfoResponse> joinnerList = new ArrayList<>(); //실제 참여중인 애들만 뽑기
+        List<String> checkMyStatus = new ArrayList<>();
+
+        joinPeopleList.forEach(joinPeople -> {
+            if (joinPeople.getJoinUserLoginId().equals(loginId)) {
+                checkMyStatus.add(joinPeople.getJoinStatus());
+            }
+            if (joinPeople.getJoinStatus().equals("참여중")) {
+                Optional<User> addUser = userRepository.findByLoginId(joinPeople.getJoinUserLoginId());
+                joinnerList.add(UserInfoResponse.builder()
+                        .userId(addUser.get().getUserIdx())
+                        .nickname(addUser.get().getNickname())
+                        .profileImageUrl(addUser.get().getProfileImageUrl())
+                        .build());
+            }
+            ;
+        });
+
+        String myJoinType = "";
+        if (checkMyStatus.isEmpty()) {
+            myJoinType = "참여안함";
+        } else {
+            myJoinType = checkMyStatus.get(0);
+        }
+
+        ProductInfo productInfo = ProductInfo.builder()
+                .productId(product.getProductIdx())
+                .productImageUrl(product.getProductImageUrl())
+                .purchaseStatus(product.getStatus())
+                .productName(product.getProductName())
+                .productPrice(product.getProductPrice())
+                .dividedPrice(product.getProductPrice() / product.getGoalPeopleCount())
+                .goalPeopleCount(product.getGoalPeopleCount())
+                .joinPeopleCount(joinnerList.size())
+                .dealingMethod(product.getDealingMethod())
+                .build();
+
+        return DetailProductInfoResponse.builder()
+                .ifOwner(isOwner)
+                .isFull(isFull)
+                .joinType(myJoinType)
+                .address(writer.getAddress())
+                .category(product.getCategory())
+                .productInfo(productInfo)
+                .owner(UserInfoResponse.builder()
+                        .userId(writer.getUserIdx())
+                        .nickname(writer.getNickname())
+                        .profileImageUrl(writer.getProfileImageUrl())
+                        .build())
+                .joinPeople(joinnerList)
+                .description(product.getDescription())
+                .build();
+
     }
 }

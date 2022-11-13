@@ -16,19 +16,31 @@ public class RequestController {
 
     @GetMapping("/request")
     public CommonResponse LookUpRequestStorage(@RequestHeader("token") String accessToken) {
-        String loginId= jwtTokenProvider.getUserLoginId(accessToken);
-        return CommonResponse.success(requestService.LookUpRequestStorage(loginId),"같이 구매 요청함 조회 성공");
+        String loginId = jwtTokenProvider.getUserLoginId(accessToken);
+        return CommonResponse.success(requestService.LookUpRequestStorage(loginId), "같이 구매 요청함 조회 성공");
     }
 
     @GetMapping("/join/{productId}")
-    public CommonResponse checkProductJoinStatus(@RequestHeader("token") String accessToken, @PathVariable("productId")Long productId){
-        String loginId= jwtTokenProvider.getUserLoginId(accessToken);
-        return CommonResponse.success(requestService.checkProductJoinStatus(loginId,productId),"참여 상태 조회 성공");
+    public CommonResponse checkProductJoinStatus(@RequestHeader("token") String accessToken, @PathVariable("productId") Long productId) {
+        String loginId = jwtTokenProvider.getUserLoginId(accessToken);
+        return CommonResponse.success(requestService.checkProductJoinStatus(loginId, productId), "참여 상태 조회 성공");
     }
 
     @GetMapping("/joinPeople/{productId}")
-    public CommonResponse checkProductJoinPeople(@RequestHeader("token") String accessToken, @PathVariable("productId")Long productId){
-        String loginId= jwtTokenProvider.getUserLoginId(accessToken);
-        return CommonResponse.success(requestService.checkProductJoinPeople(loginId,productId),"참여자 목록 조회 성공");
+    public CommonResponse checkProductJoinPeople(@RequestHeader("token") String accessToken, @PathVariable("productId") Long productId) {
+        String loginId = jwtTokenProvider.getUserLoginId(accessToken);
+        return CommonResponse.success(requestService.checkProductJoinPeople(loginId, productId), "참여자 목록 조회 성공");
+    }
+
+    @GetMapping("/{productId}")
+    public CommonResponse detailProductInfo(@RequestHeader("token") String accessToken, @PathVariable("productId") Long productId) {
+        String loginId = jwtTokenProvider.getUserLoginId(accessToken);
+        return CommonResponse.success(requestService.detailProductInfo(loginId, productId), "상세 정보 조회 성공");
+    }
+
+    @PutMapping("/status/{productId}")
+    public CommonResponse changeProductStatus(@RequestHeader("token") String accessToken, @PathVariable("productId") Long productId) {
+        String loginId = jwtTokenProvider.getUserLoginId(accessToken);
+        return CommonResponse.success(requestService.changeProductStatus(loginId, productId),"같이 구매 상태 변경 성공");
     }
 }
