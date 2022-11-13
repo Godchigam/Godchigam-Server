@@ -25,7 +25,7 @@ public class WishController {
      * **/
 
     @PutMapping("/like")
-    public CommonResponse<WishResponse> CheckWish(@RequestHeader("Authorization") String accessToken, @RequestParam Long recipeId){
+    public CommonResponse<WishResponse> CheckWish(@RequestHeader("token") String accessToken, @RequestParam Long recipeId){
         //jwt복호화, user정보 얻기
         String userId = jwtTokenProvider.getUserLoginId(accessToken);
         Optional<Recipes> recipes = recipesRepository.findById(recipeId);

@@ -22,7 +22,7 @@ public class UserReportController {
 
     //
     @PostMapping("/report")
-    public CommonResponse<UserReport> createReport(@RequestHeader("Authorization") String accessToken, @RequestBody UserReportCreationRequest request){
+    public CommonResponse<UserReport> createReport(@RequestHeader("token") String accessToken, @RequestBody UserReportCreationRequest request){
         String userId = jwtTokenProvider.getUserLoginId(accessToken);
         UserReport report = userReportService.createReport(userId,request);
         if(report == null){

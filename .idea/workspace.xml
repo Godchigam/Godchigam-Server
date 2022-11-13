@@ -5,13 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bfbd921a-ec13-4ecd-a792-a1165e0be6f5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/userReport/controller/UserReportController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/userReport/dto/UserReportCreationRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/userReport/model/UserReport.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/userReport/repository/UserReportRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/userReport/service/UserReportService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/user/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/user/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/mypage/controller/MypageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/mypage/controller/MypageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipes/controller/RecipesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipes/controller/RecipesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipesBookmark/controller/BookmarkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipesBookmark/controller/BookmarkController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipesWish/controller/WishController.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipesWish/controller/WishController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/userReport/controller/UserReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/userReport/controller/UserReportController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,7 +136,8 @@
       <workItem from="1667979889649" duration="7670000" />
       <workItem from="1668004144461" duration="129000" />
       <workItem from="1668004298777" duration="15336000" />
-      <workItem from="1668143347377" duration="3079000" />
+      <workItem from="1668143347377" duration="3413000" />
+      <workItem from="1668328083369" duration="794000" />
     </task>
     <servers />
   </component>
