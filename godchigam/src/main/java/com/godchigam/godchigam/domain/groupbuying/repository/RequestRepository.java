@@ -16,4 +16,7 @@ public interface RequestRepository extends JpaRepository<RequestStorage,Long> {
 
     @Query("select b from RequestMessage b where b.requestStorage.requestStorageIdx= :requestStorageIdx ")
     List<RequestMessage> findByRequestStorageIdx(@Param("requestStorageIdx") Long requestStorageIdx);
+
+    @Query("select b from RequestMessage b where b.requestStorage.requestStorageIdx= :requestStorageIdx and b.requestSendUser.loginId= :loginId")
+    Optional<RequestMessage> findByRequestStorageIdxAndSenderLoginId(@Param("requestStorageIdx") Long requestStorageIdx,@Param("loginId") String loginId);
 }

@@ -333,6 +333,11 @@ public class RequestService {
         currentUser.setJoinStatus(newJoinType);
         joinPeopleRepository.save(currentUser);
 
+        //기존 요청 삭제하기
+        Optional<RequestStorage> requestStorage = requestRepository.findByUser(writer.get().getLoginId());
+        Optional<RequestMessage> pastRequest = requestRepository.findByRequestStorageIdxAndSenderLoginId(requestStorage.get().getRequestStorageIdx(),loginId);
+        requestMessageRepository.delete(pastRequest.get());
+
         JoinStatusResponse joinStatusResponse= new JoinStatusResponse(newJoinType);
         return joinStatusResponse;
     }
