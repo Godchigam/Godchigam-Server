@@ -18,7 +18,7 @@ public class JoinStorage {
     @Column(name = "joinStorageIdx_PK")
     private Long joinStorageIdx;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "productIdx_FK")
     private Product product;
 }

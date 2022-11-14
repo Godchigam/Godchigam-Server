@@ -1,5 +1,6 @@
 package com.godchigam.godchigam.domain.groupbuying.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.godchigam.godchigam.domain.user.entity.User;
 import com.godchigam.godchigam.global.entity.BaseTimeEntity;
 import lombok.Getter;
@@ -38,13 +39,14 @@ public class Product extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer goalPeopleCount;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String description;
 
     @Column(nullable = false)
     private String dealingMethod;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String status;
+
 
 }

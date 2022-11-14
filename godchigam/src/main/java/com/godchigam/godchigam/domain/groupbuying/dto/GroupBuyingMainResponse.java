@@ -1,17 +1,17 @@
-/*
 package com.godchigam.godchigam.domain.groupbuying.dto;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+
+import java.util.List;
 
 @Getter
-@Setter
 @RequiredArgsConstructor
 @Builder
-public class UserJoinStatusResponse {
-    private String joinType;
-}
 
- */
+public class GroupBuyingMainResponse {
+    private final Integer reportCount;
+    private final String address;
+
+}

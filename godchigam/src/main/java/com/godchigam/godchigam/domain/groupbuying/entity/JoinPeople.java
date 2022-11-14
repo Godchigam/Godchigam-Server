@@ -24,8 +24,10 @@ public class JoinPeople {
     @Column(nullable = false)
     private String joinStatus;
 
-
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "joinStorageIdx_FK")
     private JoinStorage joinStorage;
+
+
+
 }
