@@ -4,6 +4,7 @@ import com.godchigam.godchigam.domain.groupbuying.dto.*;
 import com.godchigam.godchigam.domain.groupbuying.entity.*;
 import com.godchigam.godchigam.domain.groupbuying.repository.JoinPeopleRepository;
 import com.godchigam.godchigam.domain.groupbuying.repository.JoinStorageRepository;
+import com.godchigam.godchigam.domain.groupbuying.repository.RequestMessageRepository;
 import com.godchigam.godchigam.domain.groupbuying.repository.RequestRepository;
 import com.godchigam.godchigam.domain.user.entity.User;
 import com.godchigam.godchigam.domain.user.repository.UserRepository;
@@ -30,6 +31,8 @@ public class RequestService {
     private final JoinStorageRepository joinStorageRepository;
     private final UserRepository userRepository;
     private final JoinPeopleRepository joinPeopleRepository;
+    private final RequestMessageRepository requestMessageRepository;
+
     public List<RequestMessageResponse> LookUpRequestStorage(String loginId) {
 
         Optional<RequestStorage> loginUserStorage = requestRepository.findByUser(loginId);
@@ -256,6 +259,12 @@ public class RequestService {
             }
         });
 
+        RequestMessage requestMessage = new RequestMessage();
+        requestMessage.setRequestProduct(joinStorage.get().getProduct());
+        requestMessage.setRequestSendUser(writer.get());
+        Optional<RequestStorage> requestStorage = requestRepository.findByUser(joinStorage.get().getProduct().getWriter().getLoginId());
+        requestMessage.setRequestStorage(requestStorage.get());
+
         String myJoinType = "";
         if (checkMyStatus.isEmpty()) {
             myJoinType = "참여대기";
@@ -264,22 +273,27 @@ public class RequestService {
             newJoinner.setJoinStatus("참여대기");
             newJoinner.setJoinStorage(joinStorage.get());
 
+            requestMessage.setRequestType("참여대기");
             joinPeopleRepository.save(newJoinner);
+
         } else {
             JoinPeople currentUser = checkMyStatus.get(0);
             myJoinType = currentUser.getJoinStatus(); //참여중 일수도 있고 참여안함 일수도 있음
 
             if (myJoinType.equals("참여중")) {
                 currentUser.setJoinStatus("탈퇴대기");
+                requestMessage.setRequestType("탈퇴대기");
                 myJoinType = "탈퇴대기";
             } else if (myJoinType.equals("참여안함")) {
                 currentUser.setJoinStatus("참여대기");
+                requestMessage.setRequestType("참여대기");
                 myJoinType = "참여대기";
             }
 
             joinPeopleRepository.save(currentUser);
         }
 
+        requestMessageRepository.save(requestMessage);
         JoinStatusResponse joinStatusResponse= new JoinStatusResponse(myJoinType);
         return joinStatusResponse;
     }
