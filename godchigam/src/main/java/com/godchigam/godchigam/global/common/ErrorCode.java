@@ -37,6 +37,7 @@ public enum ErrorCode {
 
     //groupbuying
     EMPTY_PRODUCT_ID(false,400,"존재하는 공동구매 상품이 없습니다."),
+    EMPTY_REQUEST_ID(false,400,"존재하지 않는 요청입니다."),
 
     /**
      * 500 : Server 오류
