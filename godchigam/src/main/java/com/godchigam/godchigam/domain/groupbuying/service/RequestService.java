@@ -60,7 +60,7 @@ public class RequestService {
             UserInfoResponse userInfoResponse = UserInfoResponse.builder()
                     .userId(requestMessage.getRequestSendUser().getUserIdx())
                     .profileImageUrl(requestMessage.getRequestSendUser().getProfileImageUrl())
-                    .nickname(requestMessage.getRequestSendUser().getProfileImageUrl())
+                    .nickname(requestMessage.getRequestSendUser().getNickname())
                     .build();
             resultMessageList.add(
                     RequestMessageResponse.builder()
