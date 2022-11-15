@@ -1,5 +1,6 @@
 package com.godchigam.godchigam.domain.groupbuying.controller;
 
+import com.godchigam.godchigam.domain.groupbuying.dto.CheckRequest;
 import com.godchigam.godchigam.domain.groupbuying.dto.GroupBuyingPostRequest;
 import com.godchigam.godchigam.domain.groupbuying.dto.ProductInfo;
 import com.godchigam.godchigam.domain.groupbuying.dto.ProductResponse;
@@ -61,6 +62,19 @@ public class RequestController {
         return CommonResponse.success(requestService.sendJoinRequest(loginId, productId),"참여/탈퇴 요청 성공");
     }
 
+    @PostMapping("/join/cancel")
+    public CommonResponse sendJoinCancel(@RequestHeader("token") String accessToken, @RequestBody Long productId) {
+        String loginId = jwtTokenProvider.getUserLoginId(accessToken);
+        return CommonResponse.success(requestService.sendJoinCancel(loginId, productId), "참여/탈퇴 취소 요청 성공");
+    }
+
+    @PutMapping("")
+    public CommonResponse checkRequest(@RequestHeader("token") String accessToken, @RequestBody CheckRequest checkRequest) {
+        String loginId = jwtTokenProvider.getUserLoginId(accessToken);
+        requestService.checkRequest(loginId,checkRequest);
+        return CommonResponse.successWithOutData("참여/탈퇴 요청 수락 성공");
+    }
+
 
      */
     @PostMapping("")
@@ -117,4 +131,5 @@ public class RequestController {
         String loginId = jwtTokenProvider.getUserLoginId(accessToken);
         return CommonResponse.success(requestService.groupBuyingMain(loginId),"같이 구매 메인 조회 성공");
     }
+
 }
