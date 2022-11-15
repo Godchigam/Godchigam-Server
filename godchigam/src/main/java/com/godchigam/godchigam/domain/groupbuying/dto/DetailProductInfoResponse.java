@@ -10,8 +10,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Builder
 public class DetailProductInfoResponse {
-    private final boolean ifOwner;
-    private final boolean isFull;
+    private final Boolean isOwner;
+    private final Boolean isFull;
     private final String joinType;
     private final String address;
     private final String category;

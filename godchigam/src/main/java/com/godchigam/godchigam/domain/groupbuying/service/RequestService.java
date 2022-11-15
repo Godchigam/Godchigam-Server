@@ -50,6 +50,7 @@ public class RequestService {
 
         Optional<RequestStorage> loginUserStorage = requestRepository.findByUser(loginId);
         Long loginUserStorageIdx = loginUserStorage.get().getRequestStorageIdx();
+        log.info(String.valueOf(loginUserStorageIdx));
 
         List<RequestMessage> loginUserRequestMessageList = requestRepository.findByRequestStorageIdx(loginUserStorageIdx);
         List<RequestMessageResponse> resultMessageList = new ArrayList<>();
@@ -72,7 +73,7 @@ public class RequestService {
             );
         });
 
-        if (resultMessageList.isEmpty()) return null;
+        if(resultMessageList.isEmpty()) return null;
         return resultMessageList;
     }
 
@@ -184,7 +185,7 @@ public class RequestService {
                 .build();
 
         return DetailProductInfoResponse.builder()
-                .ifOwner(isOwner)
+                .isOwner(isOwner)
                 .isFull(isFull)
                 .joinType(myJoinType)
                 .address(writer.getAddress())
@@ -311,8 +312,8 @@ public class RequestService {
 
     public JoinStatusResponse sendJoinCancel(String loginId, Long productId) {
 
-        Optional<User> writer = userRepository.findByLoginId(loginId);
-        if (writer.isEmpty()) {
+        Optional<User> requestSender = userRepository.findByLoginId(loginId);
+        if (requestSender.isEmpty()) {
             throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
         }
 
@@ -321,6 +322,7 @@ public class RequestService {
             throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
         }
 
+        User owner = joinStorage.get().getProduct().getWriter();
         Long joinStorageId = joinStorage.get().getJoinStorageIdx();
         List<JoinPeople> joinPeopleList = joinStorageRepository.findByJoinStorageIdx(joinStorageId);
 
@@ -345,8 +347,9 @@ public class RequestService {
         joinPeopleRepository.save(currentUser);
 
         //기존 요청 삭제하기
-        Optional<RequestStorage> requestStorage = requestRepository.findByUser(writer.get().getLoginId());
+        Optional<RequestStorage> requestStorage = requestRepository.findByUser(owner.getLoginId());
         Optional<RequestMessage> pastRequest = requestRepository.findByRequestStorageIdxAndSenderLoginId(requestStorage.get().getRequestStorageIdx(), loginId);
+        log.info("리퀘스트 존재"+pastRequest.isEmpty());
         requestMessageRepository.delete(pastRequest.get());
 
         JoinStatusResponse joinStatusResponse = new JoinStatusResponse(newJoinType);
