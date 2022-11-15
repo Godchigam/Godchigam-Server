@@ -32,10 +32,6 @@ public class RequestService {
     private final JoinPeopleRepository joinPeopleRepository;
     private final RequestMessageRepository requestMessageRepository;
 
-    private final ProductRepository productRepository;
-    private final UserReportRepository userReportRepository;
-
-
     public List<RequestMessageResponse> LookUpRequestStorage(String loginId) {
 
         Optional<RequestStorage> loginUserStorage = requestRepository.findByUser(loginId);
@@ -252,9 +248,6 @@ public class RequestService {
         return changeProductStatus;
     }
 
-    /**
-     * RequestMessage 추가 되도록 repo 로직 추가해야함.
-     */
     public JoinStatusResponse sendJoinRequest(String loginId, Long productId) {
 
         Optional<User> writer = userRepository.findByLoginId(loginId);
@@ -372,6 +365,11 @@ public class RequestService {
 
         if (selectedRequest.isEmpty()) {
             throw new BaseException(ErrorCode.EMPTY_REQUEST_ID);
+        }
+
+        String requestType = selectedRequest.get().getRequestType().substring(0,2);
+        if(!requestType.equals(checkRequest.getRequestType())){
+            throw new BaseException(ErrorCode.WRONG_REQUEST_TYPE);
         }
 
         //요청 보낸 사람의 상태값 바뀜.
