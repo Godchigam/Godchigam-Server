@@ -26,7 +26,7 @@ public class BookmarkController {
 
     //북마크 체크하기
     @PutMapping("/bookmark")
-    public CommonResponse<BookmarkResponse> CheckBookmark(@RequestHeader("Authorization") String accessToken, @RequestParam Long recipeId){
+    public CommonResponse<BookmarkResponse> CheckBookmark(@RequestHeader("token") String accessToken, @RequestParam Long recipeId){
 
        String userId = jwtTokenProvider.getUserLoginId(accessToken);
         Optional<Recipes> recipes = recipesRepository.findById(recipeId);
@@ -39,7 +39,7 @@ public class BookmarkController {
 
     //북마크한 레시피 불러오기
     @GetMapping("/bookmark")
-    public CommonResponse<List<RecipeInfoResponseDto>> readBookmark(@RequestHeader("Authorization") String accessToken, @RequestParam(required = false)Boolean status){
+    public CommonResponse<List<RecipeInfoResponseDto>> readBookmark(@RequestHeader("token") String accessToken, @RequestParam(required = false)Boolean status){
         String userId = jwtTokenProvider.getUserLoginId(accessToken);
 
         return CommonResponse.success(bookmarkService.readBookmark(userId,status),"북마크한 레시피 조회 성공");
