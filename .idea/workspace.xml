@@ -5,12 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bfbd921a-ec13-4ecd-a792-a1165e0be6f5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/dto/GroupBuyingMainResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/dto/GroupBuyingPostRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/dto/ProductResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/repository/ProductRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/userReport/controller/UserReportController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/userReport/dto/UserReportCreationRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/userReport/model/UserReport.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/userReport/repository/UserReportRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/userReport/service/UserReportService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/mypage/controller/MypageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/mypage/controller/MypageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipes/controller/RecipesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipes/controller/RecipesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipesBookmark/controller/BookmarkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipesBookmark/controller/BookmarkController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipesWish/controller/WishController.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/recipesWish/controller/WishController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/userReport/controller/UserReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/userReport/controller/UserReportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/controller/RequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/controller/RequestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/dto/UserJoinStatusResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/dto/UserJoinStatusResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/entity/JoinPeople.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/entity/JoinPeople.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/entity/JoinStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/entity/JoinStorage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/entity/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/repository/JoinPeopleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/repository/JoinPeopleRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/repository/JoinStorageRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/repository/JoinStorageRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/service/RequestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/service/RequestService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/global/common/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/global/common/ErrorCode.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,8 +102,10 @@
     <property name="DatabaseDriversLRU" value="mysql" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelOrder2" value="2" />
     <property name="RequestMappingsPanelWidth0" value="75" />
     <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RequestMappingsPanelWidth2" value="75" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />

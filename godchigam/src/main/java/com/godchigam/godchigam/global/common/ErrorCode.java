@@ -25,6 +25,7 @@ public enum ErrorCode {
     USERS_EMPTY_USER_ID(false, 400, "존재하지 않는 계정입니다."),
     WRONG_PASSWORD(false,400,"비밀번호가 맞지 않습니다."),
     WRONG_ADDRESS(false, 400,"위치 정보를 확인해주세요."),
+    NULL_ADDRESS(false,400,"거주하는 동 정보가 없는 회원은 글을 작성할 수 없습니다."),
 
     //refrigerator
     EMPTY_FOOD_ID(false,400,"존재하는 재료가 없습니다."),
@@ -34,6 +35,10 @@ public enum ErrorCode {
     // recipes
     RECIPES_EMPTY(false, 400, "존재하는 레시피 없음"),
     EMPTY_THEME_AND_FILTER(false,400,"테마와 필터 설정 안함"),
+
+    //groupbuying
+    EMPTY_PRODUCT_ID(false,400,"존재하는 공동구매 상품이 없습니다."),
+    TOO_LONG_PRODUCT_NAME(false, 400, "최대 16자 이내로 입력해주세요."),
 
     /**
      * 500 : Server 오류

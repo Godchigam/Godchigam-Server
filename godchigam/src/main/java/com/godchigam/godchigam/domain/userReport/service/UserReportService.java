@@ -26,7 +26,6 @@ public class UserReportService {
         Optional<User> user = userRepository.findById(request.getReportId()); //신고할 유저
         Optional<User> user1 = userRepository.findByLoginId(userId); //신고한 유저
 
-
         if(!user.isPresent()){
             throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
         }
@@ -34,14 +33,10 @@ public class UserReportService {
 
         BeanUtils.copyProperties(request, reportToCreate);
 
-        reportToCreate.setUserId(user1.get().getUserIdx()); //신고한 유저
-        reportToCreate.setUser(user.get());//신고당할 유저
-        reportToCreate.setUserId(user1.get().getUserIdx());
+        reportToCreate.setReportId(request.getReportId());
+        reportToCreate.setUser(user1.get());
 
-        //2번이상 신고당한 reportId는 user table에서 status "INACTIVE"로 변환
-        if(reportToCreate.getUser().getCountOfReports()>0){
-            reportToCreate.getUser().reChangeStatus();
-        }
+
         return userReportRepository.save(reportToCreate);
     }
 }
