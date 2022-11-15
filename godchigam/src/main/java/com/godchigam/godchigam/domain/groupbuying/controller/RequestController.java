@@ -4,6 +4,7 @@ import com.godchigam.godchigam.domain.groupbuying.dto.CheckRequest;
 import com.godchigam.godchigam.domain.groupbuying.dto.GroupBuyingPostRequest;
 import com.godchigam.godchigam.domain.groupbuying.dto.ProductInfo;
 import com.godchigam.godchigam.domain.groupbuying.dto.ProductResponse;
+import com.godchigam.godchigam.domain.groupbuying.dto.requestDto.GroupBuyingJoinRequest;
 import com.godchigam.godchigam.domain.groupbuying.entity.Product;
 import com.godchigam.godchigam.domain.groupbuying.repository.ProductRepository;
 import com.godchigam.godchigam.domain.groupbuying.service.RequestService;
@@ -57,15 +58,15 @@ public class RequestController {
     }
 
     @PostMapping("/join/request")
-    public CommonResponse sendJoinRequest(@RequestHeader("token") String accessToken, @RequestBody Long productId) {
+    public CommonResponse sendJoinRequest(@RequestHeader("token") String accessToken, @RequestBody GroupBuyingJoinRequest groupBuyingJoinRequest) {
         String loginId = jwtTokenProvider.getUserLoginId(accessToken);
-        return CommonResponse.success(requestService.sendJoinRequest(loginId, productId), "참여/탈퇴 요청 성공");
+        return CommonResponse.success(requestService.sendJoinRequest(loginId, groupBuyingJoinRequest.getProductId()), "참여/탈퇴 요청 성공");
     }
 
     @PostMapping("/join/cancel")
-    public CommonResponse sendJoinCancel(@RequestHeader("token") String accessToken, @RequestBody Long productId) {
+    public CommonResponse sendJoinCancel(@RequestHeader("token") String accessToken, @RequestBody GroupBuyingJoinRequest groupBuyingJoinRequest) {
         String loginId = jwtTokenProvider.getUserLoginId(accessToken);
-        return CommonResponse.success(requestService.sendJoinCancel(loginId, productId), "참여/탈퇴 취소 요청 성공");
+        return CommonResponse.success(requestService.sendJoinCancel(loginId, groupBuyingJoinRequest.getProductId()), "참여/탈퇴 취소 요청 성공");
     }
 
     @PutMapping("")
