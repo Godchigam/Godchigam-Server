@@ -25,10 +25,12 @@ public class UserReportService {
     public UserReport createReport(String userId, UserReportCreationRequest request){
         Optional<User> user = userRepository.findById(request.getReportId()); //신고할 유저
         Optional<User> user1 = userRepository.findByLoginId(userId); //신고한 유저
+
         if(!user.isPresent()){
             throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
         }
         UserReport reportToCreate = new UserReport();
+
         BeanUtils.copyProperties(request, reportToCreate);
 
         reportToCreate.setReportId(request.getReportId());

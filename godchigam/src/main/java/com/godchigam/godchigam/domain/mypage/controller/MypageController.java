@@ -16,14 +16,14 @@ public class MypageController {
     private final MypageService mypageService;
 
     @GetMapping("")
-    public CommonResponse readMypage(@RequestHeader("Authorization") String accessToken){
+    public CommonResponse readMypage(@RequestHeader("token") String accessToken){
 
         String userId = jwtTokenProvider.getUserLoginId(accessToken);
         return CommonResponse.success(mypageService.checkMypage(userId),"메인 정보 조회 성공");
     }
 
     @PostMapping("")
-    public CommonResponse<MypageResponse> updateUser(@RequestHeader("Authorization") String accessToken, @RequestBody MypageRequest request){
+    public CommonResponse<MypageResponse> updateUser(@RequestHeader("token") String accessToken, @RequestBody MypageRequest request){
         String userId = jwtTokenProvider.getUserLoginId(accessToken);
         return CommonResponse.success(mypageService.updateMypage(userId, request),"개인정보 수정 성공");
     }

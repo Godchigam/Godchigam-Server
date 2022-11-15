@@ -1,13 +1,16 @@
 package com.godchigam.godchigam.domain.user.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.godchigam.godchigam.domain.userReport.model.UserReport;
 import com.godchigam.godchigam.global.entity.BaseTimeEntity;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -41,4 +44,15 @@ public class User extends BaseTimeEntity {
     @Column(nullable = true)
     private String address;
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "user",
+            fetch = FetchType.LAZY, cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<UserReport> userReports = new ArrayList<>();
+
+    public int getCountOfReports(){return this.userReports.size();}
+
+    public String changeStatus(){return this.status="ACTIVE";}
+
+    public String reChangeStatus(){return this.status="INACTIVE";}
 }

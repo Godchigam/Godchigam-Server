@@ -32,4 +32,6 @@ public class UserReportController {
         return CommonResponse.success(null,"유저 신고 성공");
 
     }
+
 }
+

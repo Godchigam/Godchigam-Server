@@ -117,6 +117,9 @@
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="File.Encoding" />
   </component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
   <component name="RunManager">
     <configuration name="GodchigamApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="godchigam.main" />
@@ -148,6 +151,8 @@
       <workItem from="1667979889649" duration="7670000" />
       <workItem from="1668004144461" duration="129000" />
       <workItem from="1668004298777" duration="15336000" />
+      <workItem from="1668143347377" duration="3413000" />
+      <workItem from="1668328083369" duration="794000" />
     </task>
     <servers />
   </component>

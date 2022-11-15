@@ -24,7 +24,6 @@ public class UserReport {
     @Column
     private Long reportId;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userIdx")
     private User user;
