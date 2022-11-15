@@ -1,4 +1,3 @@
-/*
 package com.godchigam.godchigam.domain.groupbuying.dto;
 
 import lombok.*;
@@ -10,4 +9,3 @@ public class UserJoinStatusResponse {
     private String joinType;
 }
 
- */

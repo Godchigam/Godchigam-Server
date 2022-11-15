@@ -44,7 +44,7 @@ public class RequestService {
 
     private final ProductRepository productRepository;
     private final UserReportRepository userReportRepository;
-/*
+
 
     public List<RequestMessageResponse> LookUpRequestStorage(String loginId) {
 
@@ -76,20 +76,20 @@ public class RequestService {
         return resultMessageList;
     }
 
-    public UserJoinStatusResponse checkProductJoinStatus(String loginId, Long productId){
+    public UserJoinStatusResponse checkProductJoinStatus(String loginId, Long productId) {
 
         Optional<JoinStorage> joinStorage = joinStorageRepository.findByProduct(productId);
-        if(joinStorage.isEmpty()){
+        if (joinStorage.isEmpty()) {
             throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
         }
 
         Long joinStorageId = joinStorage.get().getJoinStorageIdx();
         List<JoinPeople> joinPeopleList = joinStorageRepository.findByJoinStorageIdx(joinStorageId);
 
-        UserJoinStatusResponse resultResponse=  new UserJoinStatusResponse("참여안함");
+        UserJoinStatusResponse resultResponse = new UserJoinStatusResponse("참여안함");
 
         joinPeopleList.forEach(joinPeople -> {
-            if(joinPeople.getJoinUserLoginId().equals(loginId)){
+            if (joinPeople.getJoinUserLoginId().equals(loginId)) {
                 resultResponse.setJoinType(joinPeople.getJoinStatus());
             }
         });
@@ -232,7 +232,7 @@ public class RequestService {
                 }
             });
 
-            if(product.getGoalPeopleCount().equals(joinnerList.size())) {
+            if (product.getGoalPeopleCount().equals(joinnerList.size())) {
                 changeProductStatus.setPurchaseStatus("모집완료");
             } else {
                 changeProductStatus.setPurchaseStatus("모집중");
@@ -240,14 +240,12 @@ public class RequestService {
 
         } else {
             changeProductStatus.setPurchaseStatus("종료");
-       }
+        }
         return changeProductStatus;
     }
 
     /**
-     *
      * RequestMessage 추가 되도록 repo 로직 추가해야함.
-     *
      */
     public JoinStatusResponse sendJoinRequest(String loginId, Long productId) {
 
@@ -307,7 +305,7 @@ public class RequestService {
         }
 
         requestMessageRepository.save(requestMessage);
-        JoinStatusResponse joinStatusResponse= new JoinStatusResponse(myJoinType);
+        JoinStatusResponse joinStatusResponse = new JoinStatusResponse(myJoinType);
         return joinStatusResponse;
     }
 
@@ -336,8 +334,8 @@ public class RequestService {
 
         JoinPeople currentUser = checkMyStatus.get(0);
         String myJoinType = currentUser.getJoinStatus();
-        String newJoinType ="";
-        if(myJoinType.equals("참여대기")) {
+        String newJoinType = "";
+        if (myJoinType.equals("참여대기")) {
             newJoinType = "참여안함";
         } else { //탈퇴 대기
             newJoinType = "참여중";
@@ -348,10 +346,10 @@ public class RequestService {
 
         //기존 요청 삭제하기
         Optional<RequestStorage> requestStorage = requestRepository.findByUser(writer.get().getLoginId());
-        Optional<RequestMessage> pastRequest = requestRepository.findByRequestStorageIdxAndSenderLoginId(requestStorage.get().getRequestStorageIdx(),loginId);
+        Optional<RequestMessage> pastRequest = requestRepository.findByRequestStorageIdxAndSenderLoginId(requestStorage.get().getRequestStorageIdx(), loginId);
         requestMessageRepository.delete(pastRequest.get());
 
-        JoinStatusResponse joinStatusResponse= new JoinStatusResponse(newJoinType);
+        JoinStatusResponse joinStatusResponse = new JoinStatusResponse(newJoinType);
         return joinStatusResponse;
     }
 
@@ -360,271 +358,32 @@ public class RequestService {
         Long requestId = checkRequest.getRequestId();
 
         Optional<RequestStorage> writerStorage = requestRepository.findByUser(loginId);
-        Optional<RequestMessage> selectedRequest = requestRepository.findByRequestStorageIdxAndRequestMessageIdx(writerStorage.get().getRequestStorageIdx(),requestId);
+        Optional<RequestMessage> selectedRequest = requestRepository.findByRequestStorageIdxAndRequestMessageIdx(writerStorage.get().getRequestStorageIdx(), requestId);
 
-        if(selectedRequest.isEmpty()) {
+        if (selectedRequest.isEmpty()) {
             throw new BaseException(ErrorCode.EMPTY_REQUEST_ID);
         }
 
         //요청 보낸 사람의 상태값 바뀜.
         Long sendUserIdx = checkRequest.getUserId();
-        Optional<User> sendUser= userRepository.findByUserIdx(sendUserIdx);
+        Optional<User> sendUser = userRepository.findByUserIdx(sendUserIdx);
         Long productId = checkRequest.getProductId();
         Optional<JoinStorage> currentJoinStorage = joinStorageRepository.findByProduct(productId);
         List<JoinPeople> currentJoinPeople = joinStorageRepository.findByJoinStorageIdx(currentJoinStorage.get().getJoinStorageIdx());
 
         currentJoinPeople.forEach(joinPeople -> {
-            if(joinPeople.getJoinUserLoginId().equals(sendUser.get().getLoginId())) {
-                if(checkRequest.getRequestType().equals("참여")) {
+            if (joinPeople.getJoinUserLoginId().equals(sendUser.get().getLoginId())) {
+                if (checkRequest.getRequestType().equals("참여")) {
                     joinPeople.setJoinStatus("참여중");
                 } else {
                     joinPeople.setJoinStatus("참여안함");
-               }
+                }
             }
         });
 
         //요청함에서 요청 삭제됨
         requestMessageRepository.delete(selectedRequest.get());
     }
+
 }
-
- */
-
-    //글 등록
-    public Product createProduct(GroupBuyingPostRequest product, String id){
-        Optional<User> user = userRepository.findByLoginId(id);
-
-        if(!user.isPresent()){
-            throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
-        }
-        Product productToCreate = new Product();
-        JoinPeople peopleToCreate = new JoinPeople();
-        JoinStorage storageToCreate = new JoinStorage();
-        BeanUtils.copyProperties(product, productToCreate);
-        BeanUtils.copyProperties(product, peopleToCreate);
-        BeanUtils.copyProperties(product, storageToCreate);
-        productToCreate.setWriter(user.get());
-        productToCreate.setStatus("모집중");
-        peopleToCreate.setJoinStatus("참여중");
-        peopleToCreate.setJoinUserLoginId(id);
-        peopleToCreate.setJoinStorage(storageToCreate);
-        storageToCreate.setProduct(productToCreate);
-
-        joinPeopleRepository.save(peopleToCreate);
-        joinStorageRepository.save(storageToCreate);
-        return productRepository.save(productToCreate);
-
-    }
-
-    //글 수정
-    public Product updateProduct(GroupBuyingPostRequest product, Long id){
-        Optional<Product> optionalProduct = productRepository.findById(id);
-        if(!optionalProduct.isPresent()){
-            throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
-        }
-        Product product1 = optionalProduct.get();
-        product1.setProductImageUrl(product.getProductImageUrl());
-        product1.setProductName(product.getProductName());
-        product1.setProductPrice(product.getProductPrice());
-        product1.setCategory(product.getCategory());
-        product1.setGoalPeopleCount(product.getGoalPeopleCount());
-        product1.setDealingMethod(product.getDealingMethod());
-        product1.setDescription(product.getDescription());
-        productRepository.save(product1);
-        return null;
-    }
-
-
-    //글 삭제
-    public Product deleteProduct(Long id, String userId){
-
-        Optional<User> user = userRepository.findByLoginId(userId);
-
-        if(!user.isPresent()){
-            throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
-        }
-        else{
-
-            List<JoinStorage> optionalJoinStorage = joinStorageRepository.findByProduct(id);
-            Long storageId= null;
-            if(!optionalJoinStorage.isEmpty()){
-            storageId = optionalJoinStorage.get(0).getJoinStorageIdx();}
-
-            List<JoinPeople> optionalJoinPeople = joinPeopleRepository.findByJoinStorage(storageId);
-            if(!optionalJoinPeople.isEmpty()){optionalJoinPeople.get(0).getJoinerIdx();}
-
-            joinPeopleRepository.deleteAll(joinPeopleRepository.findByJoinStorage(storageId));
-            joinStorageRepository.deleteAll(joinStorageRepository.findByProduct(id));
-            productRepository.deleteById(id);
-
-
-        return null;
-
-        }
-    }
-
-
-    //같이구매 메인조회
-
-    public ProductResponse groupBuyingMain(String loginId) {
-        Optional<User> user = userRepository.findByLoginId(loginId);
-        Long userIdx = user.get().getUserIdx();
-        log.info(String.valueOf(userIdx));
-        Integer reportCnt = userReportRepository.findByReportId(userIdx).size();
-        log.info(String.valueOf(reportCnt));
-        //글 아이디:
-        String userAddress = user.get().getAddress();
-        List<Product> loginUserProductList = productRepository.findByWriter1(userAddress);
-        List<ProductInfo> food = new ArrayList<>();
-        List<ProductInfo> living = new ArrayList<>();
-        List<ProductInfo> etc = new ArrayList<>();
-        if (!user.isPresent()) {
-            throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
-        } else {
-            loginUserProductList.forEach(product -> {
-                Long productId = product.getProductIdx();
-                List<JoinStorage> optionalJoinStorage = joinStorageRepository.findByProduct(productId);
-                Long storageId = null;
-                Integer cntOfPeople = null;
-                if (!optionalJoinStorage.isEmpty()) {
-                    storageId = optionalJoinStorage.get(0).getJoinStorageIdx();
-                }
-
-                List<JoinPeople> optionalJoinPeople = joinPeopleRepository.findByJoinStorage(storageId);
-                if (!optionalJoinPeople.isEmpty()) {
-                    cntOfPeople = optionalJoinPeople.size();
-                }
-
-                if (product.getCategory().equals("식품")) {
-                    food.add(
-                            ProductInfo.builder()
-                                    .productId(product.getProductIdx())
-                                    .productImageUrl(product.getProductImageUrl())
-                                    .purchaseStatus(product.getStatus())
-                                    .productName(product.getProductName())
-                                    .productPrice(product.getProductPrice())
-                                    .dividedPrice(product.getProductPrice() / product.getGoalPeopleCount())
-                                    .goalPeopleCount(product.getGoalPeopleCount())
-                                    .joinPeopleCount(cntOfPeople)
-                                    .dealingMethod(product.getDealingMethod())
-                                    .build()
-                    );
-
-                } else if (product.getCategory().equals("생필품")) {
-                    living.add(
-                            ProductInfo.builder()
-                                    .productId(product.getProductIdx())
-                                    .productImageUrl(product.getProductImageUrl())
-                                    .purchaseStatus(product.getStatus())
-                                    .productName(product.getProductName())
-                                    .productPrice(product.getProductPrice())
-                                    .dividedPrice(product.getProductPrice() / product.getGoalPeopleCount())
-                                    .goalPeopleCount(product.getGoalPeopleCount())
-                                    .joinPeopleCount(cntOfPeople)
-                                    .dealingMethod(product.getDealingMethod())
-                                    .build()
-                    );
-                } else if (product.getCategory().equals("그 외")) {
-                    etc.add(
-                            ProductInfo.builder()
-                                    .productId(product.getProductIdx())
-                                    .productImageUrl(product.getProductImageUrl())
-                                    .purchaseStatus(product.getStatus())
-                                    .productName(product.getProductName())
-                                    .productPrice(product.getProductPrice())
-                                    .dividedPrice(product.getProductPrice() / product.getGoalPeopleCount())
-                                    .goalPeopleCount(product.getGoalPeopleCount())
-                                    .joinPeopleCount(cntOfPeople)
-                                    .dealingMethod(product.getDealingMethod())
-                                    .build()
-                    );
-                }
-            });
-
-            return ProductResponse.builder()
-                    .reportCount(reportCnt)
-                    .address(userAddress)
-                    .food(food)
-                    .living(living)
-                    .etc(etc)
-                    .build();
-        }
-    }
-
-    //내가 등록한 같이구매, 내가 참여한 같이구매
-    public List<ProductInfo> myGroupBuying(String loginId, String type) {
-        Optional<User> user = userRepository.findByLoginId(loginId);
-        List<ProductInfo> newList = new ArrayList<>();
-        List<Product> loginUserProductList = null;
-        List<JoinPeople> loginUserJoinPeopleList = null;
-        List<JoinStorage> loginUserJoinStorageList = null;
-
-        if(type.equals("register")) {
-            loginUserProductList = productRepository.findByWriter(loginId);
-            if (!user.isPresent()) {
-                throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
-            }
-            loginUserProductList.forEach(product -> {
-                Long productId = product.getProductIdx();
-                List<JoinStorage> optionalJoinStorage = joinStorageRepository.findByProduct(productId);
-                Long storageId = null;
-                Integer cntOfPeople = null;
-                if (!optionalJoinStorage.isEmpty()) {
-                    storageId = optionalJoinStorage.get(0).getJoinStorageIdx();
-                }
-
-                List<JoinPeople> optionalJoinPeople = joinPeopleRepository.findByJoinStorage(storageId);
-                if (!optionalJoinPeople.isEmpty()) {
-                    cntOfPeople = optionalJoinPeople.size();
-                }
-
-                newList.add(ProductInfo.builder()
-                        .productId(product.getProductIdx())
-                        .productImageUrl(product.getProductImageUrl())
-                        .purchaseStatus(product.getStatus())
-                        .productName(product.getProductName())
-                        .productPrice(product.getProductPrice())
-                        .dividedPrice(product.getProductPrice() / product.getGoalPeopleCount())
-                        .goalPeopleCount(product.getGoalPeopleCount())
-                        .joinPeopleCount(cntOfPeople)
-                        .dealingMethod(product.getDealingMethod())
-                        .build());
-
-            });
-
-
-        }
-        else if(type.equals("join")){
-            if (!user.isPresent()) {
-                throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
-            }
-            loginUserJoinPeopleList = joinPeopleRepository.findByJoinStatusAndJoinUserLoginId(loginId);
-            loginUserJoinPeopleList.forEach(people -> {
-                Long storageId1 = null;
-                Integer cntOfPeople1 = null;
-                storageId1 = people.getJoinStorage().getJoinStorageIdx();
-                List<JoinPeople> optionalJoinPeople = joinPeopleRepository.findByJoinStorage(storageId1);
-                if (!optionalJoinPeople.isEmpty()) {
-                    cntOfPeople1 = optionalJoinPeople.size();
-                }
-                if(!people.getJoinStorage().getProduct().getWriter().getLoginId().equals(loginId)){
-                newList.add(ProductInfo.builder()
-                        .productId(people.getJoinStorage().getProduct().getProductIdx())
-                        .productImageUrl(people.getJoinStorage().getProduct().getProductImageUrl())
-                        .purchaseStatus(people.getJoinStorage().getProduct().getStatus())
-                        .productName(people.getJoinStorage().getProduct().getProductName())
-                        .productPrice(people.getJoinStorage().getProduct().getProductPrice())
-                        .dividedPrice(people.getJoinStorage().getProduct().getProductPrice() / people.getJoinStorage().getProduct().getGoalPeopleCount())
-                        .goalPeopleCount(people.getJoinStorage().getProduct().getGoalPeopleCount())
-                        .joinPeopleCount(cntOfPeople1)
-                        .dealingMethod(people.getJoinStorage().getProduct().getDealingMethod())
-                        .build());
-
-            }}
-        );
-        }
-
-    return newList;
-
-    }}
 
