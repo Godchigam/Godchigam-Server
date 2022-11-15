@@ -60,7 +60,8 @@ public class RequestController {
     @PutMapping("")
     public CommonResponse checkRequest(@RequestHeader("token") String accessToken, @RequestBody CheckRequest checkRequest) {
         String loginId = jwtTokenProvider.getUserLoginId(accessToken);
-        return CommonResponse.success(requestService.checkRequest(loginId, checkRequest), "참여/탈퇴 요청 수락 성공");
+        requestService.checkRequest(loginId,checkRequest);
+        return CommonResponse.successWithOutData("참여/탈퇴 요청 수락 성공");
     }
 
 }

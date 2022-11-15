@@ -341,4 +341,36 @@ public class RequestService {
         JoinStatusResponse joinStatusResponse= new JoinStatusResponse(newJoinType);
         return joinStatusResponse;
     }
+
+    public void checkRequest(String loginId, CheckRequest checkRequest) {
+
+        Long requestId = checkRequest.getRequestId();
+
+        Optional<RequestStorage> writerStorage = requestRepository.findByUser(loginId);
+        Optional<RequestMessage> selectedRequest = requestRepository.findByRequestStorageIdxAndRequestMessageIdx(writerStorage.get().getRequestStorageIdx(),requestId);
+
+        if(selectedRequest.isEmpty()) {
+            throw new BaseException(ErrorCode.EMPTY_REQUEST_ID);
+        }
+
+        //요청 보낸 사람의 상태값 바뀜.
+        Long sendUserIdx = checkRequest.getUserId();
+        Optional<User> sendUser= userRepository.findByUserIdx(sendUserIdx);
+        Long productId = checkRequest.getProductId();
+        Optional<JoinStorage> currentJoinStorage = joinStorageRepository.findByProduct(productId);
+        List<JoinPeople> currentJoinPeople = joinStorageRepository.findByJoinStorageIdx(currentJoinStorage.get().getJoinStorageIdx());
+
+        currentJoinPeople.forEach(joinPeople -> {
+            if(joinPeople.getJoinUserLoginId().equals(sendUser.get().getLoginId())) {
+                if(checkRequest.getRequestType().equals("참여")) {
+                    joinPeople.setJoinStatus("참여중");
+                } else {
+                    joinPeople.setJoinStatus("참여안함");
+               }
+            }
+        });
+
+        //요청함에서 요청 삭제됨
+        requestMessageRepository.delete(selectedRequest.get());
+    }
 }
