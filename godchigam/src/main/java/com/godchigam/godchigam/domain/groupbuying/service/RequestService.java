@@ -88,32 +88,49 @@ public class RequestService {
         return resultResponse;
     }
 
-    public List<UserInfoResponse> checkProductJoinPeople(String loginId, Long productId) {
+    public JoinnerResponse checkProductJoinPeople(String loginId, Long productId) {
 
         Optional<JoinStorage> joinStorage = joinStorageRepository.findByProduct(productId);
         if (joinStorage.isEmpty()) {
             throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
         }
 
+        User owner = joinStorage.get().getProduct().getWriter();
         Long joinStorageId = joinStorage.get().getJoinStorageIdx();
         List<JoinPeople> joinPeopleList = joinStorageRepository.findByJoinStorageIdx(joinStorageId);
 
-        List<UserInfoResponse> resultList = new ArrayList<>();
+        List<JoinPeopleResponse> resultList = new ArrayList<>();
+        Boolean isOwner = false;
+        if (loginId.equals(owner.getLoginId())) {
+            isOwner = true;
+        }
 
         joinPeopleList.forEach(joinPeople -> {
-            if (!(joinPeople.getJoinUserLoginId().equals(loginId)) && joinPeople.getJoinStatus().equals("참여중")) {
+            if (joinPeople.getJoinStatus().equals("참여중")) {
 
                 Optional<User> user = userRepository.findByLoginId(joinPeople.getJoinUserLoginId());
-                resultList.add(UserInfoResponse.builder()
+                UserInfoResponse infoUser = UserInfoResponse.builder()
                         .userId(user.get().getUserIdx())
                         .profileImageUrl(user.get().getProfileImageUrl())
                         .nickname(user.get().getNickname())
+                        .build();
+
+                Boolean isMe = false;
+                if (joinPeople.getJoinUserLoginId().equals(loginId)) {
+                    isMe = true;
+                }
+                resultList.add(JoinPeopleResponse.builder()
+                        .isMe(isMe)
+                        .userInfo(infoUser)
                         .build()
                 );
             }
         });
 
-        return resultList;
+        return JoinnerResponse.builder()
+                .isOwner(isOwner)
+                .joinPeople(resultList)
+                .build();
     }
 
     public DetailProductInfoResponse detailProductInfo(String loginId, Long productId) {
