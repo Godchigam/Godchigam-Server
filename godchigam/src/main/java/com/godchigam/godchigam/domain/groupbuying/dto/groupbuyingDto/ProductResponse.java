@@ -1,5 +1,6 @@
-package com.godchigam.godchigam.domain.groupbuying.dto;
+package com.godchigam.godchigam.domain.groupbuying.dto.groupbuyingDto;
 
+import com.godchigam.godchigam.domain.groupbuying.dto.ProductInfo;
 import com.godchigam.godchigam.domain.refrigerator.dto.FoodInfoResponse;
 
 import java.util.List;

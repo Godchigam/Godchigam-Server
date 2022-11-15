@@ -1,4 +1,4 @@
-package com.godchigam.godchigam.domain.groupbuying.dto;
+package com.godchigam.godchigam.domain.groupbuying.dto.requestDto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,5 +8,6 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @Setter
 public class ChangeProductStatus {
+
     private String purchaseStatus;
 }

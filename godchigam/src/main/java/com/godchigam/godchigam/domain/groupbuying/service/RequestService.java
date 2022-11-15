@@ -1,17 +1,13 @@
 package com.godchigam.godchigam.domain.groupbuying.service;
 
 import com.godchigam.godchigam.domain.groupbuying.dto.*;
+import com.godchigam.godchigam.domain.groupbuying.dto.requestDto.*;
 import com.godchigam.godchigam.domain.groupbuying.entity.*;
 import com.godchigam.godchigam.domain.groupbuying.repository.JoinPeopleRepository;
 import com.godchigam.godchigam.domain.groupbuying.repository.JoinStorageRepository;
 import com.godchigam.godchigam.domain.groupbuying.repository.RequestMessageRepository;
 import com.godchigam.godchigam.domain.groupbuying.repository.ProductRepository;
 import com.godchigam.godchigam.domain.groupbuying.repository.RequestRepository;
-import com.godchigam.godchigam.domain.recipesBookmark.dto.RecipeInfoResponseDto;
-import com.godchigam.godchigam.domain.refrigerator.dto.FoodInfoResponse;
-import com.godchigam.godchigam.domain.refrigerator.dto.RefrigeratorResponse;
-import com.godchigam.godchigam.domain.refrigerator.entity.Ingredient;
-import com.godchigam.godchigam.domain.refrigerator.entity.Refrigerator;
 import com.godchigam.godchigam.domain.user.entity.User;
 import com.godchigam.godchigam.domain.user.repository.UserRepository;
 import com.godchigam.godchigam.domain.userReport.repository.UserReportRepository;
@@ -19,16 +15,10 @@ import com.godchigam.godchigam.global.common.ErrorCode;
 import com.godchigam.godchigam.global.common.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.mapping.Join;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j

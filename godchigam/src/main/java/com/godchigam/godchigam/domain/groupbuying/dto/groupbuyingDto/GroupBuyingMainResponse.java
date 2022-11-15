@@ -1,4 +1,4 @@
-package com.godchigam.godchigam.domain.groupbuying.dto;
+package com.godchigam.godchigam.domain.groupbuying.dto.groupbuyingDto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 @Builder
-
 public class GroupBuyingMainResponse {
     private final Integer reportCount;
     private final String address;

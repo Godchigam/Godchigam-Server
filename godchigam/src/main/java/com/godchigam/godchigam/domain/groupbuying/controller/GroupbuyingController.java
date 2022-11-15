@@ -1,13 +1,11 @@
 package com.godchigam.godchigam.domain.groupbuying.controller;
 
-import com.godchigam.godchigam.domain.groupbuying.dto.CheckRequest;
-import com.godchigam.godchigam.domain.groupbuying.dto.GroupBuyingPostRequest;
+import com.godchigam.godchigam.domain.groupbuying.dto.groupbuyingDto.GroupBuyingPostRequest;
 import com.godchigam.godchigam.domain.groupbuying.dto.ProductInfo;
-import com.godchigam.godchigam.domain.groupbuying.dto.ProductResponse;
+import com.godchigam.godchigam.domain.groupbuying.dto.groupbuyingDto.ProductResponse;
 import com.godchigam.godchigam.domain.groupbuying.entity.Product;
 import com.godchigam.godchigam.domain.groupbuying.repository.ProductRepository;
 import com.godchigam.godchigam.domain.groupbuying.service.GroupbuyingService;
-import com.godchigam.godchigam.domain.groupbuying.service.RequestService;
 import com.godchigam.godchigam.global.common.CommonResponse;
 import com.godchigam.godchigam.global.common.ErrorCode;
 import com.godchigam.godchigam.global.jwt.JwtTokenProvider;

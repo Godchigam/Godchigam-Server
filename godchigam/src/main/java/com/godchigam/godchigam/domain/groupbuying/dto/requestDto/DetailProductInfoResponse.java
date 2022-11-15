@@ -1,5 +1,7 @@
-package com.godchigam.godchigam.domain.groupbuying.dto;
+package com.godchigam.godchigam.domain.groupbuying.dto.requestDto;
 
+import com.godchigam.godchigam.domain.groupbuying.dto.ProductInfo;
+import com.godchigam.godchigam.domain.groupbuying.dto.UserInfoResponse;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

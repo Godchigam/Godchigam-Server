@@ -1,8 +1,8 @@
 package com.godchigam.godchigam.domain.groupbuying.service;
 
-import com.godchigam.godchigam.domain.groupbuying.dto.GroupBuyingPostRequest;
+import com.godchigam.godchigam.domain.groupbuying.dto.groupbuyingDto.GroupBuyingPostRequest;
 import com.godchigam.godchigam.domain.groupbuying.dto.ProductInfo;
-import com.godchigam.godchigam.domain.groupbuying.dto.ProductResponse;
+import com.godchigam.godchigam.domain.groupbuying.dto.groupbuyingDto.ProductResponse;
 import com.godchigam.godchigam.domain.groupbuying.entity.JoinPeople;
 import com.godchigam.godchigam.domain.groupbuying.entity.JoinStorage;
 import com.godchigam.godchigam.domain.groupbuying.entity.Product;

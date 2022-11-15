@@ -1,22 +1,13 @@
 package com.godchigam.godchigam.domain.groupbuying.controller;
 
-import com.godchigam.godchigam.domain.groupbuying.dto.CheckRequest;
-import com.godchigam.godchigam.domain.groupbuying.dto.GroupBuyingPostRequest;
-import com.godchigam.godchigam.domain.groupbuying.dto.ProductInfo;
-import com.godchigam.godchigam.domain.groupbuying.dto.ProductResponse;
+import com.godchigam.godchigam.domain.groupbuying.dto.requestDto.CheckRequest;
 import com.godchigam.godchigam.domain.groupbuying.dto.requestDto.GroupBuyingJoinRequest;
-import com.godchigam.godchigam.domain.groupbuying.entity.Product;
 import com.godchigam.godchigam.domain.groupbuying.repository.ProductRepository;
 import com.godchigam.godchigam.domain.groupbuying.service.RequestService;
 import com.godchigam.godchigam.global.common.CommonResponse;
-import com.godchigam.godchigam.global.common.ErrorCode;
-import com.godchigam.godchigam.global.common.exception.BaseException;
 import com.godchigam.godchigam.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor

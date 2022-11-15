@@ -1,4 +1,4 @@
-package com.godchigam.godchigam.domain.groupbuying.dto;
+package com.godchigam.godchigam.domain.groupbuying.dto.groupbuyingDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
