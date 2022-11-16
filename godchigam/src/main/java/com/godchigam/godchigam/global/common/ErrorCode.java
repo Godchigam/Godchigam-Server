@@ -28,7 +28,7 @@ public enum ErrorCode {
     NULL_ADDRESS(false,400,"거주하는 동 정보가 없는 회원은 글을 작성할 수 없습니다."),
 
     //refrigerator
-    EMPTY_FOOD_ID(false,400,"존재하는 재료가 없습니다."),
+    EMPTY_FOOD_ID(false,400,"이미 삭제됐거나 존재하지 않는 음식입니다."),
     TOO_SMALL_AMOUNT(false,400,"재료 개수가 너무 적습니다."),
     TOO_MANY_AMOUNT(false,400,"재료 개수가 초과되었습니다."),
 
