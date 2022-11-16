@@ -32,10 +32,6 @@ public class RequestService {
     private final JoinPeopleRepository joinPeopleRepository;
     private final RequestMessageRepository requestMessageRepository;
 
-    private final ProductRepository productRepository;
-    private final UserReportRepository userReportRepository;
-
-
     public List<RequestMessageResponse> LookUpRequestStorage(String loginId) {
 
         Optional<RequestStorage> loginUserStorage = requestRepository.findByUser(loginId);
@@ -88,32 +84,49 @@ public class RequestService {
         return resultResponse;
     }
 
-    public List<UserInfoResponse> checkProductJoinPeople(String loginId, Long productId) {
+    public JoinnerResponse checkProductJoinPeople(String loginId, Long productId) {
 
         Optional<JoinStorage> joinStorage = joinStorageRepository.findByProduct(productId);
         if (joinStorage.isEmpty()) {
             throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
         }
 
+        User owner = joinStorage.get().getProduct().getWriter();
         Long joinStorageId = joinStorage.get().getJoinStorageIdx();
         List<JoinPeople> joinPeopleList = joinStorageRepository.findByJoinStorageIdx(joinStorageId);
 
-        List<UserInfoResponse> resultList = new ArrayList<>();
+        List<JoinPeopleResponse> resultList = new ArrayList<>();
+        Boolean isOwner = false;
+        if (loginId.equals(owner.getLoginId())) {
+            isOwner = true;
+        }
 
         joinPeopleList.forEach(joinPeople -> {
-            if (!(joinPeople.getJoinUserLoginId().equals(loginId)) && joinPeople.getJoinStatus().equals("참여중")) {
+            if (joinPeople.getJoinStatus().equals("참여중")) {
 
                 Optional<User> user = userRepository.findByLoginId(joinPeople.getJoinUserLoginId());
-                resultList.add(UserInfoResponse.builder()
+                UserInfoResponse infoUser = UserInfoResponse.builder()
                         .userId(user.get().getUserIdx())
                         .profileImageUrl(user.get().getProfileImageUrl())
                         .nickname(user.get().getNickname())
+                        .build();
+
+                Boolean isMe = false;
+                if (joinPeople.getJoinUserLoginId().equals(loginId)) {
+                    isMe = true;
+                }
+                resultList.add(JoinPeopleResponse.builder()
+                        .isMe(isMe)
+                        .userInfo(infoUser)
                         .build()
                 );
             }
         });
 
-        return resultList;
+        return JoinnerResponse.builder()
+                .isOwner(isOwner)
+                .joinPeople(resultList)
+                .build();
     }
 
     public DetailProductInfoResponse detailProductInfo(String loginId, Long productId) {
@@ -235,9 +248,6 @@ public class RequestService {
         return changeProductStatus;
     }
 
-    /**
-     * RequestMessage 추가 되도록 repo 로직 추가해야함.
-     */
     public JoinStatusResponse sendJoinRequest(String loginId, Long productId) {
 
         Optional<User> writer = userRepository.findByLoginId(loginId);
@@ -355,6 +365,11 @@ public class RequestService {
 
         if (selectedRequest.isEmpty()) {
             throw new BaseException(ErrorCode.EMPTY_REQUEST_ID);
+        }
+
+        String requestType = selectedRequest.get().getRequestType().substring(0,2);
+        if(!requestType.equals(checkRequest.getRequestType())){
+            throw new BaseException(ErrorCode.WRONG_REQUEST_TYPE);
         }
 
         //요청 보낸 사람의 상태값 바뀜.
