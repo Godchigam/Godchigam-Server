@@ -213,9 +213,6 @@ public class RequestService {
             throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
         }
 
-        if(!writer.get().getLoginId().equals(loginId)) {
-            throw new BaseException(ErrorCode.NOT_WRITER_ID);
-        }
         
         Optional<JoinStorage> joinStorage = joinStorageRepository.findByProduct(productId);
         if (joinStorage.isEmpty()) {
@@ -224,6 +221,11 @@ public class RequestService {
 
         ChangeProductStatus changeProductStatus = new ChangeProductStatus();
         Product product = joinStorage.get().getProduct();
+
+        if(!product.getWriter().getLoginId().equals(loginId)) {
+            throw new BaseException(ErrorCode.NOT_WRITER_ID);
+        }
+        
         if (product.getStatus().equals("종료")) {
 
             Long joinStorageId = joinStorage.get().getJoinStorageIdx();
