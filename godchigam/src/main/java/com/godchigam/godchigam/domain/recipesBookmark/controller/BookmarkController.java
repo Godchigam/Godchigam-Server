@@ -8,6 +8,7 @@ import com.godchigam.godchigam.domain.recipesBookmark.service.BookmarkService;
 import com.godchigam.godchigam.domain.recipesWish.repository.WishRepository;
 import com.godchigam.godchigam.global.common.CommonResponse;
 import com.godchigam.godchigam.global.common.ErrorCode;
+import com.godchigam.godchigam.global.common.exception.BaseException;
 import com.godchigam.godchigam.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class BookmarkController {
        String userId = jwtTokenProvider.getUserLoginId(accessToken);
         Optional<Recipes> recipes = recipesRepository.findById(recipeId);
         if(recipes.isEmpty()){
-            return CommonResponse.error(ErrorCode.RECIPES_EMPTY.getStatus(), ErrorCode.RECIPES_EMPTY.getMessage());
+            throw new BaseException(ErrorCode.RECIPES_EMPTY);
         }
        return CommonResponse.success(bookmarkService.checkBookmark(userId,recipeId),"레시피 북마크 및 취소 성공");
     }

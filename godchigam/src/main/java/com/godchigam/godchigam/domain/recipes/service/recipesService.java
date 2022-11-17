@@ -60,6 +60,7 @@ public class recipesService {
                 }
                 else{
                     recipes = readCategoryTime(keyword);
+
                 }
             }
 
@@ -208,7 +209,7 @@ public class recipesService {
         newList.addAll(recipesRepository.findByCookingTimeStartsWith("20분 이내"));
         newList.addAll(recipesRepository.findByCookingTimeStartsWith("30분 이내"));
         newList.addAll(recipesRepository.findByCookingTimeStartsWith("60분 이내"));
-
+        log.info(String.valueOf(newList));
         return newList;
     }
 
@@ -216,12 +217,12 @@ public class recipesService {
     @Transactional
     public List<Recipes> readCategoryTime(String keyword){
         List<Recipes> newList = new ArrayList<>();
-        newList.addAll(recipesRepository.findByCookingTimeContainingAndCategoryContaining("5분 이내", keyword));
-        newList.addAll(recipesRepository.findByCookingTimeContainingAndCategoryContaining("10분 이내", keyword));
-        newList.addAll(recipesRepository.findByCookingTimeContainingAndCategoryContaining("15분 이내", keyword));
-        newList.addAll(recipesRepository.findByCookingTimeContainingAndCategoryContaining("20분 이내", keyword));
-        newList.addAll(recipesRepository.findByCookingTimeContainingAndCategoryContaining("30분 이내", keyword));
-        newList.addAll(recipesRepository.findByCookingTimeContainingAndCategoryContaining("60분 이내", keyword));
+        newList.addAll(recipesRepository.findByCategoryContainingAndCookingTimeStartingWith(keyword, "5분 이내"));
+        newList.addAll(recipesRepository.findByCategoryContainingAndCookingTimeStartingWith(keyword, "10분 이내"));
+        newList.addAll(recipesRepository.findByCategoryContainingAndCookingTimeStartingWith(keyword, "15분 이내"));
+        newList.addAll(recipesRepository.findByCategoryContainingAndCookingTimeStartingWith(keyword, "20분 이내"));
+        newList.addAll(recipesRepository.findByCategoryContainingAndCookingTimeStartingWith(keyword, "30분 이내"));
+        newList.addAll(recipesRepository.findByCategoryContainingAndCookingTimeStartingWith(keyword, "60분 이내"));
 
         return newList;
     }
