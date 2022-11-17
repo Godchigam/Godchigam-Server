@@ -31,6 +31,7 @@ public class RequestService {
     private final UserRepository userRepository;
     private final JoinPeopleRepository joinPeopleRepository;
     private final RequestMessageRepository requestMessageRepository;
+    private final ProductRepository productRepository;
 
     public List<RequestMessageResponse> LookUpRequestStorage(String loginId) {
 
@@ -212,6 +213,10 @@ public class RequestService {
             throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
         }
 
+        if(!writer.get().getLoginId().equals(loginId)) {
+            throw new BaseException(ErrorCode.NOT_WRITER_ID);
+        }
+        
         Optional<JoinStorage> joinStorage = joinStorageRepository.findByProduct(productId);
         if (joinStorage.isEmpty()) {
             throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
@@ -238,13 +243,18 @@ public class RequestService {
 
             if (product.getGoalPeopleCount().equals(joinnerList.size())) {
                 changeProductStatus.setPurchaseStatus("모집완료");
+                product.setStatus("모집완료");
             } else {
                 changeProductStatus.setPurchaseStatus("모집중");
+                product.setStatus("모집중");
             }
 
         } else {
             changeProductStatus.setPurchaseStatus("종료");
+            product.setStatus("종료");
         }
+
+        productRepository.save(product);
         return changeProductStatus;
     }
 

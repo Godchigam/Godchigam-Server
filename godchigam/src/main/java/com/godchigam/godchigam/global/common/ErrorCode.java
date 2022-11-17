@@ -41,6 +41,8 @@ public enum ErrorCode {
     EMPTY_REQUEST_ID(false,400,"존재하지 않는 요청입니다."),
     TOO_LONG_PRODUCT_NAME(false, 400, "최대 16자 이내로 입력해주세요."),
     WRONG_REQUEST_TYPE(false,400,"잘못된 요청 타입입니다."),
+    NOT_WRITER_ID(false,400,"내가 작성한 글만 상태를 변경할 수 있어요."),
+
     /**
      * 500 : Server 오류
      */
