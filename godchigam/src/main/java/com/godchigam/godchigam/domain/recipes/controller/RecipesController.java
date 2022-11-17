@@ -35,10 +35,8 @@ public class RecipesController {
         if (theme == null || filter == null) {
             throw new BaseException(ErrorCode.EMPTY_THEME_AND_FILTER);
         }
-
         else{
-
-           return CommonResponse.success(recipesService.searchRecipes(theme, filter, userId),"성공");
+           return CommonResponse.success(recipesService.searchRecipes(theme, filter, userId),"레시피 조회 성공");
         }
     }
 
@@ -49,7 +47,7 @@ public class RecipesController {
         Optional<Recipes> recipes = recipesRepository.findById(recipeId);
         String userId = jwtTokenProvider.getUserLoginId(accessToken);
         if(recipes.isEmpty()){
-            return CommonResponse.error(ErrorCode.RECIPES_EMPTY.getStatus(), ErrorCode.RECIPES_EMPTY.getMessage());
+            throw new BaseException(ErrorCode.RECIPES_EMPTY);
         }
         return CommonResponse.success(recipesService.readRecipe(recipeId, userId),"레시피 상세 조회 성공");
     }

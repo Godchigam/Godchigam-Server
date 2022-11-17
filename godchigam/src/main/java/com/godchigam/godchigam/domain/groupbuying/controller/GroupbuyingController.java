@@ -8,13 +8,15 @@ import com.godchigam.godchigam.domain.groupbuying.repository.ProductRepository;
 import com.godchigam.godchigam.domain.groupbuying.service.GroupbuyingService;
 import com.godchigam.godchigam.global.common.CommonResponse;
 import com.godchigam.godchigam.global.common.ErrorCode;
+import com.godchigam.godchigam.global.common.exception.BaseException;
 import com.godchigam.godchigam.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/groupbuying")
@@ -30,10 +32,12 @@ public class GroupbuyingController {
         String loginId = jwtTokenProvider.getUserLoginId(accessToken);
         Product product = groupbuyingService.createProduct(request, loginId);
         if (product.getWriter().getAddress() == null || product.getWriter().getAddress().isEmpty()) {
-            return CommonResponse.error(ErrorCode.NULL_ADDRESS.getStatus(), ErrorCode.NULL_ADDRESS.getMessage());
+            log.info("에러");
+            throw new BaseException(ErrorCode.NULL_ADDRESS);
         }
         if (product.getProductName().length() > 16) {
-            return CommonResponse.error(ErrorCode.TOO_LONG_PRODUCT_NAME.getStatus(), ErrorCode.TOO_LONG_PRODUCT_NAME.getMessage());
+            log.info("에러");
+            throw new BaseException(ErrorCode.TOO_LONG_PRODUCT_NAME);
         }
         return CommonResponse.success(null, "같이 구매 등록 성공");
     }
@@ -44,7 +48,8 @@ public class GroupbuyingController {
         String loginId = jwtTokenProvider.getUserLoginId(accessToken);
         Optional<Product> optionalProduct = productRepository.findById(productId);
         if (!optionalProduct.isPresent()) {
-            return CommonResponse.error(ErrorCode.EMPTY_PRODUCT_ID.getStatus(), ErrorCode.EMPTY_PRODUCT_ID.getMessage());
+            log.info("에러");
+            throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
         }
 
         return CommonResponse.success(groupbuyingService.updateProduct(request, productId), "같이 구매 상품 정보 수정 성공");
@@ -55,7 +60,8 @@ public class GroupbuyingController {
         String loginId = jwtTokenProvider.getUserLoginId(accessToken);
         Optional<Product> optionalProduct = productRepository.findById(productId);
         if (!optionalProduct.isPresent()) {
-            return CommonResponse.error(ErrorCode.EMPTY_PRODUCT_ID.getStatus(), ErrorCode.EMPTY_PRODUCT_ID.getMessage());
+            log.info("에러");
+            throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
         }
 
         return CommonResponse.success(groupbuyingService.deleteProduct(productId, loginId), "같이 구매 상품 삭제 성공");

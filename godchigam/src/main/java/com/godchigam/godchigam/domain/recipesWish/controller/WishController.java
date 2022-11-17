@@ -6,6 +6,7 @@ import com.godchigam.godchigam.domain.recipesWish.dto.WishResponse;
 import com.godchigam.godchigam.domain.recipesWish.service.WishService;
 import com.godchigam.godchigam.global.common.CommonResponse;
 import com.godchigam.godchigam.global.common.ErrorCode;
+import com.godchigam.godchigam.global.common.exception.BaseException;
 import com.godchigam.godchigam.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class WishController {
         String userId = jwtTokenProvider.getUserLoginId(accessToken);
         Optional<Recipes> recipes = recipesRepository.findById(recipeId);
         if(recipes.isEmpty()){
-            return CommonResponse.error(ErrorCode.RECIPES_EMPTY.getStatus(), ErrorCode.RECIPES_EMPTY.getMessage());
+            throw new BaseException(ErrorCode.RECIPES_EMPTY);
         }
         return CommonResponse.success(wishService.checkWish(userId,recipeId),"레시피 좋아요 및 취소 성공");
     }
