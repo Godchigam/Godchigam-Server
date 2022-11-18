@@ -53,7 +53,6 @@ public class recipesService {
                 log.info(keyword);
                 if(filter==0){
                     recipes = recipesRepository.findByCategoryContainingOrderByLikeCountDesc(keyword);
-                    log.info(String.valueOf(recipes.size()));
                 }
                 else if(filter==1){
                     recipes = readCategoryDifficulty(keyword);
