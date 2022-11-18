@@ -59,16 +59,27 @@ public class WishService {
 
             log.info("like 이미 있음");
             Wish updateWish = wish.get();
+            Recipes updateRecipes = recipes.get();
 
-            if(updateWish.getStatus().equals(Boolean.FALSE)){
-                updateWish.setStatus(Boolean.TRUE);
-                updateWish.getRecipes().setLikeCount(updateWish.getRecipes().getCountOfLikes());
-                wishRepository.save(updateWish);
-            }else{
+            //if(updateWish.getStatus().equals(Boolean.FALSE)){//좋아요취소->좋아요
+           //     updateWish.setStatus(Boolean.TRUE);
+            //    updateWish.getRecipes().setLikeCount(updateWish.getRecipes().getCountOfLikes());
+             //   wishRepository.save(updateWish);
+            //}
+            if(updateWish.getStatus().equals(Boolean.TRUE)){//좋아요->좋아요 취소
                 updateWish.setStatus(Boolean.FALSE);
-                wishRepository.delete(updateWish);
+                wishRepository.deleteById(updateWish.getWishIdx());
+                if(updateWish.getStatus().equals("false")){
+                    wishRepository.deleteAll();
+                }
+                log.info("좋아요 삭제");
                 updateWish.getRecipes().setLikeCount(updateWish.getRecipes().getCountOfLikes());
-                wishRepository.save(updateWish);
+                log.info(String.valueOf(updateWish.getRecipes().getCountOfLikes()));
+                log.info(String.valueOf(updateRecipes.getLikeCount()));
+                log.info("카운트 다시 반영");
+               // wishRepository.save(updateWish);
+                recipesRepository.save(updateRecipes);
+                log.info("저장");
             }
             return WishResponse.builder()
                     .isLiked(updateWish.getStatus())
