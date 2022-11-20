@@ -103,7 +103,7 @@ public class RequestService {
         }
 
         joinPeopleList.forEach(joinPeople -> {
-            if (joinPeople.getJoinStatus().equals("참여중")) {
+            if (joinPeople.getJoinStatus().equals("참여중")||joinPeople.getJoinStatus().equals("탈퇴대기")) {
 
                 Optional<User> user = userRepository.findByLoginId(joinPeople.getJoinUserLoginId());
                 UserInfoResponse infoUser = UserInfoResponse.builder()
@@ -143,11 +143,6 @@ public class RequestService {
             isOwner = true;
         }
 
-        Boolean isFull = true;
-        if (product.getStatus().equals("모집중")) {
-            isFull = false;
-        }
-
         Long joinStorageId = joinStorage.get().getJoinStorageIdx();
         List<JoinPeople> joinPeopleList = joinStorageRepository.findByJoinStorageIdx(joinStorageId);
 
@@ -158,7 +153,7 @@ public class RequestService {
             if (joinPeople.getJoinUserLoginId().equals(loginId)) {
                 checkMyStatus.add(joinPeople.getJoinStatus());
             }
-            if (joinPeople.getJoinStatus().equals("참여중")) {
+            if (joinPeople.getJoinStatus().equals("참여중")||joinPeople.getJoinStatus().equals("탈퇴대기")) {
                 Optional<User> addUser = userRepository.findByLoginId(joinPeople.getJoinUserLoginId());
                 joinnerList.add(UserInfoResponse.builder()
                         .userId(addUser.get().getUserIdx())
@@ -174,6 +169,11 @@ public class RequestService {
             myJoinType = "참여안함";
         } else {
             myJoinType = checkMyStatus.get(0);
+        }
+
+        Boolean isFull = false;
+        if (product.getGoalPeopleCount()==joinnerList.size()) {
+            isFull = true;
         }
 
         ProductInfo productInfo = ProductInfo.builder()
