@@ -225,7 +225,7 @@ public class RequestService {
         if(!product.getWriter().getLoginId().equals(loginId)) {
             throw new BaseException(ErrorCode.NOT_WRITER_ID);
         }
-        
+
         if (product.getStatus().equals("종료")) {
 
             Long joinStorageId = joinStorage.get().getJoinStorageIdx();
@@ -270,6 +270,10 @@ public class RequestService {
         Optional<JoinStorage> joinStorage = joinStorageRepository.findByProduct(productId);
         if (joinStorage.isEmpty()) {
             throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
+        }
+
+        if(loginId.equals(joinStorage.get().getProduct().getWriter().getLoginId())) {
+            throw new BaseException(ErrorCode.OWNER_CANT_REQUEST);
         }
 
         Long joinStorageId = joinStorage.get().getJoinStorageIdx();
@@ -360,7 +364,7 @@ public class RequestService {
 
         //기존 요청 삭제하기
         Optional<RequestStorage> requestStorage = requestRepository.findByUser(owner.getLoginId());
-        Optional<RequestMessage> pastRequest = requestRepository.findByRequestStorageIdxAndSenderLoginId(requestStorage.get().getRequestStorageIdx(), loginId);
+        Optional<RequestMessage> pastRequest = requestRepository.findByRequestStorageIdxAndSenderLoginIdAndProductIdx(requestStorage.get().getRequestStorageIdx(), loginId, productId);
         log.info("리퀘스트 존재"+pastRequest.isEmpty());
         requestMessageRepository.delete(pastRequest.get());
 
