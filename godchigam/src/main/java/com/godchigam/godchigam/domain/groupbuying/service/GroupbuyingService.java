@@ -112,7 +112,6 @@ public class GroupbuyingService {
         }
     }
 
-
     //같이구매 메인조회
 
     public ProductResponse groupBuyingMain(String loginId) {
@@ -132,63 +131,75 @@ public class GroupbuyingService {
         } else {
             loginUserProductList.forEach(product -> {
                 Long productId = product.getProductIdx();
+
                 //List 에서 Optional로 바꿈
                 Optional<JoinStorage> optionalJoinStorage = joinStorageRepository.findByProduct(productId);
                 Long storageId = null;
-                Integer cntOfPeople = null;
+                Integer cntOfPeople = 0;
                 if (!optionalJoinStorage.isEmpty()) {
                     storageId = optionalJoinStorage.get().getJoinStorageIdx();
                 }
 
                 List<JoinPeople> optionalJoinPeople = joinPeopleRepository.findByJoinStorage(storageId);
+                List<JoinPeople> test = new ArrayList<>();
                 if (!optionalJoinPeople.isEmpty()) {
                     cntOfPeople = optionalJoinPeople.size();
+
+                    optionalJoinPeople.forEach(joinPeople -> {
+                        if(joinPeople.getJoinStatus().equals("참여중")||joinPeople.getJoinStatus().equals("탈퇴대기")){
+                            test.add(joinPeople);
+
+                        }
+
+                    });
+                    if (product.getCategory().equals("식품")) {
+                        food.add(
+                                ProductInfo.builder()
+                                        .productId(product.getProductIdx())
+                                        .productImageUrl(product.getProductImageUrl())
+                                        .purchaseStatus(product.getStatus())
+                                        .productName(product.getProductName())
+                                        .productPrice(product.getProductPrice())
+                                        .dividedPrice(product.getProductPrice() / product.getGoalPeopleCount())
+                                        .goalPeopleCount(product.getGoalPeopleCount())
+                                        .joinPeopleCount(test.size())
+                                        .dealingMethod(product.getDealingMethod())
+                                        .build()
+                        );
+
+                    } else if (product.getCategory().equals("생필품")) {
+                        living.add(
+                                ProductInfo.builder()
+                                        .productId(product.getProductIdx())
+                                        .productImageUrl(product.getProductImageUrl())
+                                        .purchaseStatus(product.getStatus())
+                                        .productName(product.getProductName())
+                                        .productPrice(product.getProductPrice())
+                                        .dividedPrice(product.getProductPrice() / product.getGoalPeopleCount())
+                                        .goalPeopleCount(product.getGoalPeopleCount())
+                                        .joinPeopleCount(test.size())
+                                        .dealingMethod(product.getDealingMethod())
+                                        .build()
+                        );
+                    } else if (product.getCategory().equals("그 외")) {
+                        etc.add(
+                                ProductInfo.builder()
+                                        .productId(product.getProductIdx())
+                                        .productImageUrl(product.getProductImageUrl())
+                                        .purchaseStatus(product.getStatus())
+                                        .productName(product.getProductName())
+                                        .productPrice(product.getProductPrice())
+                                        .dividedPrice(product.getProductPrice() / product.getGoalPeopleCount())
+                                        .goalPeopleCount(product.getGoalPeopleCount())
+                                        .joinPeopleCount(test.size())
+                                        .dealingMethod(product.getDealingMethod())
+                                        .build()
+                        );
+
+                    }
                 }
 
-                if (product.getCategory().equals("식품")) {
-                    food.add(
-                            ProductInfo.builder()
-                                    .productId(product.getProductIdx())
-                                    .productImageUrl(product.getProductImageUrl())
-                                    .purchaseStatus(product.getStatus())
-                                    .productName(product.getProductName())
-                                    .productPrice(product.getProductPrice())
-                                    .dividedPrice(product.getProductPrice() / product.getGoalPeopleCount())
-                                    .goalPeopleCount(product.getGoalPeopleCount())
-                                    .joinPeopleCount(cntOfPeople)
-                                    .dealingMethod(product.getDealingMethod())
-                                    .build()
-                    );
 
-                } else if (product.getCategory().equals("생필품")) {
-                    living.add(
-                            ProductInfo.builder()
-                                    .productId(product.getProductIdx())
-                                    .productImageUrl(product.getProductImageUrl())
-                                    .purchaseStatus(product.getStatus())
-                                    .productName(product.getProductName())
-                                    .productPrice(product.getProductPrice())
-                                    .dividedPrice(product.getProductPrice() / product.getGoalPeopleCount())
-                                    .goalPeopleCount(product.getGoalPeopleCount())
-                                    .joinPeopleCount(cntOfPeople)
-                                    .dealingMethod(product.getDealingMethod())
-                                    .build()
-                    );
-                } else if (product.getCategory().equals("그 외")) {
-                    etc.add(
-                            ProductInfo.builder()
-                                    .productId(product.getProductIdx())
-                                    .productImageUrl(product.getProductImageUrl())
-                                    .purchaseStatus(product.getStatus())
-                                    .productName(product.getProductName())
-                                    .productPrice(product.getProductPrice())
-                                    .dividedPrice(product.getProductPrice() / product.getGoalPeopleCount())
-                                    .goalPeopleCount(product.getGoalPeopleCount())
-                                    .joinPeopleCount(cntOfPeople)
-                                    .dealingMethod(product.getDealingMethod())
-                                    .build()
-                    );
-                }
             });
 
             return ProductResponse.builder()
@@ -207,6 +218,7 @@ public class GroupbuyingService {
         List<ProductInfo> newList = new ArrayList<>();
         List<Product> loginUserProductList = null;
         List<JoinPeople> loginUserJoinPeopleList = null;
+        List<JoinPeople> loginUserJoinPeopleList2 = null;
         List<JoinStorage> loginUserJoinStorageList = null;
 
         if (type.equals("register")) {
@@ -214,6 +226,7 @@ public class GroupbuyingService {
             if (!user.isPresent()) {
                 throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
             }
+
             loginUserProductList.forEach(product -> {
                 Long productId = product.getProductIdx();
                 //List 에서 Optional로 바꿈
@@ -225,21 +238,32 @@ public class GroupbuyingService {
                 }
 
                 List<JoinPeople> optionalJoinPeople = joinPeopleRepository.findByJoinStorage(storageId);
+                List<JoinPeople> test2 = new ArrayList<>();
                 if (!optionalJoinPeople.isEmpty()) {
-                    cntOfPeople = optionalJoinPeople.size();
+
+                    optionalJoinPeople.forEach(joinPeople -> {
+                        if (joinPeople.getJoinStatus().equals("참여중") || joinPeople.getJoinStatus().equals("탈퇴대기")) {
+                            test2.add(joinPeople);
+
+                        }
+
+                    });
+                    newList.add(ProductInfo.builder()
+                            .productId(product.getProductIdx())
+                            .productImageUrl(product.getProductImageUrl())
+                            .purchaseStatus(product.getStatus())
+                            .productName(product.getProductName())
+                            .productPrice(product.getProductPrice())
+                            .dividedPrice(product.getProductPrice() / product.getGoalPeopleCount())
+                            .goalPeopleCount(product.getGoalPeopleCount())
+                            .joinPeopleCount(test2.size())
+                            .dealingMethod(product.getDealingMethod())
+                            .build());
+
+
+
                 }
 
-                newList.add(ProductInfo.builder()
-                        .productId(product.getProductIdx())
-                        .productImageUrl(product.getProductImageUrl())
-                        .purchaseStatus(product.getStatus())
-                        .productName(product.getProductName())
-                        .productPrice(product.getProductPrice())
-                        .dividedPrice(product.getProductPrice() / product.getGoalPeopleCount())
-                        .goalPeopleCount(product.getGoalPeopleCount())
-                        .joinPeopleCount(cntOfPeople)
-                        .dealingMethod(product.getDealingMethod())
-                        .build());
 
             });
 
@@ -248,7 +272,8 @@ public class GroupbuyingService {
             if (!user.isPresent()) {
                 throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
             }
-            loginUserJoinPeopleList = joinPeopleRepository.findByJoinStatusAndJoinUserLoginId(loginId);
+            String loginIdx = String.valueOf(userRepository.findByLoginId(loginId).get().getUserIdx());
+            loginUserJoinPeopleList = joinPeopleRepository.findByJoinStatusAndJoinUserLoginId(loginIdx);
             loginUserJoinPeopleList.forEach(people -> {
                         Long storageId1 = null;
                         Integer cntOfPeople1 = null;
