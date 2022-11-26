@@ -144,14 +144,11 @@ public class MessageService {
         List<Message> messages2 = messageRepository.findByRoom(userIdx);
 
         List<MessageResponse> newList = new ArrayList<>();
-        List<MessageResponse> newList2 = new ArrayList<>();
-        List<MessageResponse> newList3 = new ArrayList<>();
 
-        log.info("여기엿ㅇ:"+messages2.size());
-        log.info("여기영"+messages.size());
+
         if(!messages.isEmpty()||!messages2.isEmpty()){
       //  if(messageRepository.findByOwner(userIdx).isEmpty()||(!messageRepository.findByOwner(userIdx).isEmpty()&&!messageRepository.findByRoom(userIdx).isEmpty())){
-            log.info("띄워줘야하므로");
+
             messages2.forEach(room->{
                 Long friendId = room.getOwner();
                 String friendImageUrl = userRepository.findByUserIdx(friendId).get().getProfileImageUrl();
@@ -179,7 +176,7 @@ public class MessageService {
    //     else {
             messages.forEach(room -> {
                 if (room.getSender().getUserIdx().equals(userIdx) || room.getReceiver().equals(userIdx)) {
-                    log.info("여기");
+
                     Long friendId = room.getRoom();
                     String friendImageUrl = userRepository.findByUserIdx(friendId).get().getProfileImageUrl();
                     String friendNickName = userRepository.findByUserIdx(friendId).get().getNickname();
@@ -225,8 +222,6 @@ public class MessageService {
         if(!messages.isEmpty()||!messages2.isEmpty()){
             messages2.forEach(message -> {
                 Boolean isReceived = Boolean.FALSE;
-                log.info("받는사람: "+message.getReceiver());
-                log.info("룸 오너: "+message.getOwner());
                 if (!message.getReceiver().equals(message.getOwner())) {
                     isReceived = Boolean.TRUE;
                 }
