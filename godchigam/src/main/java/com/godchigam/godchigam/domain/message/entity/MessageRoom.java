@@ -26,8 +26,14 @@ public class MessageRoom {
     @Column(nullable = false)
     private LocalDate dateInfo;
 
-  //  @Column(nullable = false)
- //   private Boolean isReceived;
+    @Column(nullable = false)
+    private Long senderIdx;
+
+    @Column(nullable = false)
+    private Long receiverIdx;
+
+    @Column(nullable = false)
+    private Long owner;
 
 
 

@@ -41,6 +41,9 @@ public enum ErrorCode {
     EMPTY_REQUEST_ID(false,400,"존재하지 않는 요청입니다."),
     TOO_LONG_PRODUCT_NAME(false, 400, "최대 16자 이내로 입력해주세요."),
 
+    //message
+    WRONG_MESSAGE_USER_ID(false,400,"자기 자신에게는 쪽지를 보낼 수 없습니다."),
+
     /**
      * 500 : Server 오류
      */

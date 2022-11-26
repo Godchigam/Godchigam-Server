@@ -40,6 +40,10 @@ public class MessageController {
                 throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
                 //에러처리
             }
+            Long userIdx = userRepository.findByLoginId(userId).get().getUserIdx();
+            if(id.equals(userIdx)){
+                throw new BaseException(ErrorCode.WRONG_MESSAGE_USER_ID);
+            }
         });
         return CommonResponse.success(messageService.createMessage(request,userId),"쪽지 전송 성공");
     }
@@ -55,6 +59,10 @@ public class MessageController {
         String userId = jwtTokenProvider.getUserLoginId(accessToken);
         if(userRepository.findByUserIdx(friendId).isEmpty()){
             throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
+        }
+        Long userIdx = userRepository.findByLoginId(userId).get().getUserIdx();
+        if(friendId.equals(userIdx)){
+            throw new BaseException(ErrorCode.WRONG_MESSAGE_USER_ID); //고치기 에러메시지
         }
         return CommonResponse.success(messageService.readMessage(userId, friendId),"타 유저와의 쪽지함 조회 성공");
 

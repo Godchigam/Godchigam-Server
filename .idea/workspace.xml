@@ -5,10 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bfbd921a-ec13-4ecd-a792-a1165e0be6f5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/93856239-34b3-4bf5-a5a7-c1feb397d277.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/93856239-34b3-4bf5-a5a7-c1feb397d277.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/repository/JoinPeopleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/repository/JoinPeopleRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/service/GroupbuyingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/service/GroupbuyingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/message/controller/MessageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/message/controller/MessageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/message/entity/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/message/entity/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/message/entity/MessageRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/message/entity/MessageRoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/message/repository/MessageRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/message/repository/MessageRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/message/service/MessageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/message/service/MessageService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/global/common/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/global/common/ErrorCode.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,7 +143,7 @@
       <workItem from="1668328083369" duration="794000" />
       <workItem from="1668745211371" duration="2802000" />
       <workItem from="1668776973869" duration="830000" />
-      <workItem from="1669210063265" duration="16908000" />
+      <workItem from="1669210063265" duration="36725000" />
     </task>
     <servers />
   </component>

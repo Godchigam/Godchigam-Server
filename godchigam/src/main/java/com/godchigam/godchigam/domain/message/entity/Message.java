@@ -42,6 +42,10 @@ public class Message {
     @Column(nullable = false)
     private Long room;
 
+    @Column(nullable = false)
+    private Long owner;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "message_room")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
