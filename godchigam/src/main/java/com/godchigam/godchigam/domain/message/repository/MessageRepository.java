@@ -30,13 +30,26 @@ public interface MessageRepository extends JpaRepository<Message,Long> {
     @Query("select b from Message b where b.sender.userIdx= :userId and b.receiver=:otherId order by b.noteId desc" )
     List<Message> findByReceiverAndSender1(@Param("userId")Long userId, @Param("otherId")Long otherId);
 
-    @Query("select distinct b from Message b group by b.room")
-    List<Message> findByRoom();
+    @Query("select distinct b from Message b where b.owner=:userIdx group by b.room ")
+    List<Message> findByRoomAndOwner(@Param("userIdx") Long userIdx);
 
-    List<Message> findByRoom(@Param("friendId") Long friendId);
+    @Query("select b from Message b where b.owner=:userIdx and b.room= :friendId")
+    List<Message> findByRoomAndOwner2(@Param("userIdx") Long userIdx, @Param("friendId") Long friendId);
+
+    @Query("select b from Message b where b.room=:userIdx and b.owner= :friendId")
+    List<Message> findByRoom3(@Param("userIdx") Long userIdx,@Param("friendId") Long friendId);
 
     //특정 친구와 나눈 쪽지 중 제일 최근 쪽지
-    @Query("select b from Message b where b.room= :friendId order by b.noteId desc")
-    List<Message> findByRoom1(@Param("friendId") Long friendId);
+    @Query("select b from Message b where b.owner=:userIdx and b.room= :friendId order by b.noteId desc")
+    List<Message> findByRoom1(@Param("userIdx") Long userIdx, @Param("friendId") Long friendId);
+
+    @Query("select b from Message b where b.owner=:userIdx")
+    List<Message> findByOwner(@Param("userIdx") Long userIdx);
+
+    @Query("select b from Message b where b.room=:userIdx group by b.owner")
+    List<Message> findByRoom(@Param("userIdx") Long userIdx);
+
+    @Query("select b from Message b where b.room=:userIdx and b.owner= :friendId order by b.noteId desc")
+    List<Message> findByRoom2(@Param("userIdx") Long userIdx,@Param("friendId") Long friendId);
 
 }
