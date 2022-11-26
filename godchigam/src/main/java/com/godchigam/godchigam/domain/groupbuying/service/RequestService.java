@@ -405,6 +405,24 @@ public class RequestService {
             }
         });
 
+        /*
+        이때 join People 확인해서 목표인원수와 비교 후 상태 값 조정하기
+         */
+        Integer goalPeopleNumber = currentJoinStorage.get().getProduct().getGoalPeopleCount();
+        List<User> joinnerList = new ArrayList<>(); //실제 참여중인 애들만 뽑기
+        currentJoinPeople.forEach(joinPeople -> {
+            if (joinPeople.getJoinStatus().equals("참여중")) {
+                Optional<User> addUser = userRepository.findByLoginId(joinPeople.getJoinUserLoginId());
+                joinnerList.add(addUser.get());
+            }
+        });
+
+        if (goalPeopleNumber.equals(joinnerList.size())) {
+            currentJoinStorage.get().getProduct().setStatus("모집완료");
+        } else {
+            currentJoinStorage.get().getProduct().setStatus("모집중");
+        }
+
         //요청함에서 요청 삭제됨
         requestMessageRepository.delete(selectedRequest.get());
     }
