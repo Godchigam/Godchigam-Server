@@ -31,10 +31,7 @@ public class RequestService {
     private final UserRepository userRepository;
     private final JoinPeopleRepository joinPeopleRepository;
     private final RequestMessageRepository requestMessageRepository;
-
     private final ProductRepository productRepository;
-    private final UserReportRepository userReportRepository;
-
 
     public List<RequestMessageResponse> LookUpRequestStorage(String loginId) {
 
@@ -88,32 +85,49 @@ public class RequestService {
         return resultResponse;
     }
 
-    public List<UserInfoResponse> checkProductJoinPeople(String loginId, Long productId) {
+    public JoinnerResponse checkProductJoinPeople(String loginId, Long productId) {
 
         Optional<JoinStorage> joinStorage = joinStorageRepository.findByProduct(productId);
         if (joinStorage.isEmpty()) {
             throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
         }
 
+        User owner = joinStorage.get().getProduct().getWriter();
         Long joinStorageId = joinStorage.get().getJoinStorageIdx();
         List<JoinPeople> joinPeopleList = joinStorageRepository.findByJoinStorageIdx(joinStorageId);
 
-        List<UserInfoResponse> resultList = new ArrayList<>();
+        List<JoinPeopleResponse> resultList = new ArrayList<>();
+        Boolean isOwner = false;
+        if (loginId.equals(owner.getLoginId())) {
+            isOwner = true;
+        }
 
         joinPeopleList.forEach(joinPeople -> {
-            if (!(joinPeople.getJoinUserLoginId().equals(loginId)) && joinPeople.getJoinStatus().equals("참여중")) {
+            if (joinPeople.getJoinStatus().equals("참여중")||joinPeople.getJoinStatus().equals("탈퇴대기")) {
 
                 Optional<User> user = userRepository.findByLoginId(joinPeople.getJoinUserLoginId());
-                resultList.add(UserInfoResponse.builder()
+                UserInfoResponse infoUser = UserInfoResponse.builder()
                         .userId(user.get().getUserIdx())
                         .profileImageUrl(user.get().getProfileImageUrl())
                         .nickname(user.get().getNickname())
+                        .build();
+
+                Boolean isMe = false;
+                if (joinPeople.getJoinUserLoginId().equals(loginId)) {
+                    isMe = true;
+                }
+                resultList.add(JoinPeopleResponse.builder()
+                        .isMe(isMe)
+                        .userInfo(infoUser)
                         .build()
                 );
             }
         });
 
-        return resultList;
+        return JoinnerResponse.builder()
+                .isOwner(isOwner)
+                .joinPeople(resultList)
+                .build();
     }
 
     public DetailProductInfoResponse detailProductInfo(String loginId, Long productId) {
@@ -129,11 +143,6 @@ public class RequestService {
             isOwner = true;
         }
 
-        Boolean isFull = true;
-        if (product.getStatus().equals("모집중")) {
-            isFull = false;
-        }
-
         Long joinStorageId = joinStorage.get().getJoinStorageIdx();
         List<JoinPeople> joinPeopleList = joinStorageRepository.findByJoinStorageIdx(joinStorageId);
 
@@ -144,7 +153,7 @@ public class RequestService {
             if (joinPeople.getJoinUserLoginId().equals(loginId)) {
                 checkMyStatus.add(joinPeople.getJoinStatus());
             }
-            if (joinPeople.getJoinStatus().equals("참여중")) {
+            if (joinPeople.getJoinStatus().equals("참여중")||joinPeople.getJoinStatus().equals("탈퇴대기")) {
                 Optional<User> addUser = userRepository.findByLoginId(joinPeople.getJoinUserLoginId());
                 joinnerList.add(UserInfoResponse.builder()
                         .userId(addUser.get().getUserIdx())
@@ -160,6 +169,11 @@ public class RequestService {
             myJoinType = "참여안함";
         } else {
             myJoinType = checkMyStatus.get(0);
+        }
+
+        Boolean isFull = false;
+        if (product.getGoalPeopleCount()==joinnerList.size()) {
+            isFull = true;
         }
 
         ProductInfo productInfo = ProductInfo.builder()
@@ -199,6 +213,7 @@ public class RequestService {
             throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
         }
 
+        
         Optional<JoinStorage> joinStorage = joinStorageRepository.findByProduct(productId);
         if (joinStorage.isEmpty()) {
             throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
@@ -206,6 +221,11 @@ public class RequestService {
 
         ChangeProductStatus changeProductStatus = new ChangeProductStatus();
         Product product = joinStorage.get().getProduct();
+
+        if(!product.getWriter().getLoginId().equals(loginId)) {
+            throw new BaseException(ErrorCode.NOT_WRITER_ID);
+        }
+
         if (product.getStatus().equals("종료")) {
 
             Long joinStorageId = joinStorage.get().getJoinStorageIdx();
@@ -225,19 +245,21 @@ public class RequestService {
 
             if (product.getGoalPeopleCount().equals(joinnerList.size())) {
                 changeProductStatus.setPurchaseStatus("모집완료");
+                product.setStatus("모집완료");
             } else {
                 changeProductStatus.setPurchaseStatus("모집중");
+                product.setStatus("모집중");
             }
 
         } else {
             changeProductStatus.setPurchaseStatus("종료");
+            product.setStatus("종료");
         }
+
+        productRepository.save(product);
         return changeProductStatus;
     }
 
-    /**
-     * RequestMessage 추가 되도록 repo 로직 추가해야함.
-     */
     public JoinStatusResponse sendJoinRequest(String loginId, Long productId) {
 
         Optional<User> writer = userRepository.findByLoginId(loginId);
@@ -248,6 +270,10 @@ public class RequestService {
         Optional<JoinStorage> joinStorage = joinStorageRepository.findByProduct(productId);
         if (joinStorage.isEmpty()) {
             throw new BaseException(ErrorCode.EMPTY_PRODUCT_ID);
+        }
+
+        if(loginId.equals(joinStorage.get().getProduct().getWriter().getLoginId())) {
+            throw new BaseException(ErrorCode.OWNER_CANT_REQUEST);
         }
 
         Long joinStorageId = joinStorage.get().getJoinStorageIdx();
@@ -338,7 +364,7 @@ public class RequestService {
 
         //기존 요청 삭제하기
         Optional<RequestStorage> requestStorage = requestRepository.findByUser(owner.getLoginId());
-        Optional<RequestMessage> pastRequest = requestRepository.findByRequestStorageIdxAndSenderLoginId(requestStorage.get().getRequestStorageIdx(), loginId);
+        Optional<RequestMessage> pastRequest = requestRepository.findByRequestStorageIdxAndSenderLoginIdAndProductIdx(requestStorage.get().getRequestStorageIdx(), loginId, productId);
         log.info("리퀘스트 존재"+pastRequest.isEmpty());
         requestMessageRepository.delete(pastRequest.get());
 
@@ -357,6 +383,11 @@ public class RequestService {
             throw new BaseException(ErrorCode.EMPTY_REQUEST_ID);
         }
 
+        String requestType = selectedRequest.get().getRequestType().substring(0,2);
+        if(!requestType.equals(checkRequest.getRequestType())){
+            throw new BaseException(ErrorCode.WRONG_REQUEST_TYPE);
+        }
+
         //요청 보낸 사람의 상태값 바뀜.
         Long sendUserIdx = checkRequest.getUserId();
         Optional<User> sendUser = userRepository.findByUserIdx(sendUserIdx);
@@ -373,6 +404,24 @@ public class RequestService {
                 }
             }
         });
+
+        /*
+        이때 join People 확인해서 목표인원수와 비교 후 상태 값 조정하기
+         */
+        Integer goalPeopleNumber = currentJoinStorage.get().getProduct().getGoalPeopleCount();
+        List<User> joinnerList = new ArrayList<>(); //실제 참여중인 애들만 뽑기
+        currentJoinPeople.forEach(joinPeople -> {
+            if (joinPeople.getJoinStatus().equals("참여중")) {
+                Optional<User> addUser = userRepository.findByLoginId(joinPeople.getJoinUserLoginId());
+                joinnerList.add(addUser.get());
+            }
+        });
+
+        if (goalPeopleNumber.equals(joinnerList.size())) {
+            currentJoinStorage.get().getProduct().setStatus("모집완료");
+        } else {
+            currentJoinStorage.get().getProduct().setStatus("모집중");
+        }
 
         //요청함에서 요청 삭제됨
         requestMessageRepository.delete(selectedRequest.get());

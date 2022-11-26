@@ -28,7 +28,7 @@ public enum ErrorCode {
     NULL_ADDRESS(false,400,"거주하는 동 정보가 없는 회원은 글을 작성할 수 없습니다."),
 
     //refrigerator
-    EMPTY_FOOD_ID(false,400,"존재하는 재료가 없습니다."),
+    EMPTY_FOOD_ID(false,400,"이미 삭제됐거나 존재하지 않는 음식입니다."),
     TOO_SMALL_AMOUNT(false,400,"재료 개수가 너무 적습니다."),
     TOO_MANY_AMOUNT(false,400,"재료 개수가 초과되었습니다."),
 
@@ -41,8 +41,14 @@ public enum ErrorCode {
     EMPTY_REQUEST_ID(false,400,"존재하지 않는 요청입니다."),
     TOO_LONG_PRODUCT_NAME(false, 400, "최대 16자 이내로 입력해주세요."),
 
+
     //message
     WRONG_MESSAGE_USER_ID(false,400,"자기 자신에게는 쪽지를 보낼 수 없습니다."),
+
+
+    WRONG_REQUEST_TYPE(false,400,"잘못된 요청 타입입니다."),
+    NOT_WRITER_ID(false,400,"내가 작성한 글만 상태를 변경할 수 있어요."),
+    OWNER_CANT_REQUEST(false,400,"본인 글에는 요청할 수 없습니다."),
 
     /**
      * 500 : Server 오류
