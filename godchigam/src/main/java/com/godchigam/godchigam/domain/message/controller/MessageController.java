@@ -62,7 +62,7 @@ public class MessageController {
         }
         Long userIdx = userRepository.findByLoginId(userId).get().getUserIdx();
         if(friendId.equals(userIdx)){
-            throw new BaseException(ErrorCode.WRONG_MESSAGE_USER_ID); //고치기 에러메시지
+            throw new BaseException(ErrorCode.WRONG_MESSAGE_USER_ID);
         }
         return CommonResponse.success(messageService.readMessage(userId, friendId),"타 유저와의 쪽지함 조회 성공");
 
