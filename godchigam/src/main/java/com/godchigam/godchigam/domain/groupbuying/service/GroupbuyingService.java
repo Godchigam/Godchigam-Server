@@ -6,6 +6,7 @@ import com.godchigam.godchigam.domain.groupbuying.dto.groupbuyingDto.ProductResp
 import com.godchigam.godchigam.domain.groupbuying.entity.JoinPeople;
 import com.godchigam.godchigam.domain.groupbuying.entity.JoinStorage;
 import com.godchigam.godchigam.domain.groupbuying.entity.Product;
+import com.godchigam.godchigam.domain.groupbuying.entity.RequestMessage;
 import com.godchigam.godchigam.domain.groupbuying.repository.*;
 import com.godchigam.godchigam.domain.user.entity.User;
 import com.godchigam.godchigam.domain.user.repository.UserRepository;
@@ -105,7 +106,10 @@ public class GroupbuyingService {
 
             joinPeopleRepository.deleteAll(joinPeopleRepository.findByJoinStorage(storageId));
             joinStorageRepository.delete(optionalJoinStorage.get());
+            //추가코드
+            requestMessageRepository.delete(requestMessageRepository.findByProduct(id));
             productRepository.deleteById(id);
+
 
             return null;
 
