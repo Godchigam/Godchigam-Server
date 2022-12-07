@@ -28,8 +28,7 @@ public class RefrigeratorController {
 
     @PostMapping("")
     public CommonResponse addNewIngredient(@RequestHeader("token") String accessToken, @RequestBody NewIngredientRequest newIngredientRequest) {
-        refrigeratorService.addNewIngredient(jwtTokenProvider.getUserLoginId(accessToken), newIngredientRequest);
-        return CommonResponse.successWithOutData("재료 추가 성공");
+        return CommonResponse.success(refrigeratorService.addNewIngredient(jwtTokenProvider.getUserLoginId(accessToken), newIngredientRequest),"재료 추가 성공");
     }
 
     @PutMapping("")
