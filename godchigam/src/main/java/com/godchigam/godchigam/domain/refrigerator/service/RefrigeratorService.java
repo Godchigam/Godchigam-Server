@@ -167,6 +167,7 @@ public class RefrigeratorService {
         newIngredient.setRefrigerator(loginUserFrige.get());
 
         ingredientRepository.save(newIngredient);
+
     }
 
     public int addIngredientAmount(int changeAmount, Long foodId) {
