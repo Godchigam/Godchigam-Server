@@ -1,6 +1,7 @@
 package com.godchigam.godchigam.domain.refrigerator.service;
 
 
+import com.godchigam.godchigam.domain.refrigerator.dto.AddIngredientResponse;
 import com.godchigam.godchigam.domain.refrigerator.dto.FoodInfoResponse;
 import com.godchigam.godchigam.domain.refrigerator.dto.NewIngredientRequest;
 import com.godchigam.godchigam.domain.refrigerator.dto.RefrigeratorResponse;
@@ -152,7 +153,7 @@ public class RefrigeratorService {
                 .build();
     }
 
-    public void addNewIngredient(String loginId, NewIngredientRequest newIngredientRequest) {
+    public AddIngredientResponse addNewIngredient(String loginId, NewIngredientRequest newIngredientRequest) {
         Optional<Refrigerator> loginUserFrige = refrigeratorRepository.findByUser(loginId);
 
         Ingredient newIngredient = new Ingredient();
@@ -168,6 +169,7 @@ public class RefrigeratorService {
 
         ingredientRepository.save(newIngredient);
 
+        return AddIngredientResponse.builder().foodId(newIngredient.getIngredientIdx()).build();
     }
 
     public int addIngredientAmount(int changeAmount, Long foodId) {
