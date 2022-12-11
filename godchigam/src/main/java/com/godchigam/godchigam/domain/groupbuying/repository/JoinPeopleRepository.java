@@ -14,6 +14,6 @@ public interface JoinPeopleRepository extends JpaRepository<JoinPeople,Long> {
     @Query("select b from JoinPeople b where b.joinStorage.joinStorageIdx = :storageId ")
     List<JoinPeople> findByJoinStorage(@Param("storageId") Long storageId);
 
-    @Query("select b from JoinPeople b where (b.joinStatus like '참여중%' or b.joinStatus like '탈퇴대기%') and b.joinUserLoginId = :loginIdx")
-    List<JoinPeople> findByJoinStatusAndJoinUserLoginId(@Param("loginIdx") String loginIdx);
+    @Query("select b from JoinPeople b where (b.joinStatus like '참여중%' or b.joinStatus like '탈퇴대기%') and b.joinUserLoginId = :loginId")
+    List<JoinPeople> findByJoinStatusAndJoinUserLoginId(@Param("loginId") String loginId);
 }
