@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="bfbd921a-ec13-4ecd-a792-a1165e0be6f5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/repository/RequestMessageRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/repository/RequestMessageRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/repository/JoinPeopleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/repository/JoinPeopleRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/service/GroupbuyingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/godchigam/src/main/java/com/godchigam/godchigam/domain/groupbuying/service/GroupbuyingService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -140,7 +140,8 @@
       <workItem from="1668745211371" duration="2802000" />
       <workItem from="1668776973869" duration="830000" />
       <workItem from="1669210063265" duration="37341000" />
-      <workItem from="1669618709341" duration="2360000" />
+      <workItem from="1669618709341" duration="2943000" />
+      <workItem from="1670736549700" duration="1506000" />
     </task>
     <servers />
   </component>

@@ -276,17 +276,20 @@ public class GroupbuyingService {
             if (!user.isPresent()) {
                 throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
             }
-            String loginIdx = String.valueOf(userRepository.findByLoginId(loginId).get().getUserIdx());
-            loginUserJoinPeopleList = joinPeopleRepository.findByJoinStatusAndJoinUserLoginId(loginIdx);
+           // String loginIdx = String.valueOf(userRepository.findByLoginId(loginId).get().getUserIdx());
+            loginUserJoinPeopleList = joinPeopleRepository.findByJoinStatusAndJoinUserLoginId(loginId);
             loginUserJoinPeopleList.forEach(people -> {
+
                         Long storageId1 = null;
                         Integer cntOfPeople1 = null;
                         storageId1 = people.getJoinStorage().getJoinStorageIdx();
                         List<JoinPeople> optionalJoinPeople = joinPeopleRepository.findByJoinStorage(storageId1);
                         if (!optionalJoinPeople.isEmpty()) {
+
                             cntOfPeople1 = optionalJoinPeople.size();
                         }
                         if (!people.getJoinStorage().getProduct().getWriter().getLoginId().equals(loginId)) {
+
                             newList.add(ProductInfo.builder()
                                     .productId(people.getJoinStorage().getProduct().getProductIdx())
                                     .productImageUrl(people.getJoinStorage().getProduct().getProductImageUrl())
