@@ -33,8 +33,8 @@ public class RefrigeratorController {
 
     @PutMapping("")
     public CommonResponse addIngredientAmount(@RequestBody ChangeAmountRequest changeAmount, @RequestParam Long foodId) {
-        int result = refrigeratorService.addIngredientAmount(changeAmount.getChangeAmount(), foodId);
-        return CommonResponse.success(result, "재료 개수 변경 성공");
+        int addIngredientAmountResult = refrigeratorService.addIngredientAmount(changeAmount.getChangeAmount(), foodId);
+        return CommonResponse.success(addIngredientAmountResult, "재료 개수 변경 성공");
     }
 
     @DeleteMapping("")
