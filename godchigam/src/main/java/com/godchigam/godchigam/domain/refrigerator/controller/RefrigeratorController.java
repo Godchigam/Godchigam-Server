@@ -32,19 +32,19 @@ public class RefrigeratorController {
     }
 
     @PutMapping("")
-    public CommonResponse addIngredientAmount(@RequestHeader("token") String accessToken, @RequestBody ChangeAmountRequest changeAmount, @RequestParam Long foodId) {
+    public CommonResponse addIngredientAmount(@RequestBody ChangeAmountRequest changeAmount, @RequestParam Long foodId) {
         int result = refrigeratorService.addIngredientAmount(changeAmount.getChangeAmount(), foodId);
         return CommonResponse.success(result, "재료 개수 변경 성공");
     }
 
     @DeleteMapping("")
-    public CommonResponse deleteIngredient(@RequestHeader("token") String accessToken, @RequestParam Long foodId) {
+    public CommonResponse deleteIngredient(@RequestParam Long foodId) {
         refrigeratorService.deleteIngredient(foodId);
         return CommonResponse.successWithOutData("재료 삭제 성공");
     }
 
     @PostMapping("/info")
-    public CommonResponse changeIngredientDetail(@RequestHeader("token") String accessToken, @RequestBody NewIngredientRequest changeIngredientRequest, @RequestParam Long foodId){
+    public CommonResponse changeIngredientDetail(@RequestBody NewIngredientRequest changeIngredientRequest, @RequestParam Long foodId){
         refrigeratorService.changeIngredientDetail(changeIngredientRequest, foodId);
         return CommonResponse.successWithOutData("재료 정보 수정 성공");
     }
