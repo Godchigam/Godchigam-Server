@@ -28,11 +28,11 @@ public class Ingredient {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false)
-    private LocalDate ingredientBuy;
+    private LocalDate ingredientBuyDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false)
-    private LocalDate ingredientLimit;
+    private LocalDate ingredientLimitDate;
 
     @Column(nullable = false)
     private Integer ingredientCnt;
