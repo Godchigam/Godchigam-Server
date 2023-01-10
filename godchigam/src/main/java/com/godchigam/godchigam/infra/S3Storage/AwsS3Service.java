@@ -34,7 +34,7 @@ public class AwsS3Service {
         String fileNameBefore = "https://gadchigam.s3.ap-northeast-2.amazonaws.com/";
 
         log.info(multipartFile.getOriginalFilename());
-        String fileName = filePath + "/" + createFileName(multipartFile.getOriginalFilename());
+        String fileName = filePath + "/" + createRandomizedFileName(multipartFile.getOriginalFilename());
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(multipartFile.getSize());
         objectMetadata.setContentType(multipartFile.getContentType());
@@ -52,7 +52,7 @@ public class AwsS3Service {
     }
 
 
-    private String createFileName(String fileName) { // 먼저 파일 업로드 시, 파일명을 난수화하기 위해 random으로 돌립니다.
+    private String createRandomizedFileName(String fileName) { 
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
     }
 
