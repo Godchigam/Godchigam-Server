@@ -38,7 +38,6 @@ public class GroupbuyingService {
     private final ProductRepository productRepository;
     private final UserReportRepository userReportRepository;
 
-    //글 등록
     public Product createProduct(GroupBuyingPostRequest product, String id) {
         Optional<User> user = userRepository.findByLoginId(id);
 
@@ -64,7 +63,6 @@ public class GroupbuyingService {
 
     }
 
-    //글 수정
     public Product updateProduct(GroupBuyingPostRequest product, Long id) {
         Optional<Product> optionalProduct = productRepository.findById(id);
         if (!optionalProduct.isPresent()) {
@@ -83,7 +81,6 @@ public class GroupbuyingService {
     }
 
 
-    //글 삭제
     public Product deleteProduct(Long id, String userId) {
 
         Optional<User> user = userRepository.findByLoginId(userId);
@@ -116,7 +113,6 @@ public class GroupbuyingService {
         }
     }
 
-    //같이구매 메인조회
 
     public ProductResponse groupBuyingMain(String loginId) {
         Optional<User> user = userRepository.findByLoginId(loginId);
@@ -216,14 +212,11 @@ public class GroupbuyingService {
         }
     }
 
-    //내가 등록한 같이구매, 내가 참여한 같이구매
     public List<ProductInfo> myGroupBuying(String loginId, String type) {
         Optional<User> user = userRepository.findByLoginId(loginId);
         List<ProductInfo> newList = new ArrayList<>();
         List<Product> loginUserProductList = null;
         List<JoinPeople> loginUserJoinPeopleList = null;
-        List<JoinPeople> loginUserJoinPeopleList2 = null;
-        List<JoinStorage> loginUserJoinStorageList = null;
 
         if (type.equals("register")) {
             loginUserProductList = productRepository.findByWriter(loginId);
@@ -276,7 +269,6 @@ public class GroupbuyingService {
             if (!user.isPresent()) {
                 throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
             }
-           // String loginIdx = String.valueOf(userRepository.findByLoginId(loginId).get().getUserIdx());
             loginUserJoinPeopleList = joinPeopleRepository.findByJoinStatusAndJoinUserLoginId(loginId);
             loginUserJoinPeopleList.forEach(people -> {
 

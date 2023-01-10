@@ -38,7 +38,6 @@ public class MessageController {
         list.forEach(id->{
             if(userRepository.findByUserIdx(id).isEmpty()){
                 throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
-                //에러처리
             }
             Long userIdx = userRepository.findByLoginId(userId).get().getUserIdx();
             if(id.equals(userIdx)){
