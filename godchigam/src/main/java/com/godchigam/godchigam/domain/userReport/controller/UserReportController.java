@@ -21,15 +21,12 @@ public class UserReportController {
     private final UserReportService userReportService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    //
     @PostMapping("/report")
     public CommonResponse<UserReport> createReport(@RequestHeader("token") String accessToken, @RequestBody UserReportCreationRequest request){
         String userId = jwtTokenProvider.getUserLoginId(accessToken);
         UserReport report = userReportService.createReport(userId,request);
         if(report == null){
-            //에러발생
             throw new BaseException(ErrorCode.USERS_EMPTY_USER_ID);
-
         }
         return CommonResponse.success(null,"유저 신고 성공");
 

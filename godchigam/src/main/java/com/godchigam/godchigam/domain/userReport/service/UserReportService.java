@@ -21,7 +21,7 @@ import java.util.*;
 public class UserReportService {
     private final UserReportRepository userReportRepository;
     private final UserRepository userRepository;
-    //유저 신고
+
     public UserReport createReport(String userId, UserReportCreationRequest request){
         Optional<User> user = userRepository.findById(request.getReportId()); //신고할 유저
         Optional<User> user1 = userRepository.findByLoginId(userId); //신고한 유저
