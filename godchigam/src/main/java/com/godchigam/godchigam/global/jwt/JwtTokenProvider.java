@@ -54,8 +54,6 @@ public class JwtTokenProvider {
                 .getBody();
     }
 
-    //토큰 유효성 검사
-    //TODO 예외 처리 ! 특히 refresh token이 만료 됐을 떄는 refresh token도 재발행 해줘야함.
     public boolean isValidToken(String token) {
         log.info("isValidToken is : " + token);
         try {

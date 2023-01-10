@@ -13,6 +13,7 @@ import com.godchigam.godchigam.domain.user.repository.UserRepository;
 import com.godchigam.godchigam.domain.userReport.repository.UserReportRepository;
 import com.godchigam.godchigam.global.common.ErrorCode;
 import com.godchigam.godchigam.global.common.exception.BaseException;
+import com.sun.xml.bind.v2.TODO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -383,8 +384,8 @@ public class RequestService {
             throw new BaseException(ErrorCode.EMPTY_REQUEST_ID);
         }
 
-        String requestType = selectedRequest.get().getRequestType().substring(0,2);
-        if(!requestType.equals(checkRequest.getRequestType())){
+        String requestType = selectedRequest.get().getRequestType().substring(0, 2);
+        if (!requestType.equals(checkRequest.getRequestType())) {
             throw new BaseException(ErrorCode.WRONG_REQUEST_TYPE);
         }
 
@@ -405,19 +406,16 @@ public class RequestService {
             }
         });
 
-        /*
-        이때 join People 확인해서 목표인원수와 비교 후 상태 값 조정하기
-         */
         Integer goalPeopleNumber = currentJoinStorage.get().getProduct().getGoalPeopleCount();
-        List<User> joinnerList = new ArrayList<>(); //실제 참여중인 애들만 뽑기
+        List<User> currentJoinStatusUserList = new ArrayList<>();
         currentJoinPeople.forEach(joinPeople -> {
             if (joinPeople.getJoinStatus().equals("참여중")) {
                 Optional<User> addUser = userRepository.findByLoginId(joinPeople.getJoinUserLoginId());
-                joinnerList.add(addUser.get());
+                currentJoinStatusUserList.add(addUser.get());
             }
         });
 
-        if (goalPeopleNumber.equals(joinnerList.size())) {
+        if (goalPeopleNumber.equals(currentJoinStatusUserList.size())) {
             currentJoinStorage.get().getProduct().setStatus("모집완료");
         } else {
             currentJoinStorage.get().getProduct().setStatus("모집중");
