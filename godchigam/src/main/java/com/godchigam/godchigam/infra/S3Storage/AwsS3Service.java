@@ -33,7 +33,6 @@ public class AwsS3Service {
         log.info(bucket);
         String fileNameBefore = "https://gadchigam.s3.ap-northeast-2.amazonaws.com/";
 
-        // forEach 구문을 통해 multipartFile로 넘어온 파일들 하나씩 fileNameList에 추가
         log.info(multipartFile.getOriginalFilename());
         String fileName = filePath + "/" + createFileName(multipartFile.getOriginalFilename());
         ObjectMetadata objectMetadata = new ObjectMetadata();
